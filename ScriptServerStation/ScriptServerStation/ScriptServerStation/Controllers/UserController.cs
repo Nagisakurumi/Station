@@ -101,8 +101,8 @@ namespace ScriptServerStation.Controllers
         /// <param name="email"></param>
         /// <param name="phone"></param>
         /// <returns></returns>
-        [HttpPost("regiest")]
-        public ReturnObj Regiest(string account, string password, string email, string phone)
+        [HttpPost("register")]
+        public ReturnObj Register(string account, string password, string email, string phone)
         {
             ReturnObj obj = new ReturnObj();
             try
@@ -126,6 +126,47 @@ namespace ScriptServerStation.Controllers
                 obj.SetIsSuccess(false);
             }
             return obj;
+        }
+        /// <summary>
+        /// 充值
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="code"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        public ReturnObj Recharge(string account, string code, double money)
+        {
+            ReturnObj returnObj = new ReturnObj();
+            try
+            {
+                User user = userService.GetUser(account);
+                returnObj.SetIsSuccess(userService.Recharge(user, code, money));
+            }
+            catch (Exception)
+            {
+                returnObj.SetIsSuccess(false);
+            }
+            return returnObj;
+        }
+        /// <summary>
+        /// 购买会员
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        public ReturnObj BuyVIP(string account,string money)
+        {
+            ReturnObj returnObj = new ReturnObj();
+            try
+            {
+                User user = userService.GetUser(account);
+                returnObj.SetIsSuccess(userService.BuyVIP(user, money));
+            }
+            catch (Exception)
+            {
+                returnObj.SetIsSuccess(false);
+            }
+            return returnObj;
         }
     }
 }
