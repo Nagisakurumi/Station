@@ -41,5 +41,20 @@ namespace ScriptServerStation.Service
         /// <param name="account"></param>
         /// <returns></returns>
         User GetUser(string account);
+        /// <summary>
+        /// 买会员
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        bool BuyVIP(User user, int day);
+        /// <summary>
+        /// 充值
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="code"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        bool Recharge(User user, string code, double money);
     }
 }

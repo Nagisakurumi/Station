@@ -59,6 +59,10 @@ namespace DataBaseController.Entitys
         /// </summary>
         public string Phone { get; set; }
         /// <summary>
+        /// 余额
+        /// </summary>
+        public double Balance { get; set; }
+        /// <summary>
         /// 保留字段
         /// </summary>
         public string UnKnow1 { get; set; }
