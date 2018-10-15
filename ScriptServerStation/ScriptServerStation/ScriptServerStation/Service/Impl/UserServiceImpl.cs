@@ -25,6 +25,19 @@ namespace ScriptServerStation.Service.Impl
             this.DataBaseContext.SaveChanges();
             return true;
         }
+
+        public bool BuyVIP(User user, int day)
+        {
+            //按每日计算会员需要多少钱
+            if (user.Balance < day * 1.0)
+                return false;
+            user.Balance -= day * 1.0;
+            user.LastBuyDate = DateTime.Now;
+            user.EndDate = DateTime.Now + TimeSpan.FromDays(day);
+            this.DataBaseContext.SaveChanges();
+            return true;
+        }
+
         /// <summary>
         /// 获取用户
         /// </summary>
@@ -69,6 +82,15 @@ namespace ScriptServerStation.Service.Impl
             }
             return false;
         }
+
+        public bool Recharge(User user, string code, double money)
+        {
+            //支付信息
+            user.Balance += money;
+            this.DataBaseContext.SaveChanges();
+            return true;
+        }
+
         /// <summary>
         /// 设置登录信息
         /// </summary>
