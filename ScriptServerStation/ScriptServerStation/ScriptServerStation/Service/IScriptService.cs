@@ -17,7 +17,7 @@ namespace ScriptServerStation.Service
         /// 获取Web树api列表
         /// </summary>
         /// <returns></returns>
-        string GetTreeApis();
+        string GetTreeApis(string key = null);
         /// <summary>
         /// 打印信息
         /// </summary>

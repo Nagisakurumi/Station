@@ -14,7 +14,7 @@ namespace ScriptServerStation.Service.Impl
         /// 构造函数
         /// </summary>
         /// <param name="DataBaseContext"></param>
-        public ScriptServiceImpl(DataBaseContext DataBaseContext):base(DataBaseContext)
+        public ScriptServiceImpl(DataBaseContext DataBaseContext) : base(DataBaseContext)
         {
             ScriptServiceManager.ScriptUrl = @"http://115.217.255.142:8383/api/Service/";
             ScriptServiceManager.InitFunction();
@@ -36,9 +36,9 @@ namespace ScriptServerStation.Service.Impl
         /// 获取api的Web树型列表
         /// </summary>
         /// <returns></returns>
-        public string GetTreeApis()
+        public string GetTreeApis(string key = null)
         {
-            return ScriptServiceManager.GetTreeApis();
+            return ScriptServiceManager.GetTreeApis(key);
         }
         /// <summary>
         /// 打印函数

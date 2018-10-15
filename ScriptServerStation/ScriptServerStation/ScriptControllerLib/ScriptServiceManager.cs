@@ -73,26 +73,35 @@ namespace ScriptControllerLib
         /// 获取所有的api信息
         /// </summary>
         /// <returns></returns>
-        public static string GetTreeApis()
+        public static string GetTreeApis(string key = null)
         {
             var treeList = new List<zTreeModel>();
-            foreach (var item in ScriptAPIs)
+            if (key == null)
             {
-                zTreeModel tree = new zTreeModel();
-                bool hasChildren = false ;
+                foreach (var item in ScriptAPIs)
+                {
+                    zTreeModel tree = new zTreeModel();
+                    bool hasChildren = false;
 
-                tree.id = item.Value.ScriptMethAttribute.TypeId.ToString();
-                tree.name = item.Value.ScriptMethAttribute.Name.ToString();
-                tree.pId = "0";
-                tree.open = true;
-                tree.@checked = false;
-                tree.isParent = hasChildren;
-                treeList.Add(tree);
+                    tree.id = item.Key.ToString();
+                    tree.name = item.Value.ScriptMethAttribute.Name.ToString();
+                    tree.pId = "0";
+                    tree.open = true;
+                    tree.@checked = false;
+                    tree.isParent = hasChildren;
+                    treeList.Add(tree);
+                }
+                return treeList.ZTreeJson();
             }
-            return treeList.ZTreeJson();
+            else
+            {
+                List<ScriptMethAttribute> scriptMeths = new List<ScriptMethAttribute>();
+                scriptMeths.Add(ScriptAPIs[key].ScriptMethAttribute);
+                return JsonConvert.SerializeObject(scriptMeths).ToString(); ;
+            }
         }
 
-        
+
         /// <summary>
         /// 操作函数
         /// </summary>
