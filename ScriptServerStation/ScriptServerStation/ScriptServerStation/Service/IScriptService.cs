@@ -14,6 +14,11 @@ namespace ScriptServerStation.Service
         /// <returns></returns>
         string GetAllApis();
         /// <summary>
+        /// 获取Web树api列表
+        /// </summary>
+        /// <returns></returns>
+        string GetTreeApis();
+        /// <summary>
         /// 打印信息
         /// </summary>
         /// <param name="scriptInput"></param>

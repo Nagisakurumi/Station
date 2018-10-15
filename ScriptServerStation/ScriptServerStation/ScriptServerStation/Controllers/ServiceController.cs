@@ -41,6 +41,20 @@ namespace ScriptServerStation.Controllers
                 return "";
             }
         }
+
+        [HttpGet("gettypeZTree")]
+        public string GetTypeZTree()
+        {
+            try
+            {
+                return scriptService.GetTreeApis();
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
         /// <summary>
         /// 打印接口
         /// </summary>

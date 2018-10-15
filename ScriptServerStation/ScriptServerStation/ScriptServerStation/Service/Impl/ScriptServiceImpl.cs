@@ -31,6 +31,15 @@ namespace ScriptServerStation.Service.Impl
         {
             return ScriptServiceManager.GetAllApi();
         }
+
+        /// <summary>
+        /// 获取api的Web树型列表
+        /// </summary>
+        /// <returns></returns>
+        public string GetTreeApis()
+        {
+            return ScriptServiceManager.GetTreeApis();
+        }
         /// <summary>
         /// 打印函数
         /// </summary>

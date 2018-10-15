@@ -68,6 +68,31 @@ namespace ScriptControllerLib
             }
             return JsonConvert.SerializeObject(scriptMeths).ToString();
         }
+
+        /// <summary>
+        /// 获取所有的api信息
+        /// </summary>
+        /// <returns></returns>
+        public static string GetTreeApis()
+        {
+            var treeList = new List<zTreeModel>();
+            foreach (var item in ScriptAPIs)
+            {
+                zTreeModel tree = new zTreeModel();
+                bool hasChildren = false ;
+
+                tree.id = item.Value.ScriptMethAttribute.TypeId.ToString();
+                tree.name = item.Value.ScriptMethAttribute.Name.ToString();
+                tree.pId = "0";
+                tree.open = true;
+                tree.@checked = false;
+                tree.isParent = hasChildren;
+                treeList.Add(tree);
+            }
+            return treeList.ZTreeJson();
+        }
+
+        
         /// <summary>
         /// 操作函数
         /// </summary>
