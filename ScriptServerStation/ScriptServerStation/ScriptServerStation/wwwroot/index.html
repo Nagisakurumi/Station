@@ -42,12 +42,31 @@
 
         .right {
             float: left;
-            width: 300px;
+            width: 400px;
             height: 100%;
             box-sizing: border-box;
             /*border: 1px solid green;*/
             text-align: center;
         }
+        .param {
+            width:100%;
+            float:left;
+        }
+            .param li {
+                width:auto;
+                float: left;
+            }
+            .param li div {
+                width: auto;
+                float: left;
+            }
+
+            .param li div p {
+                margin: auto;
+                width: auto;
+                float: left;
+            }
+     
     </style>
     <script>
 
@@ -68,9 +87,15 @@
                         var array = data[0].InputData; 
                         for (var i = 0; i < array.length; i++) {
                             if (array[i].Type == "OBJECT") {
-                                $("#Param").append("<li><div><p> " + array[i].Name + "</p><input type='checkbox'></div></li>");
+                                $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div><input type='checkbox'>是否使用变量</div>" +
+                                    "<div> <select id='obj'> <option value='1'>18-21</option><option value = '2' > 22 - 25</option></select></div></li>");
                             }
-                            $("#Param").append("<li><p> " + i + "</p></li>");
+                            else if (array[i].Type =="STRING")
+                            {
+                                $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div class='check'><input type='checkbox'>是否使用变量</div>" +
+                                    "<div> <select id='message'> <option value='1'>18-21</option><option value = '2' > 22 - 25</option></select></div><div><input type='text' style='width: 50px;' name='message' /></div></li>");
+                            }
+                            //$("#Param").append("<li><p> " + i + "</p></li>");
                         }
                
                     },
@@ -133,7 +158,7 @@
         </div>
     </div>
     <div class="right">
-        <ul id="Param"></ul>
+        <ul id="Param" class="param"></ul>
     </div>
 </body>
 </html>
