@@ -39,7 +39,11 @@
             /* border: 1px solid red; */
             text-align: center;
         }
-
+        .selected {
+            font-weight: bold;
+            background: #FF9A35;
+            color: #fff;
+        }
         .right {
             float: left;
             width: 400px;
@@ -48,33 +52,37 @@
             /*border: 1px solid green;*/
             text-align: center;
         }
+
         .param {
-            width:100%;
-            float:left;
+            width: 100%;
+            float: left;
         }
+
             .param li {
-                width:auto;
-                float: left;
-            }
-            .param li div {
                 width: auto;
-                float: left;
             }
 
-            .param li div p {
-                margin: auto;
-                width: auto;
-                float: left;
-            }
-     
+                .param li div {
+                    width: auto;
+                    float: left;
+                }
+
+                    .param li div p {
+                        margin: auto;
+                        width: auto;
+                        float: left;
+                    }
     </style>
     <script>
+        var TotalScriptCount = 0;
 
         $(function () {
             treeView();
 
 
-            $("#Script").on("click", ".name", function () {
+            $("#Script").on("click", "li", function () {
+                $(this).siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
+                $(this).addClass('selected');                            // 添加当前元素的样式
                 var funcId = $(this).context.id;
                 $.ajax({
                     url: '/api/service/GetTypeZTreeParam',
@@ -84,30 +92,43 @@
                     async: false,
                     success: function (data) {
                         $("#Param").find("li").remove();
-                        var array = data[0].InputData; 
+                        var array = data[0].InputData;
                         for (var i = 0; i < array.length; i++) {
                             if (array[i].Type == "OBJECT") {
                                 $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div><input type='checkbox'>是否使用变量</div>" +
-                                    "<div> <select id='obj'> <option value='1'>18-21</option><option value = '2' > 22 - 25</option></select></div></li>");
+                                    "<div> <select id='obj'></select></div></li>");
                             }
-                            else if (array[i].Type =="STRING")
-                            {
+                            else if (array[i].Type == "STRING" || array[i].Type == "INT") {
                                 $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div class='check'><input type='checkbox'>是否使用变量</div>" +
-                                    "<div> <select id='message'> <option value='1'>18-21</option><option value = '2' > 22 - 25</option></select></div><div><input type='text' style='width: 50px;' name='message' /></div></li>");
+                                    "<div> <select id='message'></select></div><div><input type='text' style='width: 50px;' name='message' /></div></li>");
+                            }
+                            else if (array[i].Type == "ENUM") {
+                                $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div class='check'><input type='checkbox'>是否使用变量</div>" +
+                                    "<div> <select id='option'></select></div><div><select id='enum'></select></div></li>");
+                                if (array[i].EnumDatas.length > 0) {
+                                    for (var j = 0; j < array[i].EnumDatas.length; j++)
+                                        $("#enum").append("<option value='" + array[i].EnumDatas[j] + "'>" + array[i].EnumDatas[j]+"</option>"); //为Select追加一个Option(下拉项)
+                                }
+
                             }
                             //$("#Param").append("<li><p> " + i + "</p></li>");
                         }
-               
+
                     },
                     error: function (error) {
                         console.log(error);
                     }
                 });
             });
+
+            //$("#Script").on("click", ".name", function () {
+
+
+            //}
         });
 
-        function deleteLi(obj) {
-            obj.removeChild(obj)
+        function delElement(obj) {
+            obj.parentNode.removeChild(obj);
         }
 
         function treeView() {
@@ -124,7 +145,8 @@
 
             //tree的点击事件
             function zTreeOnDblClick(event, treeId, treeNode) {
-                $("#Script").append("<li><p> f(x)<span class='name' id='" + treeNode.id + "'>" + treeNode.name + "</span></p></li>");
+                $("#Script li").length;
+                $("#Script").append("<li  id='" + treeNode.id + "'><p> f(x)<span class='name'>" + treeNode.name + "</span></p></li>");
             };
 
             //树
