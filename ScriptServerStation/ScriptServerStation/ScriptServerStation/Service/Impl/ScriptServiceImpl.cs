@@ -16,7 +16,7 @@ namespace ScriptServerStation.Service.Impl
         /// <param name="DataBaseContext"></param>
         public ScriptServiceImpl(DataBaseContext DataBaseContext) : base(DataBaseContext)
         {
-            ScriptServiceManager.ScriptUrl = @"http://115.217.255.142:8383/api/Service/";
+            ScriptServiceManager.ScriptUrl = @"http://localhost:56233/api/Service/";
             ScriptServiceManager.InitFunction();
         }
         /// <summary>
