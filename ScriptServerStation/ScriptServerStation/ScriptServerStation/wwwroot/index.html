@@ -7,129 +7,194 @@
     <script src="/Content/js/zTree/jquery.ztree.all.min.js"></script>
     <link href="/Content/js/zTree/css/zTreeStyle.css" rel="stylesheet" />
     <link href="/Content/js/zTree/css/zTree.theme.metro.css" rel="stylesheet" />
-    <style>
-        .scriptRow ul li p span {
-            text-align: center;
-        }
 
-        .body {
-            width: 100%;
-            height: 500px;
-            box-sizing: border-box;
-            /*border: 1px solid red;*/
-        }
-
-        .left {
-            float: left;
-            display: inline-block;
-            width: 300px;
-            height: 100%;
-            box-sizing: border-box;
-            /*border: 1px solid green;*/
-            text-align: center;
-        }
-
-        .center {
-            float: left;
-            /* padding-left: 300px; */
-            /* margin: 0 -300px; */
-            /* width: 100%; */
-            height: 100%;
-            box-sizing: border-box;
-            /* border: 1px solid red; */
-            text-align: center;
-        }
-        .selected {
-            font-weight: bold;
-            background: #FF9A35;
-            color: #fff;
-        }
-        .right {
-            float: left;
-            width: 400px;
-            height: 100%;
-            box-sizing: border-box;
-            /*border: 1px solid green;*/
-            text-align: center;
-        }
-
-        .param {
-            width: 100%;
-            float: left;
-        }
-
-            .param li {
-                width: auto;
-            }
-
-                .param li div {
-                    width: auto;
-                    float: left;
-                }
-
-                    .param li div p {
-                        margin: auto;
-                        width: auto;
-                        float: left;
-                    }
-    </style>
+    <link href="/Content/css/index.css" rel="stylesheet" />
     <script>
+        //共有几个li
         var TotalScriptCount = 0;
-
+        //当前选中li在 Script 的ul中 第几个
+        var ChooseLi = null;
+        //变量的计数
+        var VariableCount = 0;
+        //当前选中li在 Variable 的ul中 第几个
+        var VariableChooseLi = null;
+        //变量所有的名称
+        var VariableList = new Array();
+        //记录变量改变前的名称
+        var BeforeChangeName = null;
         $(function () {
             treeView();
 
 
             $("#Script").on("click", "li", function () {
-                $(this).siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
-                $(this).addClass('selected');                            // 添加当前元素的样式
-                var funcId = $(this).context.id;
-                $.ajax({
-                    url: '/api/service/GetTypeZTreeParam',
-                    data: { funcId: funcId },
-                    dataType: "json",
-                    type: "get",
-                    async: false,
-                    success: function (data) {
-                        $("#Param").find("li").remove();
-                        var array = data[0].InputData;
-                        for (var i = 0; i < array.length; i++) {
-                            if (array[i].Type == "OBJECT") {
-                                $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div><input type='checkbox'>是否使用变量</div>" +
-                                    "<div> <select id='obj'></select></div></li>");
-                            }
-                            else if (array[i].Type == "STRING" || array[i].Type == "INT") {
-                                $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div class='check'><input type='checkbox'>是否使用变量</div>" +
-                                    "<div> <select id='message'></select></div><div><input type='text' style='width: 50px;' name='message' /></div></li>");
-                            }
-                            else if (array[i].Type == "ENUM") {
-                                $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div class='check'><input type='checkbox'>是否使用变量</div>" +
-                                    "<div> <select id='option'></select></div><div><select id='enum'></select></div></li>");
-                                if (array[i].EnumDatas.length > 0) {
-                                    for (var j = 0; j < array[i].EnumDatas.length; j++)
-                                        $("#enum").append("<option value='" + array[i].EnumDatas[j] + "'>" + array[i].EnumDatas[j]+"</option>"); //为Select追加一个Option(下拉项)
+                var Choose = $("#Script li").index($(this));
+                if (Choose == ChooseLi) {
+                    ChooseLi = null;
+                    $(this).removeClass('selected');  //再次点击删除自己当前选中样式
+                    $("#Param").find("li").remove();
+                }
+                else {
+                    ChooseLi = Choose;
+                    $(this).siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
+                    $(this).addClass('selected');                            // 添加当前元素的样式
+
+                    var funcId = $(this).context.id;
+                    $("#Param").find("li").remove();
+                    $.ajax({
+                        url: '/api/service/GetTypeZTreeParam',
+                        data: { funcId: funcId },
+                        dataType: "json",
+                        type: "get",
+                        async: false,
+                        success: function (data) {
+                            var array = data[0].InputData;
+                            for (var i = 0; i < array.length; i++) {
+                                if (array[i].Type == "OBJECT") {
+                                    $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div><input type='checkbox' onchange='checkBoxClick(this)'>是否使用变量</div>" +
+                                        "<div> <select id='obj'></select></div></li>");
                                 }
+                                else if (array[i].Type == "STRING" || array[i].Type == "INT") {
+                                    $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div class='check'><input type='checkbox'  onchange='checkBoxClick(this)'>是否使用变量</div>" +
+                                        "<div> <select id='message'></select></div><div><input type='text' style='width: 50px;' name='message' /></div></li>");
+                                }
+                                else if (array[i].Type == "ENUM") {
+                                    $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div class='check'><input type='checkbox'onchange='checkBoxClick(this)'>是否使用变量</div>" +
+                                        "<div> <select id='option'></select></div><div><select id='enum'></select></div></li>");
+                                    if (array[i].EnumDatas.length > 0) {
+                                        for (var j = 0; j < array[i].EnumDatas.length; j++)
+                                            $("#enum").append("<option value='" + array[i].EnumDatas[j] + "'>" + array[i].EnumDatas[j] + "</option>"); //为Select追加一个Option(下拉项)
+                                    }
 
+                                }
                             }
-                            //$("#Param").append("<li><p> " + i + "</p></li>");
+                            //checkBoxClick();
+                        },
+                        error: function (error) {
+                            console.log(error);
                         }
-
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
+                    });
+                }
             });
 
-            //$("#Script").on("click", ".name", function () {
 
+            $("#add").on("click", function () {
+                $("#Variable").append("<li><div><p>名称</p></div><input onchange='VariableNameChange(this)' name='name' count='" + VariableCount + "' type='text' style='width: 50px;' name='message' value='未命名" + VariableCount + "'/></div>" +
+                    "<div><p>当前值</p></div><div><input type='text' style='width: 50px;' name='message' /></div></li>");
+                VariableList.push("未命名" + VariableCount);
 
-            //}
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        //定位到被选中行
+                        $(this).parent().next().children().append("<option>未命名" + VariableCount + "</option>");
+                    }
+                });
+
+                VariableCount++;
+            });
+
+            $("#del").on("click", function () {
+                if (VariableChooseLi != null) {
+
+                    VariableList.splice($.inArray($("#Variable li").eq(VariableChooseLi).children()[1].value, VariableList), 1);
+
+                    $("input[type='checkbox']").each(function () {
+                        if ($(this).is(":checked")) {
+                            //定位到被选中行
+                            var name = $("#Variable li").eq(VariableChooseLi).children()[1].value;
+                            var op = $(this).parent().next().children().find("option");
+                            for (var i = 0; i < op.length; i++) {
+                                if (op[i].text == name) {
+                                    op[i].remove();
+                                }
+                            }
+                        }
+                    });
+
+                    $("#Variable li").eq(VariableChooseLi).remove();
+                }
+                else
+                    alert("请选择变量再删除。");
+            });
+
+            $("#delScript").on("click", function () {
+                if (ChooseLi != null) {
+                    $("#Script li").eq(ChooseLi).remove();
+                    $("#Param").find("li").remove();
+                    ChooseLi = null;
+                }
+                else
+                    alert("请选择变量再删除。");
+            });
+
+            $("#Variable").on("click", "p", function () {
+                var Choose = $("#Variable li").index($(this).parent().parent());
+                if (Choose == VariableChooseLi) {
+                    VariableChooseLi = null;
+                    $(this).parent().parent().removeClass('selected');  //再次点击删除自己当前选中样式
+                }
+                else {
+                    VariableChooseLi = Choose;
+                    $(this).parent().parent().siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
+                    $(this).parent().parent().addClass('selected');                            // 添加当前元素的样式
+                }
+            });
+
+            $("#Variable").on("click", "input", function () {
+                if ($(this)[0].name=="name")
+                    BeforeChangeName = $(this)[0].value;
+                var node = $(this).parent();
+                if (node[0].nodeName != 'LI') {
+                    node = node.parent();
+                }
+
+                var Choose = $("#Variable li").index(node);
+                if (Choose == VariableChooseLi) {
+                    //点击input不取消li焦点
+                }
+                else {
+                    VariableChooseLi = Choose;
+                    node.siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
+                    node.addClass('selected');                            // 添加当前元素的样式
+                }
+            });
         });
 
-        function delElement(obj) {
-            obj.parentNode.removeChild(obj);
+        function checkBoxClick(obj) {
+            if (obj.checked == true) {
+                for (var i = 0; i < VariableList.length; i++)
+                    $(obj).parent().next().children().append("<option>" + VariableList[i] + "</option>");
+            }
+            else {
+                $(obj).parent().next().children().empty();
+            }
         }
+
+        function VariableNameChange(obj) {
+            if ($.inArray(obj.value, VariableList) >= 0) {
+                alert("名称重复");
+                obj.value = BeforeChangeName;
+            }
+            else {
+                VariableList.splice($.inArray(BeforeChangeName, VariableList), 1);
+                VariableList.push(obj.value);
+
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        ////定位到被选中行
+                        //var name = $("#Variable li").eq(VariableChooseLi).children()[1].value;
+                        var op = $(this).parent().next().children().find("option");
+                        for (var i = 0; i < op.length; i++) {
+                            if (op[i].text == BeforeChangeName) {
+                                op[i].text = VariableList[VariableList.length - 1];
+                            }
+                        }
+                    }
+                });
+
+            }
+
+        }
+
 
         function treeView() {
             var setting = {
@@ -145,8 +210,11 @@
 
             //tree的点击事件
             function zTreeOnDblClick(event, treeId, treeNode) {
-                $("#Script li").length;
-                $("#Script").append("<li  id='" + treeNode.id + "'><p> f(x)<span class='name'>" + treeNode.name + "</span></p></li>");
+                if (ChooseLi == null)
+                    $("#Script").append("<li  id='" + treeNode.id + "' count='" + TotalScriptCount + "'><p> f(x)<span class='name'>" + treeNode.name + "</span></p></li>");
+                else
+                    $("#Script li").eq(ChooseLi).after("<li  id='" + treeNode.id + "' count='" + TotalScriptCount + "'><p> f(x)<span class='name'>" + treeNode.name + "</span></p></li>");
+                TotalScriptCount++;
             };
 
             //树
@@ -176,11 +244,17 @@
     </div>
     <div class="center">
         <div class="scriptRow">
-            <ul id="Script"></ul>
+            <button type="button" id="delScript" style="margin-left:50px;">删除</button>
+            <ul id="Script" class="Script"></ul>
         </div>
     </div>
     <div class="right">
         <ul id="Param" class="param"></ul>
+    </div>
+    <div class="R-right">
+        <button type="button" id="add" style="margin-left:50px;">新增</button>
+        <button type="button" id="del">删除</button>
+        <ul id="Variable" class="variable"></ul>
     </div>
 </body>
 </html>

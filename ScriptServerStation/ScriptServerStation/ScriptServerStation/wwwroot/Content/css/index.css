@@ -1,0 +1,108 @@
+﻿.scriptRow ul li p span {
+    text-align: center;
+}
+
+.body {
+    width: 100%;
+    height: 500px;
+    box-sizing: border-box;
+    /*border: 1px solid red;*/
+}
+
+.left {
+    float: left;
+    display: inline-block;
+    width: 300px;
+    height: 100%;
+    box-sizing: border-box;
+    /*border: 1px solid green;*/
+    text-align: center;
+}
+
+.center {
+    float: left;
+    /* padding-left: 300px; */
+    /* margin: 0 -300px; */
+    /* width: 100%; */
+    height: 100%;
+    box-sizing: border-box;
+    /* border: 1px solid red; */
+    /*text-align: center;*/
+}
+
+
+
+.right {
+    float: left;
+    width: 400px;
+    height: 100%;
+    box-sizing: border-box;
+    /*border: 1px solid green;*/
+    /*text-align: center;*/
+}
+.R-right {
+    float: left;
+    width: 400px;
+    height: 100%;
+    box-sizing: border-box;
+    /*border: 1px solid green;*/
+    /*text-align: center;*/
+}
+
+.selected {
+    font-weight: bold;
+    background: #FF9A35;
+    color: #fff;
+}
+.Script li {
+    list-style: none;
+}
+
+.param {
+    width: 100%;
+    float: left;
+}
+
+    .param li {
+        width: auto;
+        list-style: none;
+        float: left;
+        clear: both;
+    }
+
+        .param li div {
+            width: auto;
+            float: left;
+        }
+
+            .param li div p {
+                margin: auto;
+                width: auto;
+                float: left;
+            }
+.variable {
+    width: 100%;
+    float: left;
+}
+
+    .variable li {
+        width: auto;
+        list-style: none;
+        float: left;
+        clear: both;
+    }
+
+        .variable li div {
+            width: auto;
+            float: left;
+        }
+
+            .variable li div p {
+                margin: auto;
+                width: auto;
+                float: left;
+            }
+            .variable li input {
+                width: 50px;
+                float: left;
+            }
