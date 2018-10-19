@@ -40,6 +40,12 @@ namespace ScriptServerStation.Service.Impl
         {
             return ScriptServiceManager.GetTreeApis(key);
         }
+        public string GetVueTreeApis(string key = null)
+        {
+            return ScriptServiceManager.GetVueTreeApis(key);
+        }
+
+
         /// <summary>
         /// 打印函数
         /// </summary>

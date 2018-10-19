@@ -11,7 +11,6 @@
 
 .left {
     float: left;
-    display: inline-block;
     width: 300px;
     height: 100%;
     box-sizing: border-box;
@@ -106,3 +105,16 @@
                 width: 50px;
                 float: left;
             }
+.center item {
+    cursor: pointer;
+}
+
+.center bold {
+    font-weight: bold;
+}
+
+.center ul {
+    padding-left: 1em;
+    line-height: 1.5em;
+    list-style-type: dot;
+}

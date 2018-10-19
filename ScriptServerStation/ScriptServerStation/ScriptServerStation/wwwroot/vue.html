@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script src="/Content/js/jquery/jquery-2.1.1.min.js"></script>
+    <script src="/Content/js/zTree/jquery.ztree.all.min.js"></script>
+    <link href="/Content/js/zTree/css/zTreeStyle.css" rel="stylesheet" />
+    <link href="/Content/js/zTree/css/zTree.theme.metro.css" rel="stylesheet" />
+
+    <script src="/Content/js/vue.js"></script>
+
+    <link href="/Content/css/index.css" rel="stylesheet" />
+    <script type="text/x-template" id="typeItem-template">
+        <li>
+            <div :class="{bold: isFolder}"
+                 @click="toggle"
+                 @dblclick="addParam">
+                {{ model.name }}
+                <span v-if="isFolder">[{{ open ? '-' : '+' }}]</span>
+            </div>
+            <ul v-show="open" v-if="isFolder">
+                <typeItem is="typeTreeItem"
+                          class="typeItem"
+                          v-for="(model, index) in model.children"
+                          :key="index"
+                          :model="model">
+                </typeItem>
+            </ul>
+        </li>
+    </script>
+    <script type="text/x-template" id="paramItem-template">
+        <li>
+            <div :class="{bold: isFolder}"
+                 @click="toggle">
+                {{ model.name }}
+            </div>
+            <ul v-show="open" v-if="isFolder">
+                <typeItem is="paramTreeItem"
+                          class="paramItem"
+                          v-for="(model, index) in model.children"
+                          :key="index"
+                          :model="model">
+                </typeItem>
+            </ul>
+        </li>
+    </script>
+    <script>
+        //变量的计数
+        var VariableCount = 0;
+        $(function () {
+
+
+            //参数的模板
+            Vue.component('variable-temp', {
+                template: '\
+                            <li>\
+                            <div><p>名称</p></div>\
+                            <div><input onchange="VariableNameChange(this)" name="name" type="text"  :value="value"  /></div>\
+                            <div><p>当前值</p></div>\
+                            <div><input type=\'text\' name=\'message\'/></div>\
+                            <div><button v-on:click="$emit(\'remove\')">Remove</button></div>\
+                            </li>\
+                          ',
+                props: ['value']
+            });
+
+            var variable = new Vue({
+                el: '#variable-list',
+                data: {
+                    variableValues: [
+                    ]
+                },
+                methods: {
+                    addNewTodo: function () {
+                        this.variableValues.push({
+                            id: VariableCount,
+                            value: "未命名" + VariableCount
+                        })
+                        VariableCount++;
+                    }
+                }
+            });
+
+            //类型树的模板
+            Vue.component('typeTreeItem', {
+                template: '#typeItem-template',
+                props: {
+                    model: Object
+                },
+                data: function () {
+                    return {
+                        open: false
+                    }
+                },
+                computed: {
+                    isFolder: function () {
+                        return this.model.children
+                    }
+                },
+                methods: {
+                    toggle: function () {
+                        if (this.isFolder) {
+                            this.open = !this.open
+                        }
+                    },
+                    addParam: function () {
+                        if (this.model.name != "函数") {
+                            paramTree.setTreeData(this.model);
+                        }
+
+                    },
+                }
+            });
+
+            var typeTree = new Vue({
+                el: '#typeTree',
+                data: {
+                    treeData: {}
+                },
+                methods: {
+                    setTreeData: function (data) {
+                        var tree = { id: "1", name: "函数", children: data }
+                        this.treeData = tree;
+                    },
+                }
+            });
+
+
+            //函数树的模板
+            Vue.component('paramTreeItem', {
+                template: '#paramItem-template',
+                props: {
+                    model: Object
+                },
+                data: function () {
+                    return {
+                        open: true
+                    }
+                },
+                computed: {
+                    isFolder: function () {
+                        return this.model.children
+                    }
+                },
+                methods: {
+                    toggle: function () {
+                        alert(1);
+                    },
+                }
+            });
+
+            var paramTree = new Vue({
+                el: '#paramTree',
+                data: {
+                    paramData: { id: '1', name: "函数", children: [] }
+                },
+                methods: {
+                    setTreeData: function (data) {
+                        var tree = { id: data.id, name: data.name, children: data.children }
+                        this.paramData.children.push(tree);
+                    },
+                }
+            });
+
+            //树
+            $.ajax({
+                url: '/api/service/GetTypeVueTree',
+                data: {},
+                dataType: "json",
+                type: "get",
+                beforeSend: function () {
+                },
+                success: function (data) {
+                    typeTree.setTreeData(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+
+
+    </script>
+</head>
+<body>
+    <div id="variable-list" class="left">
+        <form v-on:submit.prevent="addNewTodo">
+            <button style="margin-left:50px">Add</button>
+        </form>
+        <ul class="variable">
+            <li is="variable-temp"
+                v-for="(variableValue, index) in variableValues"
+                v-bind:key="variableValue.id"
+                v-bind:value="variableValue.value"
+                v-on:remove="variableValues.splice(index, 1)"></li>
+        </ul>
+    </div>
+    <div class="center">
+        <ul id="typeTree">
+            <item is="typeTreeItem"
+                  class="typeItem"
+                  :model="treeData">
+            </item>
+        </ul>
+    </div>
+    <div class="right">
+        <ul id="paramTree" class="param">
+            <item is="paramTreeItem"
+                  class="paramItem"
+                  :model="paramData">
+            </item>
+        </ul>
+    </div>
+</body>
+</html>

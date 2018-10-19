@@ -76,6 +76,7 @@ namespace ScriptControllerLib
         public static string GetTreeApis(string key = null)
         {
             var treeList = new List<zTreeModel>();
+
             if (key == null)
             {
                 foreach (var item in ScriptAPIs)
@@ -90,6 +91,7 @@ namespace ScriptControllerLib
                     tree.@checked = false;
                     tree.isParent = hasChildren;
                     treeList.Add(tree);
+
                 }
                 return treeList.ZTreeJson();
             }
@@ -100,6 +102,32 @@ namespace ScriptControllerLib
                 return JsonConvert.SerializeObject(scriptMeths).ToString(); ;
             }
         }
+        public static string GetVueTreeApis(string key = null)
+        {
+            var treeList = new List<VueTreeModel>();
+            if (key == null)
+            {
+                foreach (var item in ScriptAPIs)
+                {
+
+                    VueTreeModel tree = new VueTreeModel();
+                    bool hasChildren = false;
+                    tree.id = item.Key.ToString();
+                    tree.name = item.Value.ScriptMethAttribute.Name.ToString();
+                    tree.pId = "0";
+                    tree.isParent = hasChildren;
+                    treeList.Add(tree);
+                }
+                return treeList.VueTreeJson();
+            }
+            else
+            {
+                List<ScriptMethAttribute> scriptMeths = new List<ScriptMethAttribute>();
+                scriptMeths.Add(ScriptAPIs[key].ScriptMethAttribute);
+                return JsonConvert.SerializeObject(scriptMeths).ToString(); ;
+            }
+        }
+        
 
 
         /// <summary>

@@ -18,6 +18,7 @@ namespace ScriptServerStation.Service
         /// </summary>
         /// <returns></returns>
         string GetTreeApis(string key = null);
+        string GetVueTreeApis(string key = null);
         /// <summary>
         /// 打印信息
         /// </summary>
