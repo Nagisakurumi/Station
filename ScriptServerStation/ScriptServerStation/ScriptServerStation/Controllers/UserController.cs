@@ -10,7 +10,8 @@ using ScriptServerStation.Service;
 
 namespace ScriptServerStation.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/User")]
     public class UserController : Controller
     {
 
@@ -87,7 +88,7 @@ namespace ScriptServerStation.Controllers
 
                 returnObj.SetIsSuccess(userService.Login(account, password, HttpContext.Session));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 returnObj.SetIsSuccess(false);
             }

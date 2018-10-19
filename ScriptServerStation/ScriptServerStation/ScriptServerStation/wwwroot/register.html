@@ -4,183 +4,56 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <script src="/Content/js/jquery/jquery-2.1.1.min.js"></script>
-    <script src="/Content/js/zTree/jquery.ztree.all.min.js"></script>
-    <link href="/Content/js/zTree/css/zTreeStyle.css" rel="stylesheet" />
-    <link href="/Content/js/zTree/css/zTree.theme.metro.css" rel="stylesheet" />
-    <style>
-        .scriptRow ul li p span {
-            text-align: center;
-        }
-
-        .body {
-            width: 100%;
-            height: 500px;
-            box-sizing: border-box;
-            /*border: 1px solid red;*/
-        }
-
-        .left {
-            float: left;
-            display: inline-block;
-            width: 300px;
-            height: 100%;
-            box-sizing: border-box;
-            /*border: 1px solid green;*/
-            text-align: center;
-        }
-
-        .center {
-            float: left;
-            /* padding-left: 300px; */
-            /* margin: 0 -300px; */
-            /* width: 100%; */
-            height: 100%;
-            box-sizing: border-box;
-            /* border: 1px solid red; */
-            text-align: center;
-        }
-        .selected {
-            font-weight: bold;
-            background: #FF9A35;
-            color: #fff;
-        }
-        .right {
-            float: left;
-            width: 400px;
-            height: 100%;
-            box-sizing: border-box;
-            /*border: 1px solid green;*/
-            text-align: center;
-        }
-
-        .param {
-            width: 100%;
-            float: left;
-        }
-
-            .param li {
-                width: auto;
-            }
-
-                .param li div {
-                    width: auto;
-                    float: left;
-                }
-
-                    .param li div p {
-                        margin: auto;
-                        width: auto;
-                        float: left;
-                    }
-    </style>
     <script>
-        var TotalScriptCount = 0;
-
-        $(function () {
-            treeView();
-
-
-            $("#Script").on("click", "li", function () {
-                $(this).siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
-                $(this).addClass('selected');                            // 添加当前元素的样式
-                var funcId = $(this).context.id;
-                $.ajax({
-                    url: '/api/service/GetTypeZTreeParam',
-                    data: { funcId: funcId },
-                    dataType: "json",
-                    type: "get",
-                    async: false,
-                    success: function (data) {
-                        $("#Param").find("li").remove();
-                        var array = data[0].InputData;
-                        for (var i = 0; i < array.length; i++) {
-                            if (array[i].Type == "OBJECT") {
-                                $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div><input type='checkbox'>是否使用变量</div>" +
-                                    "<div> <select id='obj'></select></div></li>");
-                            }
-                            else if (array[i].Type == "STRING" || array[i].Type == "INT") {
-                                $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div class='check'><input type='checkbox'>是否使用变量</div>" +
-                                    "<div> <select id='message'></select></div><div><input type='text' style='width: 50px;' name='message' /></div></li>");
-                            }
-                            else if (array[i].Type == "ENUM") {
-                                $("#Param").append("<li><div><p> " + array[i].Name + "</p></div><div class='check'><input type='checkbox'>是否使用变量</div>" +
-                                    "<div> <select id='option'></select></div><div><select id='enum'></select></div></li>");
-                                if (array[i].EnumDatas.length > 0) {
-                                    for (var j = 0; j < array[i].EnumDatas.length; j++)
-                                        $("#enum").append("<option value='" + array[i].EnumDatas[j] + "'>" + array[i].EnumDatas[j]+"</option>"); //为Select追加一个Option(下拉项)
-                                }
-
-                            }
-                            //$("#Param").append("<li><p> " + i + "</p></li>");
-                        }
-
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-            });
-
-            //$("#Script").on("click", ".name", function () {
-
-
-            //}
-        });
-
-        function delElement(obj) {
-            obj.parentNode.removeChild(obj);
-        }
-
-        function treeView() {
-            var setting = {
-                data: {
-                    simpleData: {
-                        enable: true
-                    }
-                },
-                callback: {
-                    onDblClick: zTreeOnDblClick
-                }
-            };
-
-            //tree的点击事件
-            function zTreeOnDblClick(event, treeId, treeNode) {
-                $("#Script li").length;
-                $("#Script").append("<li  id='" + treeNode.id + "'><p> f(x)<span class='name'>" + treeNode.name + "</span></p></li>");
-            };
-
+        function Register() {
             //树
             $.ajax({
-                url: '/api/service/GetTypeZTree',
-                data: {},
+                url: '/api/user/login',
+                data: { account: $("#username").val(), password: $("#password").val() },
                 dataType: "json",
-                type: "get",
+                type: "post",
                 async: false,
                 beforeSend: function () {
                 },
                 success: function (data) {
-                    $.fn.zTree.init($("#typeTree"), setting, data);
+                    window.alert("登录成功");
                 },
                 error: function (error) {
                     console.log(error);
                 }
             });
-        };
-
-
+        }
+        document.getElementById("confirm").addEventListener("focus", checkPwd);
+        document.getElementById("confirm").addEventListener("blur", checkPwd);
+        function checkPwd() {
+            if (!$("#confirm").val()) {
+                $("#message").text("请输入确认密码").show();
+            } else if ($("#password").val() != $("#confirm").val()) {
+                $("#message").text("两次密码输入不一致").show();
+            } else {
+                $("#message").text("").show();
+            }
+        }
     </script>
 </head>
 <body>
-    <div class="left">
-        <div id="typeTree" class="ztree"></div>
-    </div>
-    <div class="center">
-        <div class="scriptRow">
-            <ul id="Script"></ul>
+    <div>
+        <div>
+            <label>用户名</label>
+            <input type="text" id="username" />
         </div>
-    </div>
-    <div class="right">
-        <ul id="Param" class="param"></ul>
+        <div>
+            <label>密  码</label>
+            <input type="password" id="password" />
+        </div>
+        <div>
+            <label>确认密码</label>
+            <input type="password" id="confirm" />
+            <label id="message"></label>
+        </div>
+        <div>
+            <input type="button" value="注册" onclick="Register()" />
+        </div>
     </div>
 </body>
 </html>

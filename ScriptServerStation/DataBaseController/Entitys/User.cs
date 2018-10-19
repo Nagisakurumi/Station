@@ -6,6 +6,7 @@ namespace DataBaseController.Entitys
 {
     public class User
     {
+        public Guid Guid;
         /// <summary>
         /// 用户物理id
         /// </summary>
@@ -13,7 +14,7 @@ namespace DataBaseController.Entitys
         /// <summary>
         /// 用户guid
         /// </summary>
-        public Guid Guid{ get; set; }
+        //public Guid Guid{ get; set; }
         /// <summary>
         /// 账号
         /// </summary>
@@ -37,7 +38,7 @@ namespace DataBaseController.Entitys
         /// <summary>
         /// 最后一次登录时间
         /// </summary>
-        public DateTime LastLogionDate { get; set; }
+        public DateTime LastLoginDate { get; set; }
         /// <summary>
         /// 用户等级
         /// </summary>
@@ -65,10 +66,10 @@ namespace DataBaseController.Entitys
         /// <summary>
         /// 保留字段
         /// </summary>
-        public string UnKnow1 { get; set; }
+        public string UnKnown1 { get; set; }
         /// <summary>
         /// 保留字段2
         /// </summary>
-        public string UnKnow2 { get; set; }
+        public string UnKnown2 { get; set; }
     }
 }

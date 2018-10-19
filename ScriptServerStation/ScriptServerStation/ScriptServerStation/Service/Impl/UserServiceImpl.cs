@@ -102,7 +102,7 @@ namespace ScriptServerStation.Service.Impl
             var user = GetUser(account);
             if (user.Password.Equals(password))
             {
-                user.LastLogionDate = DateTime.Now;
+                user.LastLoginDate = DateTime.Now;
                 this.DataBaseContext.SaveChanges();
                 return true;
             }
