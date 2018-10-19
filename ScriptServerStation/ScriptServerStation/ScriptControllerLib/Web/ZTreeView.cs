@@ -38,4 +38,33 @@ namespace ScriptControllerLib
             return strJson.ToString();
         }
     }
+
+    public static class VueTreeView
+    {
+        public static string VueTreeJson(this List<VueTreeModel> data, string pId = "0")
+        {
+            StringBuilder strJson = new StringBuilder();
+            List<VueTreeModel> item = data.FindAll(t => t.pId == pId);
+            strJson.Append("[");
+            if (item.Count > 0)
+            {
+                foreach (VueTreeModel entity in item)
+                {
+                    strJson.Append("{");
+                    strJson.Append("\"id\":\"" + entity.id.ToString() + "\",");
+                    strJson.Append("\"name\":\"" + entity.name.Replace("&nbsp;", "") + "\"");
+
+                    if (entity.isParent)
+                    {
+                        strJson.Append(",");
+                        strJson.Append("\"children\":" + VueTreeJson(data, entity.id) + "");
+                    }
+                    strJson.Append("},");
+                }
+                strJson = strJson.Remove(strJson.Length - 1, 1);
+            }
+            strJson.Append("]");
+            return strJson.ToString();
+        }
+    }
 }

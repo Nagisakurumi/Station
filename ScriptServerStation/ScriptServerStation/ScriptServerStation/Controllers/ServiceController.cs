@@ -42,6 +42,21 @@ namespace ScriptServerStation.Controllers
             }
         }
 
+        [HttpGet("GetTypeVueTree")]
+        public string GetTypeVueTree()
+        {
+            try
+            {
+                return scriptService.GetVueTreeApis();
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+
+
         [HttpGet("gettypeZTree")]
         public string GetTypeZTree()
         {
