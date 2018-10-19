@@ -110,14 +110,14 @@ namespace ScriptServerStation.Controllers
             {
                 User user = new User() {
                     Account = account,
-                    Guid = Guid.NewGuid(),
+                    Guid = Guid.NewGuid().ToString(),
                     Password = password,
                     Email = email,
                     Phone = phone,
                     Level = 0,
                     LevelValue = 0,
-                    CreateTime = DateTime.Now,
-                    IsSpecial = false,
+                    CreateTime = DateTime.Now.ToString(),
+                    IsSpecial = false.ToString(),
                 };
 
                 obj.SetIsSuccess(userService.AddUser(user));
