@@ -32,8 +32,8 @@ namespace ScriptServerStation.Service.Impl
             if (user.Balance < day * 1.0)
                 return false;
             user.Balance -= day * 1.0;
-            user.LastBuyDate = DateTime.Now;
-            user.EndDate = DateTime.Now + TimeSpan.FromDays(day);
+            user.LastBuyDate = DateTime.Now.ToString();
+            user.EndDate = (DateTime.Now + TimeSpan.FromDays(day)).ToString();
             this.DataBaseContext.SaveChanges();
             return true;
         }
@@ -102,7 +102,7 @@ namespace ScriptServerStation.Service.Impl
             var user = GetUser(account);
             if (user.Password.Equals(password))
             {
-                user.LastLogionDate = DateTime.Now;
+                user.LastLoginDate = DateTime.Now.ToString();
                 this.DataBaseContext.SaveChanges();
                 return true;
             }
