@@ -15,33 +15,35 @@
         <li>
             <div :class="{bold: isFolder}"
                  @click="toggle"
-                 @dblclick="addParam">
+                 @dblclick="addscript">
                 {{ model.name }}
                 <span v-if="isFolder">[{{ open ? '-' : '+' }}]</span>
             </div>
             <ul v-show="open" v-if="isFolder">
-                <typeItem is="typeTreeItem"
+                <Item is="typeTreeItem"
                           class="typeItem"
                           v-for="(model, index) in model.children"
                           :key="index"
                           :model="model">
-                </typeItem>
+                </Item>
             </ul>
         </li>
     </script>
-    <script type="text/x-template" id="paramItem-template">
+    <script type="text/x-template" id="scriptItem-template">
         <li>
             <div :class="{bold: isFolder}"
-                 @click="toggle">
+                 :isActive="model.isActive"
+                 @click="toggle(model.id)">
                 {{ model.name }}
+                <span v-if="isFolder">[{{ open ? '-' : '+' }}]</span>
             </div>
             <ul v-show="open" v-if="isFolder">
-                <typeItem is="paramTreeItem"
-                          class="paramItem"
+                <Item is="scriptTreeItem"
+                          class="scriptItem"
                           v-for="(model, index) in model.children"
                           :key="index"
                           :model="model">
-                </typeItem>
+                </Item>
             </ul>
         </li>
     </script>
@@ -104,9 +106,9 @@
                             this.open = !this.open
                         }
                     },
-                    addParam: function () {
+                    addscript: function () {
                         if (this.model.name != "函数") {
-                            paramTree.setTreeData(this.model);
+                            scriptTree.setTreeData(this.model);
                         }
 
                     },
@@ -128,8 +130,8 @@
 
 
             //函数树的模板
-            Vue.component('paramTreeItem', {
-                template: '#paramItem-template',
+            Vue.component('scriptTreeItem', {
+                template: '#scriptItem-template',
                 props: {
                     model: Object
                 },
@@ -144,22 +146,36 @@
                     }
                 },
                 methods: {
-                    toggle: function () {
-                        alert(1);
+                    toggle: function (id) {
+                        scriptTree.activeFunc();
+                        this.model.isActive = true;
+                        var aLi = $("#scriptTree li li");
+                        for (var i = 0; i < aLi.length; i++) {
+                            $(aLi[i]).removeClass('selected');
+                            if (this == aLi[i]) {
+                                $(aLi[i]).addClasss('selected');
+                            }
+                        }
+                        //$(this).siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
+                        //$(this).addClass('selected');                    // 添加当前元素的样式
                     },
                 }
             });
 
-            var paramTree = new Vue({
-                el: '#paramTree',
+            var scriptTree = new Vue({
+                el: '#scriptTree',
                 data: {
-                    paramData: { id: '1', name: "函数", children: [] }
+                    scriptData: { id: '1', name: "函数", isActive: true, children: [] }
                 },
                 methods: {
                     setTreeData: function (data) {
-                        var tree = { id: data.id, name: data.name, children: data.children }
-                        this.paramData.children.push(tree);
+                        var tree = { id: data.id, name: data.name, isActive: false,children: data.children }
+                        this.scriptData.children.push(tree);
                     },
+                    activeFunc: function () {
+                        this.scriptData.isActive = false;
+                        traverse(this.scriptData.children)
+                    }
                 }
             });
 
@@ -180,7 +196,16 @@
             });
         });
 
-
+        function traverse(array) {
+            array.forEach(item => {
+                if (item.isActive) {
+                    item.isActive = !item.isActive;
+                }
+                if (item.children) {
+                    traverse(item.children)
+                }
+            })
+        }
 
     </script>
 </head>
@@ -206,10 +231,10 @@
         </ul>
     </div>
     <div class="right">
-        <ul id="paramTree" class="param">
-            <item is="paramTreeItem"
-                  class="paramItem"
-                  :model="paramData">
+        <ul id="scriptTree" class="script">
+            <item is="scriptTreeItem"
+                  class="scriptItem"
+                  :model="scriptData">
             </item>
         </ul>
     </div>
