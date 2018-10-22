@@ -30,8 +30,8 @@
         </li>
     </script>
     <script type="text/x-template" id="scriptItem-template">
-        <li>
-            <div :class="{bold: isFolder}"
+        <li >
+            <div :class="{bold: isFolder,'selected':model.isActive}"
                  :isActive="model.isActive"
                  @click="toggle(model.id)">
                 {{ model.name }}
@@ -149,15 +149,6 @@
                     toggle: function (id) {
                         scriptTree.activeFunc();
                         this.model.isActive = true;
-                        var aLi = $("#scriptTree li li");
-                        for (var i = 0; i < aLi.length; i++) {
-                            $(aLi[i]).removeClass('selected');
-                            if (this == aLi[i]) {
-                                $(aLi[i]).addClasss('selected');
-                            }
-                        }
-                        //$(this).siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
-                        //$(this).addClass('selected');                    // 添加当前元素的样式
                     },
                 }
             });
