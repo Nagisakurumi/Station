@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Service\IEmailService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\Content\images\" />
     <Folder Include="wwwroot\Content\lib\" />
   </ItemGroup>

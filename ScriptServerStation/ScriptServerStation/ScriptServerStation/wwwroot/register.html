@@ -6,17 +6,33 @@
     <script src="/Content/js/jquery/jquery-2.1.1.min.js"></script>
     <script>
         function Register() {
-            //树
             $.ajax({
-                url: '/api/user/login',
-                data: { account: $("#username").val(), password: $("#password").val() },
+                url: '/api/user/register',
+                data: { account: $("#username").val(), password: $("#password").val(), email: $("#email").val() },
                 dataType: "json",
                 type: "post",
                 async: false,
                 beforeSend: function () {
                 },
                 success: function (data) {
-                    window.alert("登录成功");
+                    window.alert("注册成功");
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        function GetVerification() {
+            $.ajax({
+                url: '/api/user/getverification',
+                data: { account: $("#username").val(), password: $("#password").val(), email: $("#email").val() },
+                dataType: "json",
+                type: "post",
+                async: false,
+                beforeSend: function () {
+                },
+                success: function (data) {
+                    window.alert("注册成功");
                 },
                 error: function (error) {
                     console.log(error);
@@ -50,6 +66,20 @@
             <label>确认密码</label>
             <input type="password" id="confirm" />
             <label id="message"></label>
+        </div>
+        <div>
+            <label>邮  箱</label>
+            <input type="text" id="email" />
+            <select>
+                <option>@QQ.com</option>
+                <option>@163.com</option>
+                <option>@sina.com</option>
+            </select>
+        </div>
+        <div>
+            <label>验证码</label>
+            <input type="text" id="verification" />
+            <input type="button" onclick="GetVerification()"/>
         </div>
         <div>
             <input type="button" value="注册" onclick="Register()" />

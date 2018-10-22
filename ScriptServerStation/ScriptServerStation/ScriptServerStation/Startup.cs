@@ -34,7 +34,7 @@ namespace ScriptServerStation
             //DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder() { };
 
             services.AddDbContext<DataBaseContext>(x => x.UseMySQL(Configuration["ConnectionString:DefaultConnection"]));
-            
+
             //services.AddSmartCookies();
 
             services.AddMemoryCache();

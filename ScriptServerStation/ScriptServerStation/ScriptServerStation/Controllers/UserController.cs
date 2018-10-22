@@ -85,7 +85,6 @@ namespace ScriptServerStation.Controllers
             ReturnObj returnObj = new ReturnObj();
             try
             {
-
                 returnObj.SetIsSuccess(userService.Login(account, password, HttpContext.Session));
             }
             catch (Exception ex)
@@ -100,10 +99,10 @@ namespace ScriptServerStation.Controllers
         /// <param name="account"></param>
         /// <param name="password"></param>
         /// <param name="email"></param>
-        /// <param name="phone"></param>
+        /// <param name="verification"></param>
         /// <returns></returns>
         [HttpPost("register")]
-        public ReturnObj Register(string account, string password, string email, string phone)
+        public ReturnObj Register(string account, string password, string email, string verification)
         {
             ReturnObj obj = new ReturnObj();
             try
@@ -113,7 +112,40 @@ namespace ScriptServerStation.Controllers
                     Guid = Guid.NewGuid().ToString(),
                     Password = password,
                     Email = email,
-                    Phone = phone,
+                    //Phone = phone,
+                    Level = 0,
+                    LevelValue = 0,
+                    CreateTime = DateTime.Now.ToString(),
+                    IsSpecial = false.ToString(),
+                };
+
+                obj.SetIsSuccess(userService.AddUser(user));
+            }
+            catch (Exception)
+            {
+                obj.SetIsSuccess(false);
+            }
+            return obj;
+        }
+        /// <summary>
+        /// 获取验证码
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [HttpPost("getverification")]
+        public ReturnObj GetVerification(string account, string email)
+        {
+            ReturnObj obj = new ReturnObj();
+            try
+            {
+                User user = new User()
+                {
+                    Account = account,
+                    Guid = Guid.NewGuid().ToString(),
+                    Password = password,
+                    Email = email,
+                    //Phone = phone,
                     Level = 0,
                     LevelValue = 0,
                     CreateTime = DateTime.Now.ToString(),
