@@ -22,8 +22,10 @@ namespace ScriptServerStation.Service.Impl
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool AddUser(User user)
+        public bool AddUser(User user, string verification, ISession session)
         {
+            if (session.GetString(user.Email) != verification)
+                return false;
             this.DataBaseContext.Add<User>(user);
             this.DataBaseContext.SaveChanges();
             return true;
@@ -94,10 +96,11 @@ namespace ScriptServerStation.Service.Impl
             return true;
         }
 
-        public bool GetVerification(User user)
+        public bool GetVerification(string email, ISession session)
         {
             string verification = GetVerification(4);
-            EmailHelper mail = new EmailHelper(ConfigSettings, user.Email, "测试邮件2", "<html><body><div style='color:red;'>验证码为：" + verification + "</div></body></html>");
+            session.SetString(email, verification);
+            EmailHelper mail = new EmailHelper(ConfigSettings, email, "测试邮件2", "<html><body><div style='color:red;'>验证码为：" + verification + "</div></body></html>");
             mail.Send();
             return true;
         }

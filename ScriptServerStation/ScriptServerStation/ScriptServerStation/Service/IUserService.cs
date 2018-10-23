@@ -19,7 +19,7 @@ namespace ScriptServerStation.Service
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        bool AddUser(User user);
+        bool AddUser(User user, string verification, ISession session);
         /// <summary>
         /// 是否登录
         /// </summary>
@@ -61,6 +61,6 @@ namespace ScriptServerStation.Service
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        bool GetVerification(User user);
+        bool GetVerification(string email, ISession session);
     }
 }

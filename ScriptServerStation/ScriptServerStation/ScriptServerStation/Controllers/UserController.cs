@@ -119,7 +119,7 @@ namespace ScriptServerStation.Controllers
                     IsSpecial = false.ToString(),
                 };
 
-                obj.SetIsSuccess(userService.AddUser(user));
+                obj.SetIsSuccess(userService.AddUser(user, verification, HttpContext.Session));
             }
             catch (Exception)
             {
@@ -134,24 +134,12 @@ namespace ScriptServerStation.Controllers
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpPost("getverification")]
-        public ReturnObj GetVerification(string account, string email)
+        public ReturnObj GetVerification(string email)
         {
             ReturnObj obj = new ReturnObj();
             try
             {
-                User user = new User()
-                {
-                    Account = account,
-                    Guid = Guid.NewGuid().ToString(),
-                    //Password = password,
-                    Email = email,
-                    //Phone = phone,
-                    Level = 0,
-                    LevelValue = 0,
-                    CreateTime = DateTime.Now.ToString(),
-                    IsSpecial = false.ToString(),
-                };
-                obj.SetIsSuccess(userService.GetVerification(user));
+                obj.SetIsSuccess(userService.GetVerification(email, HttpContext.Session));
             }
             catch (Exception ex)
             {

@@ -8,7 +8,12 @@
         function Register() {
             $.ajax({
                 url: '/api/user/register',
-                data: { account: $("#username").val(), password: $("#password").val(), email: $("#email").val() },
+                data: {
+                    account: $("#username").val(),
+                    password: $("#password").val(),
+                    email: $("#email").val() + $("#email_hz option:selected").val(),
+                    verification: $("#verification").val()
+                },
                 dataType: "json",
                 type: "post",
                 async: false,
@@ -25,7 +30,7 @@
         function GetVerification() {
             $.ajax({
                 url: '/api/user/getverification',
-                data: { account: $("#username").val(), email: $("#email").val() + $("#email_hz option:selected").val() },
+                data: { email: $("#email").val() + $("#email_hz option:selected").val() },
                 dataType: "json",
                 type: "post",
                 async: false,
@@ -39,17 +44,6 @@
                 }
             });
         }
-        document.getElementById("confirm").addEventListener("focus", checkPwd);
-        document.getElementById("confirm").addEventListener("blur", checkPwd);
-        function checkPwd() {
-            if (!$("#confirm").val()) {
-                $("#message").text("请输入确认密码").show();
-            } else if ($("#password").val() != $("#confirm").val()) {
-                $("#message").text("两次密码输入不一致").show();
-            } else {
-                $("#message").text("").show();
-            }
-        }
     </script>
 </head>
 <body>
@@ -61,11 +55,6 @@
         <div>
             <label>密  码</label>
             <input type="password" id="password" />
-        </div>
-        <div>
-            <label>确认密码</label>
-            <input type="password" id="confirm" />
-            <label id="message"></label>
         </div>
         <div>
             <label>邮  箱</label>
