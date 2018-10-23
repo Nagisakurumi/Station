@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -19,7 +18,7 @@ namespace ScriptServerStation
         private int _SmtpPort = -1;
         private string _FromEmailAddress = string.Empty;
         private string _FormEmailPassword = string.Empty;
-        private IConfiguration Configuration;
+        private EmailSettings ConfigSettings { get; set; }
         /// <summary>  
         /// smtp 服务器   
         /// </summary>  
@@ -29,7 +28,7 @@ namespace ScriptServerStation
             {
                 if (string.IsNullOrEmpty(_SmtpHost))
                 {
-                    _SmtpHost = Configuration["WebConfig:Email:SmtpHost"];
+                    _SmtpHost = ConfigSettings.SmtpHost;
                 }
                 return _SmtpHost;
             }
@@ -43,7 +42,7 @@ namespace ScriptServerStation
             {
                 if (_SmtpPort == -1)
                 {
-                    _SmtpPort = Configuration.GetValue<int>("WebConfig:Email:SmtpPort");
+                    _SmtpPort = ConfigSettings.SmtpPort;
                 }
                 return _SmtpPort;
             }
@@ -57,7 +56,7 @@ namespace ScriptServerStation
             {
                 if (string.IsNullOrEmpty(_FromEmailAddress))
                 {
-                    _FromEmailAddress = Configuration["WebConfig:Email:FromEmailAddress"];
+                    _FromEmailAddress = ConfigSettings.FromEmailAddress;
                 }
                 return _FromEmailAddress;
             }
@@ -72,7 +71,7 @@ namespace ScriptServerStation
             {
                 if (string.IsNullOrEmpty(_FormEmailPassword))
                 {
-                    _FormEmailPassword = Configuration["WebConfig:Email:FormEmailPassword"];
+                    _FormEmailPassword = ConfigSettings.FormEmailPassword;
                 }
                 return _FormEmailPassword;
             }
@@ -116,13 +115,10 @@ namespace ScriptServerStation
         public List<Attachment> AttachmentList { get; set; }
         #endregion
 
-        #region [ 构造函数 ]  
-        private EmailHelper()
+        #region [ 构造函数 ]
+        public EmailHelper(EmailSettings ConfigSettings)
         {
-            var builder = new ConfigurationBuilder()
-              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-              .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            this.ConfigSettings = ConfigSettings;
         }
         /// <summary>  
         /// 构造函数 (body默认为html格式)  
@@ -130,7 +126,7 @@ namespace ScriptServerStation
         /// <param name="toList">收件人列表</param>  
         /// <param name="subject">邮件标题</param>  
         /// <param name="body">邮件正文</param>  
-        public EmailHelper(string toList, string subject, string body) : this()
+        public EmailHelper(EmailSettings ConfigSettings, string toList, string subject, string body) : this(ConfigSettings)
         {
             this.ToList = toList;
             this.Subject = subject;
@@ -143,7 +139,7 @@ namespace ScriptServerStation
         /// <param name="subject">邮件标题</param>  
         /// <param name="isBodyHtml">邮件正文是否为Html格式</param>  
         /// <param name="body">邮件正文</param>  
-        public EmailHelper(string toList, string subject, bool isBodyHtml, string body) : this()
+        public EmailHelper(EmailSettings ConfigSettings, string toList, string subject, bool isBodyHtml, string body) : this(ConfigSettings)
         {
             this.ToList = toList;
             this.Subject = subject;
@@ -159,7 +155,7 @@ namespace ScriptServerStation
         /// <param name="subject">邮件标题</param>  
         /// <param name="isBodyHtml">邮件正文是否为Html格式</param>  
         /// <param name="body">邮件正文</param>  
-        public EmailHelper(string toList, string ccList, string bccList, string subject, bool isBodyHtml, string body) : this()
+        public EmailHelper(EmailSettings ConfigSettings, string toList, string ccList, string bccList, string subject, bool isBodyHtml, string body) : this(ConfigSettings)
         {
             this.ToList = toList;
             this.CCList = ccList;
@@ -178,7 +174,7 @@ namespace ScriptServerStation
         /// <param name="isBodyHtml">邮件正文是否为Html格式</param>  
         /// <param name="body">邮件正文</param>  
         /// <param name="attachmentList">附件列表</param>  
-        public EmailHelper(string toList, string ccList, string bccList, string subject, bool isBodyHtml, string body, List<Attachment> attachmentList) : this()
+        public EmailHelper(EmailSettings ConfigSettings, string toList, string ccList, string bccList, string subject, bool isBodyHtml, string body, List<Attachment> attachmentList) : this(ConfigSettings)
         {
             this.ToList = toList;
             this.CCList = ccList;
@@ -207,7 +203,7 @@ namespace ScriptServerStation
 
             MailMessage mm = new MailMessage(); //实例化一个邮件类  
             mm.Priority = MailPriority.Normal; //邮件的优先级，分为 Low, Normal, High，通常用 Normal即可  
-            mm.From = new MailAddress(this.FromEmailAddress, "管理员", Encoding.GetEncoding(936));
+            mm.From = new MailAddress(this.FromEmailAddress, "管理员", Encoding.Default);
 
             //收件人  
             if (!string.IsNullOrEmpty(this.ToList))
@@ -220,9 +216,9 @@ namespace ScriptServerStation
                 mm.Bcc.Add(this.BccList);
 
             mm.Subject = this.Subject;                      //邮件标题  
-            mm.SubjectEncoding = Encoding.GetEncoding(936); //这里非常重要，如果你的邮件标题包含中文，这里一定要指定，否则对方收到的极有可能是乱码。  
+            mm.SubjectEncoding = Encoding.Default; //这里非常重要，如果你的邮件标题包含中文，这里一定要指定，否则对方收到的极有可能是乱码。  
             mm.IsBodyHtml = this.IsBodyHtml;                //邮件正文是否是HTML格式  
-            mm.BodyEncoding = Encoding.GetEncoding(936);    //邮件正文的编码， 设置不正确， 接收者会收到乱码  
+            mm.BodyEncoding = Encoding.Default;    //邮件正文的编码， 设置不正确， 接收者会收到乱码  
             mm.Body = this.Body;                            //邮件正文  
             //邮件附件  
             if (this.AttachmentList != null && this.AttachmentList.Count > 0)

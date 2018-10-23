@@ -55,8 +55,10 @@ namespace ScriptServerStation
             }
             );
 
-            services.AddSession();
+            services.AddSession(configure => configure.IdleTimeout = new TimeSpan(sessionOutTime));
             #endregion
+
+            services.Configure<EmailSettings>(Configuration.GetSection("WebConfig:EmailSettings"));
             services.AddSingleton<IDistributedCache, RedisCache>();
             services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<IScriptService, ScriptServiceImpl>();

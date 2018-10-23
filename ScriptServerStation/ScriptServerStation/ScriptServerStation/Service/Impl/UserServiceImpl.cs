@@ -5,14 +5,17 @@ using System.Threading.Tasks;
 using DataBaseController;
 using DataBaseController.Entitys;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 
 namespace ScriptServerStation.Service.Impl
 {
     public class UserServiceImpl : BaseService, IUserService
     {
 
-        public UserServiceImpl(DataBaseContext DataBaseContext) : base(DataBaseContext)
+        private EmailSettings ConfigSettings { get; set; }
+        public UserServiceImpl(DataBaseContext DataBaseContext, IOptions<EmailSettings> settings) : base(DataBaseContext)
         {
+            ConfigSettings = settings.Value;
         }
         /// <summary>
         /// 添加一个用户
@@ -91,6 +94,13 @@ namespace ScriptServerStation.Service.Impl
             return true;
         }
 
+        public bool GetVerification(User user)
+        {
+            string verification = GetVerification(4);
+            EmailHelper mail = new EmailHelper(ConfigSettings, user.Email, "测试邮件2", "<html><body><div style='color:red;'>验证码为：" + verification + "</div></body></html>");
+            mail.Send();
+            return true;
+        }
         /// <summary>
         /// 设置登录信息
         /// </summary>
@@ -110,6 +120,35 @@ namespace ScriptServerStation.Service.Impl
             {
                 return false;
             }
+        }
+        /// <summary>
+        /// 随机生成验证码
+        /// </summary>
+        /// <param name="count">几位验证码</param>
+        /// <returns></returns>
+        private string GetVerification(int count)
+        {
+            int number;
+            string checkCode = String.Empty;     //存放随机码的字符串   
+
+            System.Random random = new Random();
+
+            for (int i = 0; i < count; i++) //产生4位校验码   
+            {
+                number = random.Next();
+                number = number % 36;
+                if (number < 10)
+                {
+                    number += 48;    //数字0-9编码在48-57   
+                }
+                else
+                {
+                    number += 55;    //字母A-Z编码在65-90   
+                }
+
+                checkCode += ((char)number).ToString();
+            }
+            return checkCode;
         }
     }
 }

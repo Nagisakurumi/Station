@@ -56,5 +56,11 @@ namespace ScriptServerStation.Service
         /// <param name="money"></param>
         /// <returns></returns>
         bool Recharge(User user, string code, double money);
+        /// <summary>
+        /// 获取验证码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        bool GetVerification(User user);
     }
 }

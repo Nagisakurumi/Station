@@ -25,14 +25,14 @@
         function GetVerification() {
             $.ajax({
                 url: '/api/user/getverification',
-                data: { account: $("#username").val(), password: $("#password").val(), email: $("#email").val() },
+                data: { account: $("#username").val(), email: $("#email").val() + $("#email_hz option:selected").val() },
                 dataType: "json",
                 type: "post",
                 async: false,
                 beforeSend: function () {
                 },
                 success: function (data) {
-                    window.alert("注册成功");
+                    window.alert("发送成功");
                 },
                 error: function (error) {
                     console.log(error);
@@ -70,8 +70,8 @@
         <div>
             <label>邮  箱</label>
             <input type="text" id="email" />
-            <select>
-                <option>@QQ.com</option>
+            <select id="email_hz">
+                <option selected="selected">@QQ.com</option>
                 <option>@163.com</option>
                 <option>@sina.com</option>
             </select>
@@ -79,7 +79,7 @@
         <div>
             <label>验证码</label>
             <input type="text" id="verification" />
-            <input type="button" onclick="GetVerification()"/>
+            <input type="button" value="发送验证码" onclick="GetVerification()"/>
         </div>
         <div>
             <input type="button" value="注册" onclick="Register()" />

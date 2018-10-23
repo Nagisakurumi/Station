@@ -143,7 +143,7 @@ namespace ScriptServerStation.Controllers
                 {
                     Account = account,
                     Guid = Guid.NewGuid().ToString(),
-                    Password = password,
+                    //Password = password,
                     Email = email,
                     //Phone = phone,
                     Level = 0,
@@ -151,10 +151,9 @@ namespace ScriptServerStation.Controllers
                     CreateTime = DateTime.Now.ToString(),
                     IsSpecial = false.ToString(),
                 };
-
-                obj.SetIsSuccess(userService.AddUser(user));
+                obj.SetIsSuccess(userService.GetVerification(user));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 obj.SetIsSuccess(false);
             }
