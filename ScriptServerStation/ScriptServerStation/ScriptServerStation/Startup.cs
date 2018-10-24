@@ -55,11 +55,16 @@ namespace ScriptServerStation
             }
             );
 
-            services.AddSession(configure => configure.IdleTimeout = new TimeSpan(sessionOutTime));
+            services.AddSession(Options => {
+                Options.IdleTimeout = TimeSpan.FromMinutes(sessionOutTime);
+                Options.Cookie.IsEssential = true;
+                Options.Cookie.HttpOnly = true;
+            });
+            //services.AddSession();
             #endregion
 
             services.Configure<EmailSettings>(Configuration.GetSection("WebConfig:EmailSettings"));
-            services.AddSingleton<IDistributedCache, RedisCache>();
+            //services.AddSingleton<IDistributedCache, RedisCache>();
             services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<IScriptService, ScriptServiceImpl>();
             //services.AddBlobStorage()
