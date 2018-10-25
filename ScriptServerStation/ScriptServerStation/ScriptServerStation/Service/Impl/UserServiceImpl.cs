@@ -4,18 +4,40 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataBaseController;
 using DataBaseController.Entitys;
+using IdentityServer4.Models;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace ScriptServerStation.Service.Impl
 {
-    public class UserServiceImpl : BaseService, IUserService
+    public class UserServiceImpl : BaseService, IUserService, IProfileService
     {
 
         private EmailSettings ConfigSettings { get; set; }
         public UserServiceImpl(DataBaseContext DataBaseContext, IOptions<EmailSettings> settings) : base(DataBaseContext)
         {
             ConfigSettings = settings.Value;
+        }
+        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
+        {
+            try
+            {
+                //depending on the scope accessing the user data.
+                var claims = context.Subject.Claims.ToList();
+
+                //set issued claims to return
+                context.IssuedClaims = claims.ToList();
+            }
+            catch (Exception ex)
+            {
+                //log your error
+            }
+        }
+
+        public async Task IsActiveAsync(IsActiveContext context)
+        {
+            context.IsActive = true;
         }
         /// <summary>
         /// 添加一个用户
