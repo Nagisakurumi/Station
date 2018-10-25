@@ -21,16 +21,16 @@
             </div>
             <ul v-show="open" v-if="isFolder">
                 <Item is="typeTreeItem"
-                          class="typeItem"
-                          v-for="(model, index) in model.children"
-                          :key="index"
-                          :model="model">
+                      class="typeItem"
+                      v-for="(model, index) in model.children"
+                      :key="index"
+                      :model="model">
                 </Item>
             </ul>
         </li>
     </script>
     <script type="text/x-template" id="scriptItem-template">
-        <li >
+        <li>
             <div :class="{bold: isFolder,'selected':model.isActive}"
                  :isActive="model.isActive"
                  @click="toggle(model.id)">
@@ -39,31 +39,33 @@
             </div>
             <ul v-show="open" v-if="isFolder">
                 <Item is="scriptTreeItem"
-                          class="scriptItem"
-                          v-for="(model, index) in model.children"
-                          :key="index"
-                          :model="model">
+                      class="scriptItem"
+                      v-for="(model, index) in model.children"
+                      :key="index"
+                      :model="model">
                 </Item>
             </ul>
         </li>
     </script>
+
     <script>
         //变量的计数
         var VariableCount = 0;
+        var ScriptTreeId = 0;
         $(function () {
 
 
             //参数的模板
             Vue.component('variable-temp', {
                 template: '\
-                            <li>\
-                            <div><p>名称</p></div>\
-                            <div><input onchange="VariableNameChange(this)" name="name" type="text"  :value="value"  /></div>\
-                            <div><p>当前值</p></div>\
-                            <div><input type=\'text\' name=\'message\'/></div>\
-                            <div><button v-on:click="$emit(\'remove\')">Remove</button></div>\
-                            </li>\
-                          ',
+                                <li>\
+                                <div><p>名称</p></div>\
+                                <div><input onchange="VariableNameChange(this)" name="name" type="text"  :value="value"  /></div>\
+                                <div><p>当前值</p></div>\
+                                <div><input type=\'text\' name=\'message\'/></div>\
+                                <div><button v-on:click="$emit(\'remove\')">Remove</button></div>\
+                                </li>\
+                              ',
                 props: ['value']
             });
 
@@ -80,6 +82,9 @@
                             value: "未命名" + VariableCount
                         })
                         VariableCount++;
+                    },
+                    GetSelectValue: function () {
+                        return this.variableValues;
                     }
                 }
             });
@@ -107,7 +112,7 @@
                         }
                     },
                     addscript: function () {
-                        if (this.model.name != "函数") {
+                        if (this.model.source != "fixed") {
                             scriptTree.setTreeData(this.model);
                         }
 
@@ -118,12 +123,27 @@
             var typeTree = new Vue({
                 el: '#typeTree',
                 data: {
-                    treeData: {}
+                    treeData: {
+                        id: "0", name: "函数", source:"fixed", children: [{
+                            id: "1", name: "系统", source: "fixed", children: [
+                                {
+                                    id: "3", name: "分支", source: "system", children: [
+                                        { id: "7", name: "True", source: "fixed", dataId:"True", children: []  },
+                                        { id: "8", name: "False", source: "fixed", dataId: "False",children: []},
+                                    ]
+                                },
+                                { id: "4", name: "循环(由起始和结束值决定次数)", source: "system", children: [] },
+                                { id: "5", name: "循环(由bool参数决定次数)", source: "system", children: [] },
+                                { id: "6", name: "循环(由时间参数决定次数)", source: "system", children: [] },
+                            ]
+                        }, {
+                                id: "2", name: "脚本函数", source: "fixed", children: []
+                        }]
+                    }
                 },
                 methods: {
                     setTreeData: function (data) {
-                        var tree = { id: "1", name: "函数", children: data }
-                        this.treeData = tree;
+                        this.treeData.children[1].children = data;
                     },
                 }
             });
@@ -149,6 +169,38 @@
                     toggle: function (id) {
                         scriptTree.activeFunc();
                         this.model.isActive = true;
+                        var funcId = this.model.dataId;
+                        $("#Param").find("li").remove();
+                        if (funcId != '1' || funcId != 'true' || funcId != 'false') {
+                            $.ajax({
+                                url: '/api/service/GetTypeZTreeParam',
+                                data: { funcId: funcId },
+                                dataType: "json",
+                                type: "get",
+                                async: false,
+                                success: function (data) {
+                                    var array = data[0].InputData;
+                                    for (var i = 0; i < array.length; i++) {
+                                        if (array[i].Type == "OBJECT") {
+                                            var component = new MyObject({ propsData: { name: array[i].Name, selectDatas: variable.GetSelectValue() } }).$mount();
+                                            $('#Param').append(component.$el);
+                                        }
+                                        else if (array[i].Type == "STRING" || array[i].Type == "INT"){
+                                            var component = new MyString({ propsData: { name: array[i].Name, selectDatas: variable.GetSelectValue()  } }).$mount();
+                                            $('#Param').append(component.$el);
+                                        }
+                                        else if (array[i].Type == "ENUM") {
+                                            var component = new MyEnum({ propsData: { name: array[i].Name, selectDatas: variable.GetSelectValue()  ,EnumDatas: array[i].EnumDatas } }).$mount();
+                                            $('#Param').append(component.$el);
+                                        }
+                                    }
+
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }
+                            });
+                        }
                     },
                 }
             });
@@ -156,18 +208,48 @@
             var scriptTree = new Vue({
                 el: '#scriptTree',
                 data: {
-                    scriptData: { id: '1', name: "函数", isActive: true, children: [] }
+                    scriptData: { id: ScriptTreeId, dataId: "0", name: "函数", isActive: true, children: [] }
                 },
                 methods: {
                     setTreeData: function (data) {
-                        var tree = { id: data.id, name: data.name, isActive: false,children: data.children }
-                        this.scriptData.children.push(tree);
+                        var copyArr = deepClone(data);                  
+                        addScript(this.scriptData, copyArr);
+           
                     },
                     activeFunc: function () {
                         this.scriptData.isActive = false;
                         traverse(this.scriptData.children)
                     }
                 }
+            });
+
+
+   
+            var MyObject = Vue.extend({
+                template: "<li><div><p>{{name}}</p></div><div><input type='checkbox' onchange='checkBoxClick(this)'>是否使用变量</div><div id='select'> <select><option v-for='selectData in selectDatas' v-bind:value='selectData.value'> {{ selectData.value }}</option></select></div></li>",
+                props: ['name','selectDatas'],
+                methods: {
+
+                }
+
+            });
+
+            var MyString = Vue.extend({
+                template: "<li><div><p>{{name}}</p></div><div class='check'><input type='checkbox'  onchange='checkBoxClick(this)'>是否使用变量</div><div id='select'> <select ><option v-for='selectData in selectDatas' v-bind:value='selectData.value'> {{ selectData.value }}</option></select></div><div><input type='text' style='width: 50px;' name='message' /></div></li>",
+                props: ['name', 'selectDatas'],
+                methods: {
+
+                }   
+
+            });
+
+            var MyEnum = Vue.extend({
+                template: "<li><div><p>{{name}}</p></div><div class='check'><input type='checkbox' onchange='checkBoxClick(this)'>是否使用变量</div><div id='select'> <select ><option v-for='selectData in selectDatas' v-bind:value='selectData.value'> {{ selectData.value }}</option></select></div><div id='enum'><select><option v-for='EnumData in EnumDatas' v-bind:value='EnumData'> {{ EnumData }}</option></select></div></li>",
+                props: ['name', 'selectDatas','EnumDatas'],
+                methods: {
+
+                }
+
             });
 
             //树
@@ -187,6 +269,22 @@
             });
         });
 
+        //深复制
+        function deepClone(data) {
+            ScriptTreeId++;
+            var obj = [];
+            for (var i = 0, len = data.children.length; i < len; i++) {
+                var clone = $.extend(true, {}, data.children[i]);
+                var tree = { id: ScriptTreeId, dataId: data.children[i].id, name: data.children[i].name, isActive: false, children: [] };
+                obj.push(clone);
+                ScriptTreeId++;
+            }
+            var clone = $.extend(true, {}, data);
+            var tree = { id: ScriptTreeId, dataId: clone.id, name: clone.name, isActive: false, children: obj };
+           
+            return tree;
+        }
+
         function traverse(array) {
             array.forEach(item => {
                 if (item.isActive) {
@@ -196,6 +294,21 @@
                     traverse(item.children)
                 }
             })
+        }
+
+        function addScript(tree, node) {
+            if (tree.isActive) {
+                tree.children.push(node);
+                return true;
+            }
+            if (tree.children) {
+                for (var i = 0; i < tree.children.length; i++) {
+                    if (addScript(tree.children[i], node)) {
+                        return true;
+                    }
+                }
+            }
+        
         }
 
     </script>
@@ -228,6 +341,9 @@
                   :model="scriptData">
             </item>
         </ul>
+    </div>
+    <div class="R-right">
+        <ul id="Param" class="param"></ul>
     </div>
 </body>
 </html>

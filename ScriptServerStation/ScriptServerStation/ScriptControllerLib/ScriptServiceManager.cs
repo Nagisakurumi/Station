@@ -109,11 +109,11 @@ namespace ScriptControllerLib
             {
                 foreach (var item in ScriptAPIs)
                 {
-
                     VueTreeModel tree = new VueTreeModel();
                     bool hasChildren = false;
                     tree.id = item.Key.ToString();
                     tree.name = item.Value.ScriptMethAttribute.Name.ToString();
+                    tree.source = "service";
                     tree.pId = "0";
                     tree.isParent = hasChildren;
                     treeList.Add(tree);
