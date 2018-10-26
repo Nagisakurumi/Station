@@ -128,13 +128,13 @@
                             id: "1", name: "系统", source: "fixed", children: [
                                 {
                                     id: "3", name: "分支", source: "system", children: [
-                                        { id: "7", name: "True", source: "fixed", dataId:"True", children: []  },
-                                        { id: "8", name: "False", source: "fixed", dataId: "False",children: []},
+                                        { id: "true", name: "True", source: "fixed", dataId:"True", children: []  },
+                                        { id: "false", name: "False", source: "fixed", dataId: "False",children: []},
                                     ]
                                 },
-                                { id: "4", name: "循环(由起始和结束值决定次数)", source: "system", children: [] },
-                                { id: "5", name: "循环(由bool参数决定次数)", source: "system", children: [] },
-                                { id: "6", name: "循环(由时间参数决定次数)", source: "system", children: [] },
+                                { id: "forcount", name: "循环(由起始和结束值决定次数)", source: "system", children: [] },
+                                { id: "forbool", name: "循环(由bool参数决定次数)", source: "system", children: [] },
+                                { id: "fortime", name: "循环(由时间参数决定次数)", source: "system", children: [] },
                             ]
                         }, {
                                 id: "2", name: "脚本函数", source: "fixed", children: []
@@ -170,8 +170,10 @@
                         scriptTree.activeFunc();
                         this.model.isActive = true;
                         var funcId = this.model.dataId;
+                        var funcSource = this.model.source;
                         $("#Param").find("li").remove();
-                        if (funcId != '1' || funcId != 'true' || funcId != 'false') {
+                        $("#OutParam").find("li").remove();
+                        if (funcSource == 'service') {
                             $.ajax({
                                 url: '/api/service/GetTypeZTreeParam',
                                 data: { funcId: funcId },
@@ -180,19 +182,24 @@
                                 async: false,
                                 success: function (data) {
                                     var array = data[0].InputData;
+                                    var arrayOut = data[0].OutputData;
                                     for (var i = 0; i < array.length; i++) {
                                         if (array[i].Type == "OBJECT") {
                                             var component = new MyObject({ propsData: { name: array[i].Name, selectDatas: variable.GetSelectValue() } }).$mount();
                                             $('#Param').append(component.$el);
                                         }
-                                        else if (array[i].Type == "STRING" || array[i].Type == "INT"){
-                                            var component = new MyString({ propsData: { name: array[i].Name, selectDatas: variable.GetSelectValue()  } }).$mount();
+                                        else if (array[i].Type == "STRING" || array[i].Type == "INT") {
+                                            var component = new MyString({ propsData: { name: array[i].Name, selectDatas: variable.GetSelectValue() } }).$mount();
                                             $('#Param').append(component.$el);
                                         }
                                         else if (array[i].Type == "ENUM") {
-                                            var component = new MyEnum({ propsData: { name: array[i].Name, selectDatas: variable.GetSelectValue()  ,EnumDatas: array[i].EnumDatas } }).$mount();
+                                            var component = new MyEnum({ propsData: { name: array[i].Name, selectDatas: variable.GetSelectValue(), EnumDatas: array[i].EnumDatas } }).$mount();
                                             $('#Param').append(component.$el);
                                         }
+                                    }
+                                    for (var i = 0; i < arrayOut.length; i++) {
+                                        var component = new MyObject({ propsData: { name: arrayOut[i].Name, selectDatas: variable.GetSelectValue() } }).$mount();
+                                        $('#OutParam').append(component.$el);
                                     }
 
                                 },
@@ -201,6 +208,25 @@
                                 }
                             });
                         }
+                        else if (funcSource == 'system'){
+                            if (funcId == 'true' || funcId == 'forbool') {
+                                var array = ["true", "false"];
+                                var component = new MyEnum({ propsData: { name: "判断的值", selectDatas: variable.GetSelectValue(), EnumDatas: array } }).$mount();
+                                $('#Param').append(component.$el);
+                            }
+                            else if (funcId == 'forcount') {
+                                var component1 = new MyString({ propsData: { name: "起始值", selectDatas: variable.GetSelectValue() } }).$mount();
+                                var component2 = new MyString({ propsData: { name: "终止值", selectDatas: variable.GetSelectValue() } }).$mount();
+                                $('#Param').append(component1.$el);
+                                $('#Param').append(component2.$el);
+                                var component = new MyObject({ propsData: { name: "迭代值", selectDatas: variable.GetSelectValue() } }).$mount();
+                                $('#OutParam').append(component.$el);
+                            }
+                            else if (funcId=='fortime') {
+                                var component = new MyString({ propsData: { name: "起始值", selectDatas: variable.GetSelectValue(), value: "10/26/2018 3:26:00 PM" } }).$mount();
+                                $('#Param').append(component.$el);
+                            }
+                        }
                     },
                 }
             });
@@ -208,12 +234,25 @@
             var scriptTree = new Vue({
                 el: '#scriptTree',
                 data: {
-                    scriptData: { id: ScriptTreeId, dataId: "0", name: "函数", isActive: true, children: [] }
+                    scriptData: { id: ScriptTreeId, dataId: "0", name: "函数", source:'fixed', isActive: true, children: [] }
                 },
                 methods: {
                     setTreeData: function (data) {
-                        var copyArr = deepClone(data);                  
-                        addScript(this.scriptData, copyArr);
+
+                        //var copyArr = deepClone(data); 
+                        var clone = $.extend(true, {}, data);
+                        ScriptTreeId++;
+                        var tree = { id: ScriptTreeId, dataId: clone.id, name: clone.name, source: clone.source, isActive: false, children: [] };
+
+                        addScript(this.scriptData, tree);
+
+                        //如果 data有子节点，增加子节点。默认就2层。
+                        for (var i = 0, len = data.children.length; i < len; i++) {
+                            ScriptTreeId++;
+                            var cloneNode = $.extend(true, {}, data.children[i]);
+                            var node = { id: ScriptTreeId, dataId: cloneNode.id, name: cloneNode.name, source: clone.source, isActive: false, children: [] };
+                            tree.children.push(node);
+                        }
            
                     },
                     activeFunc: function () {
@@ -235,8 +274,8 @@
             });
 
             var MyString = Vue.extend({
-                template: "<li><div><p>{{name}}</p></div><div class='check'><input type='checkbox'  onchange='checkBoxClick(this)'>是否使用变量</div><div id='select'> <select ><option v-for='selectData in selectDatas' v-bind:value='selectData.value'> {{ selectData.value }}</option></select></div><div><input type='text' style='width: 50px;' name='message' /></div></li>",
-                props: ['name', 'selectDatas'],
+                template: "<li><div><p>{{name}}</p></div><div class='check'><input type='checkbox'  onchange='checkBoxClick(this)'>是否使用变量</div><div id='select'> <select ><option v-for='selectData in selectDatas' v-bind:value='selectData.value'> {{ selectData.value }}</option></select></div><div><input type='text' style='width: 50px;' name='message' v-bind:value='value' /></div></li>",
+                props: ['name', 'selectDatas','value'],
                 methods: {
 
                 }   
@@ -249,8 +288,8 @@
                 methods: {
 
                 }
-
             });
+
 
             //树
             $.ajax({
@@ -269,20 +308,32 @@
             });
         });
 
-        //深复制
-        function deepClone(data) {
-            ScriptTreeId++;
-            var obj = [];
-            for (var i = 0, len = data.children.length; i < len; i++) {
-                var clone = $.extend(true, {}, data.children[i]);
-                var tree = { id: ScriptTreeId, dataId: data.children[i].id, name: data.children[i].name, isActive: false, children: [] };
-                obj.push(clone);
-                ScriptTreeId++;
-            }
-            var clone = $.extend(true, {}, data);
-            var tree = { id: ScriptTreeId, dataId: clone.id, name: clone.name, isActive: false, children: obj };
-           
-            return tree;
+
+        function VariableNameChange(obj) {
+            var oldValue = obj._value;
+            var newValue = obj.value;
+            //if ($.inArray(obj.value, VariableList) >= 0) {
+            //    alert("名称重复");
+            //    obj.value = BeforeChangeName;
+            //}
+            //else {
+            //    VariableList.splice($.inArray(BeforeChangeName, VariableList), 1);
+            //    VariableList.push(obj.value);
+
+            //    $("input[type='checkbox']").each(function () {
+            //        if ($(this).is(":checked")) {
+            //            ////定位到被选中行
+            //            //var name = $("#Variable li").eq(VariableChooseLi).children()[1].value;
+            //            var op = $(this).parent().next().children().find("option");
+            //            for (var i = 0; i < op.length; i++) {
+            //                if (op[i].text == BeforeChangeName) {
+            //                    op[i].text = VariableList[VariableList.length - 1];
+            //                }
+            //            }
+            //        }
+            //    });
+
+            //}
         }
 
         function traverse(array) {
@@ -344,6 +395,9 @@
     </div>
     <div class="R-right">
         <ul id="Param" class="param"></ul>
+    </div>
+    <div class="R-right">
+        <ul id="OutParam" class="param"></ul>
     </div>
 </body>
 </html>
