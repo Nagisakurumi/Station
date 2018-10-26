@@ -29,7 +29,15 @@ namespace ScriptServerStation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            // configure identity server with in-memory stores, keys, clients and scopes
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryIdentityResources(Config.GetIdentityResourceResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
+                .AddProfileService<ProfileService>();
+
             services.AddMvc();
             //DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder() { };
 
@@ -55,11 +63,16 @@ namespace ScriptServerStation
             }
             );
 
-            services.AddSession(configure => configure.IdleTimeout = new TimeSpan(sessionOutTime));
+            services.AddSession(Options => {
+                Options.IdleTimeout = TimeSpan.FromMinutes(sessionOutTime);
+                Options.Cookie.IsEssential = true;
+                Options.Cookie.HttpOnly = true;
+            });
+            //services.AddSession();
             #endregion
 
             services.Configure<EmailSettings>(Configuration.GetSection("WebConfig:EmailSettings"));
-            services.AddSingleton<IDistributedCache, RedisCache>();
+            //services.AddSingleton<IDistributedCache, RedisCache>();
             services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<IScriptService, ScriptServiceImpl>();
             //services.AddBlobStorage()
