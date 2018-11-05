@@ -14,6 +14,7 @@ using ScriptServerStation.Service.Impl;
 using ScriptServerStation.Service;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
+using ScriptServerStation.IdentityServer4;
 
 namespace ScriptServerStation
 {
@@ -31,12 +32,12 @@ namespace ScriptServerStation
         {
             // configure identity server with in-memory stores, keys, clients and scopes
             services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
+                //.AddDeveloperSigningCredential()
                 .AddInMemoryIdentityResources(Config.GetIdentityResourceResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
-                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
-                .AddProfileService<ProfileService>();
+                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
+                //.AddProfileService<ProfileService>();
 
             services.AddMvc();
             //DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder() { };
@@ -91,6 +92,9 @@ namespace ScriptServerStation
             app.UseStaticFiles();
             app.UseSession();
             app.UseDeveloperExceptionPage();
+
+            // Adds IdentityServer
+            app.UseIdentityServer();
             app.UseMvc();
         }
     }

@@ -19,7 +19,7 @@ namespace ScriptServerStation.IdentityServer4
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
             //根据context.UserName和context.Password与数据库的数据做校验，判断是否合法
-            if (context.UserName == "wjk" && context.Password == "123")
+            if (context.UserName == "lord" && context.Password == "123")
             {
                 context.Result = new GrantValidationResult(
                  subject: context.UserName,
@@ -28,7 +28,6 @@ namespace ScriptServerStation.IdentityServer4
             }
             else
             {
-
                 //验证失败
                 context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "invalid custom credential");
             }
@@ -38,12 +37,8 @@ namespace ScriptServerStation.IdentityServer4
         {
             return new Claim[]
             {
-            new Claim("UserId", 1.ToString()),
-            new Claim(JwtClaimTypes.Name,"wjk"),
-            new Claim(JwtClaimTypes.GivenName, "jaycewu"),
-            new Claim(JwtClaimTypes.FamilyName, "yyy"),
-            new Claim(JwtClaimTypes.Email, "977865769@qq.com"),
-            new Claim(JwtClaimTypes.Role,"admin")
+                new Claim("UserId", 1.ToString()),
+                new Claim(JwtClaimTypes.Name,"lord")
             };
         }
     }
