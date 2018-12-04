@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreHelper;
 using DataBaseController;
 using DataBaseController.Entitys;
 using IdentityServer4.Models;
@@ -59,8 +60,8 @@ namespace ScriptServerStation.Service.Impl
             if (user.Balance < day * 1.0)
                 return false;
             user.Balance -= day * 1.0;
-            user.LastBuyDate = DateTime.Now.ToString();
-            user.EndDate = (DateTime.Now + TimeSpan.FromDays(day)).ToString();
+            user.LastBuyDate = TimeProvider.Current.Now.ToString();
+            user.EndDate = (TimeProvider.Current.Now + TimeSpan.FromDays(day)).ToString();
             this.DataBaseContext.SaveChanges();
             return true;
         }
@@ -104,7 +105,7 @@ namespace ScriptServerStation.Service.Impl
         {
             if (setLoginInfo(account, password))
             {
-                session.SetString(account, DateTime.Now.ToString());
+                session.SetString(account, TimeProvider.Current.Now.ToString());
                 return true;
             }
             return false;
@@ -137,7 +138,7 @@ namespace ScriptServerStation.Service.Impl
             var user = GetUser(account);
             if (user.Password.Equals(password))
             {
-                user.LastLoginDate = DateTime.Now.ToString();
+                user.LastLoginDate = TimeProvider.Current.Now.ToString();
                 this.DataBaseContext.SaveChanges();
                 return true;
             }

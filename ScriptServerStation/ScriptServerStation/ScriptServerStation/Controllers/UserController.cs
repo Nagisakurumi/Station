@@ -7,8 +7,8 @@ using DataBaseController;
 using DataBaseController.Entitys;
 using ScriptServerStation.HelpClasses;
 using ScriptServerStation.Service;
-using System.Security.Cryptography;
 using System.Text;
+using CoreHelper;
 
 namespace ScriptServerStation.Controllers
 {
@@ -87,7 +87,7 @@ namespace ScriptServerStation.Controllers
             ReturnObj returnObj = new ReturnObj();
             try
             {
-                returnObj.SetIsSuccess(userService.Login(account, GetMD5(password), HttpContext.Session));
+                returnObj.SetIsSuccess(userService.Login(account, MD5Helper.GetMD5(password), HttpContext.Session));
             }
             catch (Exception ex)
             {
@@ -109,21 +109,11 @@ namespace ScriptServerStation.Controllers
             ReturnObj obj = new ReturnObj();
             try
             {
-                User user = new User() {
-                    Account = account,
-                    Guid = Guid.NewGuid().ToString(),
-                    Password = GetMD5(password),
-                    Email = email,
-                    //Phone = phone,
-                    Level = 0,
-                    LevelValue = 0,
-                    CreateTime = DateTime.Now.ToString(),
-                    IsSpecial = false.ToString(),
-                };
+                User user = new User(account, password, email);
 
                 obj.SetIsSuccess(userService.AddUser(user, verification, HttpContext.Session));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 obj.SetIsSuccess(false);
             }
@@ -192,24 +182,5 @@ namespace ScriptServerStation.Controllers
             }
             return obj;
         }
-        /// <summary>
-		/// 对字符串进行MD5加密
-		/// </summary>
-		/// <param name="myString"></param>
-		/// <returns></returns>
-		public static string GetMD5(string myString)
-		{
-			MD5 md5 = new MD5CryptoServiceProvider();
-			byte[] fromData = System.Text.Encoding.UTF8.GetBytes(myString);
-			byte[] targetData = md5.ComputeHash(fromData);
-			StringBuilder byte2String = new StringBuilder();
-
-			for (int i = 0; i < targetData.Length; i++)
-			{
-				byte2String.Append(targetData[i].ToString("x2"));
-			}
-
-			return byte2String.ToString();
-		}
     }
 }

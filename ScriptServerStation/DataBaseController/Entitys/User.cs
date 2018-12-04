@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CoreHelper;
+using DataBaseController.Interface;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +8,19 @@ namespace DataBaseController.Entitys
 {
     public class User
     {
-        //public Guid Guid;
+        public User()
+        {
+        }
+        public User(string account, string password, string email) : this()
+        {
+            //if (guidService == null)
+            //    guidService = new GuidService();
+            //Guid = guidService.NewGuid().ToString();
+            Account = account;
+            Password = MD5Helper.GetMD5(password);
+            Email = email;
+            CreateTime = TimeProvider.Current.Now.ToString();
+        }
         /// <summary>
         /// 用户物理id
         /// </summary>

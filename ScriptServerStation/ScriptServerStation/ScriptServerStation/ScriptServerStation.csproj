@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\DataBaseController\DataBaseController.csproj" />
+    <ProjectReference Include="..\CoreHelper\CoreHelper.csproj" />
     <ProjectReference Include="..\ScriptControllerLib\ScriptControllerLib.csproj" />
   </ItemGroup>
 
