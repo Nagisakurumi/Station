@@ -130,7 +130,7 @@ namespace ScriptServerStation.Controllers
             {
                 return scriptService.DelyTime(GetScriptInput());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }

@@ -79,9 +79,17 @@ namespace ScriptServerStation.Tests
         public void DelyTime()
         {
             var mock = new Mock<IScriptService>();
+            var requestMock = new Mock<HttpRequest>();
+            var contextMock = new Mock<HttpContext>();
+            var streamMock = new Mock<System.IO.Stream>();
             ServiceController serviceController = new ServiceController(mock.Object);
             ScriptOutput scriptOutput = new ScriptOutput();
+            serviceController.ControllerContext = new ControllerContext();
+            serviceController.ControllerContext.HttpContext = contextMock.Object;
 
+            requestMock.SetupGet(x => x.ContentLength).Returns(0);
+            requestMock.SetupGet(x => x.Body).Returns(streamMock.Object);
+            contextMock.SetupGet(x => x.Request).Returns(requestMock.Object);
             mock.Setup(x => x.DelyTime(It.IsAny<ScriptInput>())).Returns(scriptOutput);
             var result = serviceController.DelyTime();
             Assert.Equal(scriptOutput, result);
@@ -90,8 +98,17 @@ namespace ScriptServerStation.Tests
         public void Option()
         {
             var mock = new Mock<IScriptService>();
+            var requestMock = new Mock<HttpRequest>();
+            var contextMock = new Mock<HttpContext>();
+            var streamMock = new Mock<System.IO.Stream>();
             ServiceController serviceController = new ServiceController(mock.Object);
             ScriptOutput scriptOutput = new ScriptOutput();
+            serviceController.ControllerContext = new ControllerContext();
+            serviceController.ControllerContext.HttpContext = contextMock.Object;
+
+            requestMock.SetupGet(x => x.ContentLength).Returns(0);
+            requestMock.SetupGet(x => x.Body).Returns(streamMock.Object);
+            contextMock.SetupGet(x => x.Request).Returns(requestMock.Object);
             mock.Setup(x => x.Option(It.IsAny<ScriptInput>())).Returns(scriptOutput);
             var result = serviceController.Option();
             Assert.Equal(scriptOutput, result);
