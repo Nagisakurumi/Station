@@ -1,11 +1,12 @@
-﻿using IdentityServer4;
-using IdentityServer4.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-namespace ScriptServerStation.IdentityServer4
+using IdentityServer4;
+using IdentityServer4.Models;
+using IdentityServer4.Test;
+using System.Collections.Generic;
+
+namespace ScriptServerStation.Service
 {
     public class Config
     {
@@ -22,7 +23,7 @@ namespace ScriptServerStation.IdentityServer4
         {
             return new List<ApiResource>
             {
-                new ApiResource("api1", "My API")
+                new ApiResource("myApi", "My API")
             };
         }
 
@@ -34,30 +35,30 @@ namespace ScriptServerStation.IdentityServer4
             {
                 new Client
                 {
-                    ClientId = "client1",
+                    ClientId = "web",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
 
-                    ClientSecrets =
+                    ClientSecrets = 
                     {
-                        new Secret("secret".Sha256())
+                        new Secret("MyWebSecret".Sha256())
                     },
-                    AllowedScopes = { "api1",IdentityServerConstants.StandardScopes.OpenId, //必须要添加，否则报forbidden错误
-                    IdentityServerConstants.StandardScopes.Profile},
-
+                    AllowedScopes = { "myApi",IdentityServerConstants.StandardScopes.OpenId, //必须要添加，否则报forbidden错误
+                  IdentityServerConstants.StandardScopes.Profile},
+                    
                 },
 
                 // resource owner password grant client
                 new Client
                 {
-                    ClientId = "client2",
+                    ClientId = "wpf",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
-                    ClientSecrets =
+                    ClientSecrets = 
                     {
-                        new Secret("secret".Sha256())
+                        new Secret("MyWpfSecret".Sha256())
                     },
-                    AllowedScopes = { "api1",IdentityServerConstants.StandardScopes.OpenId, //必须要添加，否则报forbidden错误
-                    IdentityServerConstants.StandardScopes.Profile }
+                    AllowedScopes = { "myApi",IdentityServerConstants.StandardScopes.OpenId, //必须要添加，否则报forbidden错误
+                  IdentityServerConstants.StandardScopes.Profile }
                 }
             };
         }

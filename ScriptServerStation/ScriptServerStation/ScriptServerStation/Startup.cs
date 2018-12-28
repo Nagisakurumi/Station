@@ -14,7 +14,6 @@ using ScriptServerStation.Service.Impl;
 using ScriptServerStation.Service;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
-using ScriptServerStation.IdentityServer4;
 
 namespace ScriptServerStation
 {
@@ -30,15 +29,13 @@ namespace ScriptServerStation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // configure identity server with in-memory stores, keys, clients and scopes
             services.AddIdentityServer()
-                //.AddDeveloperSigningCredential()
-                .AddInMemoryIdentityResources(Config.GetIdentityResourceResources())
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
-                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
-                //.AddProfileService<ProfileService>();
-
+                   .AddDeveloperSigningCredential()
+                   .AddInMemoryIdentityResources(Config.GetIdentityResourceResources())
+                   .AddInMemoryApiResources(Config.GetApiResources())
+                   .AddInMemoryClients(Config.GetClients())
+                   .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
+                   .AddProfileService<ProfileService>();
             services.AddMvc();
             //DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder() { };
 
@@ -61,8 +58,7 @@ namespace ScriptServerStation
                 option.Configuration = redisConn;
                 //redis 实例名
                 option.InstanceName = redisInstanceName;
-            }
-            );
+            });
 
             services.AddSession(Options => {
                 Options.IdleTimeout = TimeSpan.FromMinutes(sessionOutTime);
@@ -92,10 +88,9 @@ namespace ScriptServerStation
             app.UseStaticFiles();
             app.UseSession();
             app.UseDeveloperExceptionPage();
-
-            // Adds IdentityServer
-            app.UseIdentityServer();
+            
             app.UseMvc();
+            app.UseIdentityServer();
         }
     }
 }
