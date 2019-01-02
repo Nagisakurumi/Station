@@ -29,13 +29,6 @@ namespace ScriptServerStation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityServer()
-                   .AddDeveloperSigningCredential()
-                   .AddInMemoryIdentityResources(Config.GetIdentityResourceResources())
-                   .AddInMemoryApiResources(Config.GetApiResources())
-                   .AddInMemoryClients(Config.GetClients())
-                   .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
-                   .AddProfileService<ProfileService>();
             services.AddMvc();
             //DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder() { };
 
@@ -90,7 +83,6 @@ namespace ScriptServerStation
             app.UseDeveloperExceptionPage();
             
             app.UseMvc();
-            app.UseIdentityServer();
         }
     }
 }

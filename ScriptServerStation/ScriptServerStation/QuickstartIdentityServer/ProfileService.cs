@@ -7,7 +7,7 @@ using IdentityServer4.Models;
 using System.Security.Claims;
 using IdentityModel;
 
-namespace ScriptServerStation.Service
+namespace QuickstartIdentityServer
 {
     public class ProfileService : IProfileService
     {

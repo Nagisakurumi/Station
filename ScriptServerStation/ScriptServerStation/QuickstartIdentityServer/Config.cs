@@ -6,7 +6,7 @@ using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System.Collections.Generic;
 
-namespace ScriptServerStation.Service
+namespace QuickstartIdentityServer
 {
     public class Config
     {
@@ -36,7 +36,7 @@ namespace ScriptServerStation.Service
                 new Client
                 {
                     ClientId = "web",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     ClientSecrets = 
                     {
@@ -51,7 +51,7 @@ namespace ScriptServerStation.Service
                 new Client
                 {
                     ClientId = "wpf",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
 
                     ClientSecrets = 
                     {

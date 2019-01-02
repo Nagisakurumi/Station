@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptServerStation.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{D41E939C-85A6-4565-BF2D-4A1EC7884732}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickstartIdentityServer", "QuickstartIdentityServer\QuickstartIdentityServer.csproj", "{9418B2BE-BB75-46B1-8A4D-630396C7310C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{D41E939C-85A6-4565-BF2D-4A1EC7884732}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D41E939C-85A6-4565-BF2D-4A1EC7884732}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D41E939C-85A6-4565-BF2D-4A1EC7884732}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9418B2BE-BB75-46B1-8A4D-630396C7310C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9418B2BE-BB75-46B1-8A4D-630396C7310C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9418B2BE-BB75-46B1-8A4D-630396C7310C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9418B2BE-BB75-46B1-8A4D-630396C7310C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

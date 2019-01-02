@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace ScriptServerStation.Service
+namespace QuickstartIdentityServer
 {
     public class ResourceOwnerPasswordValidator :BaseService, IResourceOwnerPasswordValidator
     {
