@@ -21,9 +21,12 @@ namespace ScriptServerStation.Tests
             userController.ControllerContext = new ControllerContext();
             userController.ControllerContext.HttpContext = new DefaultHttpContext();
             userController.ControllerContext.HttpContext.Session = session;
-            mock.Setup(x => x.Login("liu", MD5Helper.GetMD5("123"), session)).Returns(true);
+
+            string account = System.DateTime.Now.ToString();
+            string password = System.DateTime.Now.Ticks.ToString();
+            mock.Setup(x => x.Login(account, MD5Helper.GetMD5(password), session)).Returns(true);
             //userController.ControllerContext.HttpContext.Request.Headers["device-id"] = "20317";
-            var result = userController.Login("liu", "123");
+            var result = userController.Login(account, password);
             Assert.True(result.IsSuccess == true.ToString());
         }
         [Fact]
@@ -39,9 +42,10 @@ namespace ScriptServerStation.Tests
         public void GetUserInfo()
         {
             var mock = new Mock<IUserService>();
-            mock.Setup(x => x.GetUser("123")).Returns(new User());
+            string account = System.DateTime.Now.ToString();
+            mock.Setup(x => x.GetUser(account)).Returns(new User());
             UserController userController = new UserController(mock.Object);
-            var result = userController.GetUserInfo("123");
+            var result = userController.GetUserInfo(account);
             Assert.True(result.Result is User);
         }
         [Fact]
@@ -70,12 +74,13 @@ namespace ScriptServerStation.Tests
             var session = new Mock<ISession>().Object;
             UserController userController = new UserController(mock.Object);
 
-            mock.Setup(x => x.GetVerification("123", session)).Returns(true);
+            string email = System.DateTime.Now.ToString();
+            mock.Setup(x => x.GetVerification(email, session)).Returns(true);
             userController.ControllerContext = new ControllerContext();
             userController.ControllerContext.HttpContext = new DefaultHttpContext();
             userController.ControllerContext.HttpContext.Session = session;
 
-            var result = userController.GetVerification("123");
+            var result = userController.GetVerification(email);
             Assert.True(result.IsSuccess == true.ToString());
         }
         [Fact]
@@ -84,9 +89,11 @@ namespace ScriptServerStation.Tests
             var mock = new Mock<IUserService>();
             UserController userController = new UserController(mock.Object);
 
-            mock.Setup(x => x.BuyVIP(It.IsAny<User>(), 0)).Returns(true);
-
-            var result = userController.BuyVIP("123", 0);
+            string account = System.DateTime.Now.ToString();
+            int day = new System.Random().Next();
+            mock.Setup(x => x.BuyVIP(It.IsAny<User>(), day)).Returns(true);
+            
+            var result = userController.BuyVIP(account, day);
             Assert.True(result.IsSuccess == true.ToString());
         }
         [Fact]
@@ -95,9 +102,12 @@ namespace ScriptServerStation.Tests
             var mock = new Mock<IUserService>();
             UserController userController = new UserController(mock.Object);
 
-            mock.Setup(x => x.Recharge(It.IsAny<User>(), "1", 1)).Returns(true);
+            string account = System.DateTime.Now.ToString();
+            string code = System.Guid.NewGuid().ToString();
+            double money = System.DateTime.Now.Ticks;
+            mock.Setup(x => x.Recharge(It.IsAny<User>(), code, money)).Returns(true);
 
-            var result = userController.Recharge("123", "1", 1);
+            var result = userController.Recharge(account, code, money);
             Assert.True(result.IsSuccess == true.ToString());
         }
     }

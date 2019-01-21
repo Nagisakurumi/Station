@@ -19,9 +19,10 @@ namespace ScriptServerStation.Tests
             var mock = new Mock<IScriptService>();
             ServiceController serviceController = new ServiceController(mock.Object);
 
-            mock.Setup(x => x.GetAllApis()).Returns("qqq");
+            string expected = System.DateTime.Now.ToString();
+            mock.Setup(x => x.GetAllApis()).Returns(expected);
             var result = serviceController.GetApis();
-            Assert.Equal("qqq", result);
+            Assert.Equal(expected, result);
         }
         [Fact]
         public void GetTypeVueTree()
@@ -29,9 +30,10 @@ namespace ScriptServerStation.Tests
             var mock = new Mock<IScriptService>();
             ServiceController serviceController = new ServiceController(mock.Object);
 
-            mock.Setup(x => x.GetVueTreeApis(It.IsAny<string>())).Returns("qqq");
+            string expected = System.DateTime.Now.ToString();
+            mock.Setup(x => x.GetVueTreeApis(It.IsAny<string>())).Returns(expected);
             var result = serviceController.GetTypeVueTree();
-            Assert.Equal("qqq", result);
+            Assert.Equal(expected, result);
         }
         [Fact]
         public void GetTypeZTree()
@@ -39,9 +41,10 @@ namespace ScriptServerStation.Tests
             var mock = new Mock<IScriptService>();
             ServiceController serviceController = new ServiceController(mock.Object);
 
-            mock.Setup(x => x.GetTreeApis(It.IsAny<string>())).Returns("qqq");
+            string expected = System.DateTime.Now.ToString();
+            mock.Setup(x => x.GetTreeApis(It.IsAny<string>())).Returns(expected);
             var result = serviceController.GetTypeZTree();
-            Assert.Equal("qqq", result);
+            Assert.Equal(expected, result);
         }
         [Fact]
         public void GetTypeZTreeParam()
@@ -49,9 +52,11 @@ namespace ScriptServerStation.Tests
             var mock = new Mock<IScriptService>();
             ServiceController serviceController = new ServiceController(mock.Object);
 
-            mock.Setup(x => x.GetTreeApis(It.IsAny<string>())).Returns("qqq");
-            var result = serviceController.GetTypeZTreeParam("123");
-            Assert.Equal("qqq", result);
+            string expected = System.DateTime.Now.ToString();
+            string funcId = System.DateTime.Now.Ticks.ToString();
+            mock.Setup(x => x.GetTreeApis(It.IsAny<string>())).Returns(expected);
+            var result = serviceController.GetTypeZTreeParam(funcId);
+            Assert.Equal(expected, result);
         }
         [Fact]
         public void PrintObject()
