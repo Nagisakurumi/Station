@@ -14,6 +14,8 @@ using ScriptServerStation.Service.Impl;
 using ScriptServerStation.Service;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
+using ScriptServerStation.HelpClasses.Cache;
+using ScriptServerStation.HelpClasses.Cache.Redis;
 
 namespace ScriptServerStation
 {
@@ -57,9 +59,34 @@ namespace ScriptServerStation
 
             services.AddSession();
             #endregion
+            ///系统redis
             services.AddSingleton<IDistributedCache, RedisCache>();
+            ///自定义redis
+            services.AddSingleton<ICacheOption>(new RedisDataBase(new ExRedisCacheOptions() {
+                Configuration = redisConn,
+                DataBaseIdx = 0,
+                InstanceName = redisInstanceName,
+            }));
+
             services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<IScriptService, ScriptServiceImpl>();
+            services.AddScoped<IVersionUpdateService, VersionUpdateServiceImpl>();
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<ITextDetectionService>(new TextDetectionServiceImpl(null));
+            services.AddScoped<ISpoilsStatisticsService, SpoilsStatisticsServiceImpl>();
+            ///添加邮件服务
+            services.AddScoped<IEmailConnect, EmailConnect>(c=>
+            {
+                return new EmailConnect(Configuration["MailConfig:Account"],
+                    Configuration["MailConfig:Password"], 
+                    Configuration["MailConfig:Address"],
+                    Convert.ToInt32(Configuration["MailConfig:Port"]),
+                    Configuration["MailConfig:NickName"],
+                    Configuration["MailConfig:Host"]);
+            });
+            ///增加日志系统
+            services.AddSingleton<ILog>(new WxxandxyxLog(Configuration["LogConfig:FileName"]));
+            
             //services.AddBlobStorage()
             //    .AddEntityFrameworkStorage<BlogContext>()
             //    .AddSessionUploadAuthorization();

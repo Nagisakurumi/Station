@@ -14,6 +14,7 @@ namespace ScriptServerStation
     {
         public static void Main(string[] args)
         {
+            //string msg = HelpClasses.MD5Comm.Get32MD5One("17935");
             BuildWebHost(args).Run();
         }
 

@@ -26,5 +26,9 @@ namespace ScriptServerStation.HelpClasses
         {
             this.IsSuccess = issuccess.ToString();
         }
+        /// <summary>
+        /// 错误信息
+        /// </summary>
+        public string ErrorMsg { get; set; }
     }
 }

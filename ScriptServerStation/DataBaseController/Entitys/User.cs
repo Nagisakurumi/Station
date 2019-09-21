@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace DataBaseController.Entitys
 {
     public class User
     {
-        //public Guid Guid;
         /// <summary>
         /// 用户物理id
         /// </summary>

@@ -20,5 +20,17 @@ namespace DataBaseController
         /// 用户表
         /// </summary>
         public DbSet<User> Users { get; set; }
+        /// <summary>
+        /// 版本文件
+        /// </summary>
+        public DbSet<VersionUpdate> VersionUpdates { get; set; }
+        /// <summary>
+        /// 版本文件
+        /// </summary>
+        public DbSet<ActiveCode> ActiveCodes { get; set; }
+        /// <summary>
+        /// 战利品统计
+        /// </summary>
+        public DbSet<SpoilsStatistics> SpoilsStatistics { get; set; }
     }
 }
