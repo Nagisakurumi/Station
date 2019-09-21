@@ -52,12 +52,15 @@ namespace ScriptControllerLib
                 {
                     strJson.Append("{");
                     strJson.Append("\"id\":\"" + entity.id.ToString() + "\",");
-                    strJson.Append("\"name\":\"" + entity.name.Replace("&nbsp;", "") + "\"");
-
+                    strJson.Append("\"name\":\"" + entity.name.Replace("&nbsp;", "") + "\",");
+                    strJson.Append("\"source\":\"" + entity.source.Replace("&nbsp;", "") + "\",");
                     if (entity.isParent)
                     {
-                        strJson.Append(",");
                         strJson.Append("\"children\":" + VueTreeJson(data, entity.id) + "");
+                    }
+                    else
+                    {
+                        strJson.Append("\"children\":[]");
                     }
                     strJson.Append("},");
                 }

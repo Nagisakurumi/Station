@@ -9,6 +9,9 @@ namespace DataBaseController.Entitys
 {
     public class User
     {
+<<<<<<< HEAD
+=======
+        public User()
         {
         }
         public User(string account, string password, string email) : this()
@@ -21,6 +24,7 @@ namespace DataBaseController.Entitys
             Email = email;
             CreateTime = TimeProvider.Current.Now.ToString();
         }
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
         /// <summary>
         /// 用户物理id
         /// </summary>

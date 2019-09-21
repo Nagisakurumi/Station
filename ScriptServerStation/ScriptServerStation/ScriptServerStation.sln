@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBaseController", "..\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptControllerLib", "ScriptControllerLib\ScriptControllerLib.csproj", "{02DEA17D-A080-4212-833C-102DDDA53BBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreHelper", "CoreHelper\CoreHelper.csproj", "{7F6432CE-9198-4751-8FFE-CEDFCB87E92C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreHelper", "CoreHelper\CoreHelper.csproj", "{7F6432CE-9198-4751-8FFE-CEDFCB87E92C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptServerStation.Tests", "ScriptServerStation.Tests\ScriptServerStation.Tests.csproj", "{6222E38B-CDE2-4E7B-9EFA-027AA1B74C03}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{D41E939C-85A6-4565-BF2D-4A1EC7884732}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickstartIdentityServer", "QuickstartIdentityServer\QuickstartIdentityServer.csproj", "{9418B2BE-BB75-46B1-8A4D-630396C7310C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,18 @@ Global
 		{7F6432CE-9198-4751-8FFE-CEDFCB87E92C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F6432CE-9198-4751-8FFE-CEDFCB87E92C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F6432CE-9198-4751-8FFE-CEDFCB87E92C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6222E38B-CDE2-4E7B-9EFA-027AA1B74C03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6222E38B-CDE2-4E7B-9EFA-027AA1B74C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6222E38B-CDE2-4E7B-9EFA-027AA1B74C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6222E38B-CDE2-4E7B-9EFA-027AA1B74C03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D41E939C-85A6-4565-BF2D-4A1EC7884732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D41E939C-85A6-4565-BF2D-4A1EC7884732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D41E939C-85A6-4565-BF2D-4A1EC7884732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D41E939C-85A6-4565-BF2D-4A1EC7884732}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9418B2BE-BB75-46B1-8A4D-630396C7310C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9418B2BE-BB75-46B1-8A4D-630396C7310C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9418B2BE-BB75-46B1-8A4D-630396C7310C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9418B2BE-BB75-46B1-8A4D-630396C7310C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

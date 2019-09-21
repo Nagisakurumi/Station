@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="HelpClasses\BaseService.cs" />
+    <Compile Remove="Service\IEmailService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\Content\images\" />
     <Folder Include="wwwroot\Content\lib\" />
   </ItemGroup>

@@ -10,19 +10,26 @@ namespace ScriptServerStation.Service.Impl
 {
     public class ScriptServiceImpl : BaseService, IScriptService
     {
+        public ScriptServiceImpl(DataBaseContext DataBaseContext):this(DataBaseContext, ScriptServiceManager.CreateInstance())
+        {
+        }
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="DataBaseContext"></param>
-        public ScriptServiceImpl(DataBaseContext DataBaseContext) : base(DataBaseContext)
+        internal ScriptServiceImpl(DataBaseContext DataBaseContext, ScriptServiceManager scriptServiceManager) : base(DataBaseContext)
         {
             ScriptServiceManager.ScriptUrl = @"http://localhost:56233/api/Service/";
-            ScriptServiceManager.InitFunction();
+            scriptServiceManager.InitFunction();
+            this.ScriptServiceManager = scriptServiceManager;
         }
         /// <summary>
         /// 脚本管理对象
         /// </summary>
-        public static ScriptControllerLib.ScriptServiceManager ScriptServiceManager = new ScriptControllerLib.ScriptServiceManager();
+        public ScriptControllerLib.ScriptServiceManager ScriptServiceManager
+        {
+            get;set;
+        }
         /// <summary>
         /// 获取api列表
         /// </summary>

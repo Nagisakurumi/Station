@@ -1,0 +1,51 @@
+﻿{
+  "ConnectionString": {
+    "DefaultConnection": "server=www.wxxandxyx.cn;userid=mytest;pwd=123456;port=3306;database=mytest;sslmode=none;"
+  },
+  "Logging": {
+    "IncludeScopes": false,
+    "Debug": {
+      "LogLevel": {
+        "Default": "Warning"
+      }
+    },
+    "Console": {
+      "LogLevel": {
+        "Default": "Warning"
+      }
+    }
+  },
+  "WebConfig": {
+    "Redis": {
+      "Connection": "www.wxxandxyx.cn:6379",
+<<<<<<< HEAD
+=======
+      //"Connection": "www.wxxandxyx.cn:6379,defaultdatabase=11",
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
+      //"Connection": "127.0.0.1:6379,allowAdmin=true,password=123456,defaultdatabase=5",
+      "InstanceName": "Redis"
+    },
+<<<<<<< HEAD
+    "SessionTimeOut": "30" //session过期时长，分钟
+  },
+  "MailConfig": {
+    "Account": "1018429593",
+    "Password": "pyclfwjwxtlwbdff",
+    "Address": "martianscript@qq.com",
+    "Port": "587",
+    "NickName": "火星人",
+    "Host": "smtp.qq.com"
+  },
+  "LogConfig": {
+    "FileName" :  "ServerLog"
+=======
+    "SessionTimeOut": "30", //session过期时长，分钟
+    "EmailSettings": {
+      "SmtpHost": "smtp.163.com", //Smtp 服务器
+      "SmtpPort": "25", //Smtp 服务器端口
+      "FromEmailAddress": "liuqianyutest@163.com", //发送者 Email 地址
+      "FormEmailPassword": "liu123456" //发送者 Email 密码
+    }
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
+  }
+}

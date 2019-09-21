@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreHelper;
 using DataBaseController;
 using DataBaseController.Entitys;
 using Microsoft.AspNetCore.Http;
+<<<<<<< HEAD
 using CoreHelper.Expends;
 using ScriptServerStation.HelpClasses;
 using ScriptServerStation.HelpClasses.Cache;
-
-namespace ScriptServerStation.Service.Impl
-{
-    public class UserServiceImpl : BaseService, IUserService
-    {
+=======
+using Microsoft.Extensions.Options;
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
 
 namespace ScriptServerStation.Service.Impl
 {
@@ -23,6 +23,7 @@ namespace ScriptServerStation.Service.Impl
         /// </summary>
         private ICacheOption session = null;
 
+<<<<<<< HEAD
         public UserServiceImpl(DataBaseContext DataBaseContext, 
             ICacheOption cacheOption) : base(DataBaseContext)
         {
@@ -106,19 +107,30 @@ namespace ScriptServerStation.Service.Impl
             this.DataBaseContext.ActiveCodes.Add(activeCode);
             this.DataBaseContext.SaveChanges();
             return activeCode;
+=======
+        private EmailSettings ConfigSettings { get; set; }
+        public UserServiceImpl(DataBaseContext DataBaseContext, IOptions<EmailSettings> settings) : base(DataBaseContext)
+        {
+            ConfigSettings = settings.Value;
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
         }
         /// <summary>
         /// 添加一个用户
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool AddUser(User user)
+        public bool AddUser(User user, string verification, ISession session)
         {
+<<<<<<< HEAD
             var list = DataBaseContext.Users.Where(x => x.Account.Equals(user.Account));
             if (list.Count() != 0)
             {
                 return false;
             }
+=======
+            if (session.GetString(user.Email) != verification)
+                return false;
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
             this.DataBaseContext.Add<User>(user);
             this.DataBaseContext.SaveChanges();
             return true;
@@ -130,8 +142,8 @@ namespace ScriptServerStation.Service.Impl
             if (user.Balance < day * 1.0)
                 return false;
             user.Balance -= day * 1.0;
-            user.LastBuyDate = DateTime.Now.ToString();
-            user.EndDate = (DateTime.Now + TimeSpan.FromDays(day)).ToString();
+            user.LastBuyDate = TimeProvider.Current.Now.ToString();
+            user.EndDate = (TimeProvider.Current.Now + TimeSpan.FromDays(day)).ToString();
             this.DataBaseContext.SaveChanges();
             return true;
         }
@@ -185,7 +197,11 @@ namespace ScriptServerStation.Service.Impl
         {
             if (setLoginInfo(account, password))
             {
+<<<<<<< HEAD
                 session.SetValue(account, uuid);
+=======
+                session.SetString(account, TimeProvider.Current.Now.ToString());
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
                 return true;
             }
             return false;
@@ -199,6 +215,14 @@ namespace ScriptServerStation.Service.Impl
             return true;
         }
 
+        public bool GetVerification(string email, ISession session)
+        {
+            string verification = GetVerification(4);
+            session.SetString(email, verification);
+            EmailHelper mail = new EmailHelper(ConfigSettings, email, "测试邮件2", "<html><body><div style='color:red;'>验证码为：" + verification + "</div></body></html>");
+            mail.Send();
+            return true;
+        }
         /// <summary>
         /// 设置登录信息
         /// </summary>
@@ -210,7 +234,7 @@ namespace ScriptServerStation.Service.Impl
             var user = GetUser(account);
             if (user.Password.Equals(password))
             {
-                user.LastLoginDate = DateTime.Now.ToString();
+                user.LastLoginDate = TimeProvider.Current.Now.ToString();
                 this.DataBaseContext.SaveChanges();
                 return true;
             }
@@ -220,6 +244,7 @@ namespace ScriptServerStation.Service.Impl
             }
         }
         /// <summary>
+<<<<<<< HEAD
         /// 激活体验
         /// </summary>
         /// <param name="account"></param>
@@ -271,6 +296,35 @@ namespace ScriptServerStation.Service.Impl
         {
             user.Email = email;
             this.DataBaseContext.SaveChanges();
+=======
+        /// 随机生成验证码
+        /// </summary>
+        /// <param name="count">几位验证码</param>
+        /// <returns></returns>
+        private string GetVerification(int count)
+        {
+            int number;
+            string checkCode = String.Empty;     //存放随机码的字符串   
+
+            System.Random random = new Random();
+
+            for (int i = 0; i < count; i++) //产生4位校验码   
+            {
+                number = random.Next();
+                number = number % 36;
+                if (number < 10)
+                {
+                    number += 48;    //数字0-9编码在48-57   
+                }
+                else
+                {
+                    number += 55;    //字母A-Z编码在65-90   
+                }
+
+                checkCode += ((char)number).ToString();
+            }
+            return checkCode;
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
         }
     }
 }

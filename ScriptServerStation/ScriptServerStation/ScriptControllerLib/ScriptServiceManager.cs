@@ -19,14 +19,36 @@ namespace ScriptControllerLib
         /// <summary>
         /// api地址
         /// </summary>
-        public static Dictionary<string, ScriptAPI> ScriptAPIs = new Dictionary<string, ScriptAPI>();
+        private static Dictionary<string, ScriptAPI> ScriptAPIs = new Dictionary<string, ScriptAPI>();
+        // 定义一个静态变量来保存类的实例
+        private static ScriptServiceManager _scriptServiceManager;
+        // 定义一个标识确保线程同步
+        private static readonly object locker = new object();
 
+        private ScriptServiceManager()
+        { }
+
+        public static ScriptServiceManager CreateInstance()
+        {
+            if (_scriptServiceManager == null)
+            {
+                lock (locker)
+                {
+                    // 如果类的实例不存在则创建，否则直接返回
+                    if (_scriptServiceManager == null)
+                    {
+                        _scriptServiceManager = new ScriptServiceManager();
+                    }
+                }
+            }
+            return _scriptServiceManager;
+        }
         /// <summary>
         /// 添加脚本函数
         /// </summary>
         /// <param name="url">地址</param>
         /// <param name="scriptFunction">脚本函数</param>
-        public static bool AddScriptFunction(string url, ScriptFunction scriptFunction)
+        public bool AddScriptFunction(string url, ScriptFunction scriptFunction)
         {
             if (ScriptAPIs.ContainsKey(url) == false)
             {
@@ -45,7 +67,7 @@ namespace ScriptControllerLib
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static bool RemoveScriptFunction(string url)
+        public bool RemoveScriptFunction(string url)
         {
             if (ScriptAPIs.ContainsKey(url) == true)
             {
@@ -59,7 +81,7 @@ namespace ScriptControllerLib
         /// 获取所有的api信息
         /// </summary>
         /// <returns></returns>
-        public static string GetAllApi()
+        public string GetAllApi()
         {
             List<ScriptMethAttribute> scriptMeths = new List<ScriptMethAttribute>();
             foreach (var item in ScriptAPIs)
@@ -73,7 +95,7 @@ namespace ScriptControllerLib
         /// 获取所有的api信息
         /// </summary>
         /// <returns></returns>
-        public static string GetTreeApis(string key = null)
+        public string GetTreeApis(string key = null)
         {
             var treeList = new List<zTreeModel>();
 
@@ -102,18 +124,18 @@ namespace ScriptControllerLib
                 return JsonConvert.SerializeObject(scriptMeths).ToString(); ;
             }
         }
-        public static string GetVueTreeApis(string key = null)
+        public string GetVueTreeApis(string key = null)
         {
             var treeList = new List<VueTreeModel>();
             if (key == null)
             {
                 foreach (var item in ScriptAPIs)
                 {
-
                     VueTreeModel tree = new VueTreeModel();
                     bool hasChildren = false;
                     tree.id = item.Key.ToString();
                     tree.name = item.Value.ScriptMethAttribute.Name.ToString();
+                    tree.source = "service";
                     tree.pId = "0";
                     tree.isParent = hasChildren;
                     treeList.Add(tree);
@@ -135,7 +157,7 @@ namespace ScriptControllerLib
         /// </summary>
         /// <param name="scriptInput"></param>
         /// <returns></returns>
-        public static ScriptOutput DoFunction(string key, ScriptInput scriptInput)
+        public ScriptOutput DoFunction(string key, ScriptInput scriptInput)
         {
             if (ScriptAPIs.ContainsKey(key))
             {
@@ -146,7 +168,7 @@ namespace ScriptControllerLib
         /// <summary>
         /// 初始化
         /// </summary>
-        public static void InitFunction()
+        public void InitFunction()
         {
             if (ScriptAPIs.Count != 0) return;
             AddScriptFunction("PrintObject", ScriptToolsFunction.PrintObject);

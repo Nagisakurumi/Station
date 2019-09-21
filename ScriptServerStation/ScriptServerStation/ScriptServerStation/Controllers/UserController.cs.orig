@@ -7,11 +7,16 @@ using DataBaseController;
 using DataBaseController.Entitys;
 using ScriptServerStation.HelpClasses;
 using ScriptServerStation.Service;
+<<<<<<< HEAD
 using System.IO;
 using CoreHelper.Expends;
 using System.Net.Http;
 using Newtonsoft.Json;
 using ScriptServerStation.HelpClasses.Cache;
+=======
+using System.Text;
+using CoreHelper;
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
 
 namespace ScriptServerStation.Controllers
 {
@@ -107,6 +112,7 @@ namespace ScriptServerStation.Controllers
             ReturnObj returnObj = new ReturnObj();
             try
             {
+<<<<<<< HEAD
                 Dictionary<string, string> resultcontents = new Dictionary<string, string>();
                 if (uuid.Length < 10)
                     throw new Exception("非正常加密的uuid!");
@@ -120,6 +126,9 @@ namespace ScriptServerStation.Controllers
                 resultcontents.Add("msg", "检测到您还没绑定邮箱，请有空尽快去绑定一下邮箱，群里有修改邮箱地址，" +
                     "绑定邮箱之后可以通过邮箱找回密码!");
                 returnObj.Result = resultcontents;
+=======
+                returnObj.SetIsSuccess(userService.Login(account, MD5Helper.GetMD5(password), HttpContext.Session));
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
             }
             catch (Exception ex)
             {
@@ -137,11 +146,16 @@ namespace ScriptServerStation.Controllers
         /// <param name="verification"></param>
         /// <returns></returns>
         [HttpPost("register")]
+<<<<<<< HEAD
         public ReturnObj Register(string account, string password, string code, string email, string recommend)
+=======
+        public ReturnObj Register(string account, string password, string email, string verification)
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
         {
             ReturnObj obj = new ReturnObj();
             try
             {
+<<<<<<< HEAD
                 string value = cacheOption.GetValue<string>("register_{0}".ToFormat(account));
                 if (string.IsNullOrEmpty(value)) throw new Exception("该账号没有被发送过邮箱验证,请在发送邮箱验证之后不要" +
                       "更改填写的账号!");
@@ -160,12 +174,23 @@ namespace ScriptServerStation.Controllers
                     IsSpecial = false.ToString(),
                 };
                 
-                obj.SetIsSuccess(userService.AddUser(user, verification, HttpContext.Session));
+                obj.SetIsSuccess(userService.AddUser(user));
                 try
                 {
                     userService.ActiveAccount(user.Account, recommend, true);
                 }
                 catch (Exception)
+                {
+
+                }
+            }
+            catch (Exception ex)
+=======
+                User user = new User(account, password, email);
+
+                obj.SetIsSuccess(userService.AddUser(user, verification, HttpContext.Session));
+            }
+            catch (Exception ex)
             {
                 obj.SetIsSuccess(false);
             }
@@ -186,11 +211,7 @@ namespace ScriptServerStation.Controllers
                 obj.SetIsSuccess(userService.GetVerification(email, HttpContext.Session));
             }
             catch (Exception ex)
-                {
-
-                }
-            }
-            catch (Exception ex)
+>>>>>>> 05d10b232c6b909c4315975153b3d6171de9f744
             {
                 obj.ErrorMsg = ex.Message;
                 obj.SetIsSuccess(false);
