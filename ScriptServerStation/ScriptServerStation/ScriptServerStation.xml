@@ -1,0 +1,1783 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ScriptServerStation</name>
+    </assembly>
+    <members>
+        <member name="T:ScriptServerStation.Attribute.InterfaceAttribute">
+            <summary>
+            作为接口的注入
+            </summary>
+        </member>
+        <member name="T:ScriptServerStation.AutofacMoudles.AutoMoudle">
+            <summary>
+            自动注入模块
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.AutofacMoudles.AutoMoudle.Load(Autofac.ContainerBuilder)">
+            <summary>
+            加载注入
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="F:ScriptServerStation.Controllers.SpoilsStatisticsController.spoilsStatisticsService">
+            <summary>
+            服务
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.SpoilsStatisticsController.#ctor(ScriptServerStation.Service.ISpoilsStatisticsService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="spoilsStatistics"></param>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.SpoilsStatisticsController.QueryShipmentRate(System.DateTime,System.DateTime,System.Int32,System.Int32)">
+            <summary>
+            查询单个类型的出货率
+            </summary>
+            <param name="from">起始时间</param>
+            <param name="to">结束时间</param>
+            <param name="type">类型</param>
+            <param name="model">模式</param>
+            <returns></returns>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.UserController.UserService">
+            <summary>
+            service
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.UserController.TextDetectionService">
+            <summary>
+            识别
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.UserController.CacheOption">
+            <summary>
+            缓存
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.UserController.EmailConnect">
+            <summary>
+            邮件服务
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.UserController.Log">
+            <summary>
+            日志
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.UserController.CacheKey">
+            <summary>
+            缓存名
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.GetUserList">
+            <summary>
+            获取用户列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.GetUserInfo(System.String)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="account"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.Login(System.String,System.String)">
+            <summary>
+            登陆
+            </summary>
+            <param name="username"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ScriptServerStation.Controllers.UserController.Register(System.String,System.String,System.String,System.String,System.String)" -->
+        <member name="M:ScriptServerStation.Controllers.UserController.SendVerificationCode(System.String,System.String)">
+            <summary>
+            发送验证码
+            </summary>
+            <param name="account">账号</param>
+            <param name="email">邮箱</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.ActiveAccount(System.String,System.String)">
+            <summary>
+            激活账号
+            </summary>
+            <param name="account"></param>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.ExperienceCode">
+            <summary>
+            激活体验期
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.TemporaryInterface">
+            <summary>
+             临时接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.ActivateAddTime(System.String,System.String,System.Int32)">
+            <summary>
+            活动追加时间接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.CreateActivatecode(System.String,System.String,System.Int32,System.String)">
+            <summary>
+            创建激活码
+            </summary>
+            <param name="account"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.RestPassword(System.String)">
+            <summary>
+            重置密码
+            </summary>
+            <param name="account">账号</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.AccountCompletion(System.String,System.String,System.String)">
+            <summary>
+            账号补全
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.ModifyPassword(System.String,System.String,System.String)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="account">账号</param>
+            <param name="oldpassword">旧账号</param>
+            <param name="newpassword">新账号</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.CheckImage(Microsoft.AspNetCore.Http.IFormCollection)">
+            <summary>
+            答题检测
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.CheckFw">
+            <summary>
+            符文检测
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.checkimagecode(System.String)">
+            <summary>
+            检测所有需要被点击的序号
+            </summary>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.UserController.ishaveroot(ScriptServerStation.Database.User)">
+            <summary>
+            检测用户是否还拥有vip权限
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ScriptServerStation.Controllers.UserController.ImageItem">
+            <summary>
+            图片
+            </summary>
+        </member>
+        <member name="T:ScriptServerStation.Controllers.VersionUpdateController">
+            <summary>
+            版本更新
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.VersionUpdateController.VersionUpdateService">
+            <summary>
+            版本更新接口
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.VersionUpdateController.Log">
+            <summary>
+            日志
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.VersionUpdateController.CacheOption">
+            <summary>
+            缓存
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.VersionUpdateController.MemoryCache">
+            <summary>
+            内存缓存
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Controllers.VersionUpdateController.CacheKey">
+            <summary>
+            键值
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.VersionUpdateController.UploadInfo(ScriptServerStation.FileUpdate.VersionUpdateInfo)">
+            <summary>
+            上传最新版本信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.VersionUpdateController.UploadFile(Microsoft.AspNetCore.Http.IFormCollection)">
+            <summary>
+            上传文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.VersionUpdateController.UploadFileItem(Microsoft.AspNetCore.Http.IFormCollection)">
+            <summary>
+            分片上传
+            </summary>
+            <param name="formCollection"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.VersionUpdateController.CheckUpdate">
+            <summary>
+            检测所有版本
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.VersionUpdateController.UpdateVersion(System.String,System.String)">
+            <summary>
+            获取更新到指定版本的信息
+            </summary>
+            <param name="from"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Controllers.VersionUpdateController.DownloadFile(System.String)">
+            <summary>
+            下载文件
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ScriptServerStation.FileUpdate.FileItemInfo">
+            <summary>
+            单个文件信息
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileItemInfo.Version">
+            <summary>
+            从哪个版本中获取
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileItemInfo.Md5">
+            <summary>
+            文件md5码
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileItemInfo.Status">
+            <summary>
+            文件状态
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileItemInfo.Path">
+            <summary>
+            文件所在路径
+            </summary>
+        </member>
+        <member name="T:ScriptServerStation.FileUpdate.FileOutStream">
+            <summary>
+            文件持续输出流
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileOutStream.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileOutStream.CloseTime">
+            <summary>
+            设定的自动关闭时间
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileOutStream.IsClose">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileOutStream.AutoCloseTask">
+            <summary>
+            自动关闭任务
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileOutStream.FileName">
+            <summary>
+            文件名称
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileOutStream.FilePath">
+            <summary>
+            文件保存路径
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.FileOutStream.WriteStream">
+            <summary>
+            文件写出流
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.FileUpdate.FileOutStream.#ctor(System.String,System.DateTime,System.String)">
+            <summary>
+            文件持续写出流
+            </summary>
+            <param name="name">文件</param>
+            <param name="closeTime">自动关闭时间</param>
+            <param name="path">路径</param>
+        </member>
+        <member name="T:ScriptServerStation.FileUpdate.FileStatus">
+            <summary>
+            文件状态
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.FileUpdate.FileStatus.Add">
+            <summary>
+            追加
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.FileUpdate.FileStatus.On">
+            <summary>
+            保留
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.FileUpdate.FileStatus.Delete">
+            <summary>
+            删除
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.FileUpdate.FileStatus.Modify">
+            <summary>
+            /修改
+            </summary>
+        </member>
+        <member name="T:ScriptServerStation.FileUpdate.VersionUpdateInfo">
+            <summary>
+            版本信息更新文件
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.VersionUpdateInfo.Version">
+            <summary>
+            版本号
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.VersionUpdateInfo.Files">
+            <summary>
+            文件信息集合
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.VersionUpdateInfo.UpdateTime">
+            <summary>
+            更新日期
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.VersionUpdateInfo.UserName">
+            <summary>
+            上传作者
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.VersionUpdateInfo.Size">
+            <summary>
+            数据包总大小
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.VersionUpdateInfo.Path">
+            <summary>
+            保存目录路径
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.FileUpdate.VersionUpdateInfo.Message">
+            <summary>
+            版本信息
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.FileUpdate.VersionUpdateInfo.AddFileInfo(ScriptServerStation.FileUpdate.FileItemInfo)">
+            <summary>
+            添加一个文件修改信息
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="M:ScriptServerStation.FileUpdate.VersionUpdateInfo.GetVersion">
+            <summary>
+            获取版本
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.FileUpdate.VersionUpdateInfo.FlushVersion">
+            <summary>
+            完善版本号格式
+            </summary>
+        </member>
+        <member name="T:ScriptServerStation.HelpClasses.Cache.ConfigurationHelp">
+            <summary>
+            读取配置文件的值
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.HelpClasses.Cache.ConfigurationHelp.trace">
+            <summary>
+            堆栈信息
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.HelpClasses.Cache.ConfigurationHelp.Configuration">
+            <summary>
+            配置文件读取
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.ConfigurationHelp.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.ConfigurationHelp.Read``1">
+            <summary>
+            读取内容
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:ScriptServerStation.HelpClasses.Cache.Configuration.CacheKey">
+            <summary>
+            配置文件中的CacheKey
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.HelpClasses.Cache.Configuration.CacheKey.UserCacheName">
+            <summary>
+            读取UserCacheName
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.HelpClasses.Cache.Configuration.CacheKey.UploadCacheFileName">
+            <summary>
+            读取UploadFileName
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.HelpClasses.Cache.Configuration.CacheKey.UploadCacheFileRootPath">
+            <summary>
+            上传文件根目录
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.HelpClasses.Cache.Configuration.CacheKey.VersionUpdateFileSaveName">
+            <summary>
+            读取配置文件名
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.HelpClasses.Cache.Configuration.CacheKey.UserCookieName">
+            <summary>
+            读取再cookie中的用户名
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.Configuration.CacheKey.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            /构造函数
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="T:ScriptServerStation.HelpClasses.Cache.ICacheOption">
+            <summary>
+            缓存类
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.ICacheOption.SetValue(System.String,System.Object)">
+            <summary>
+            设置缓存的值
+            </summary>
+            <param name="key">键值</param>
+            <param name="obj">缓存的对象</param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.ICacheOption.Exists(System.String)">
+            <summary>
+            键值是否存在
+            </summary>
+            <param name="key">键值</param>
+            <returns>是否存在</returns>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.ICacheOption.GetValue``1(System.String)">
+            <summary>
+            获取缓存的值
+            </summary>
+            <typeparam name="T">取出来并且转换类型</typeparam>
+            <param name="key">键值</param>
+            <returns>缓存的值</returns>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.ICacheOption.SetValue(System.String,System.Object,System.DateTimeOffset)">
+            <summary>
+            设置缓存的值
+            </summary>
+            <param name="key">键值</param>
+            <param name="obj">缓存的对象</param>
+            <param name="timeOffset">超时时间</param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.ICacheOption.Remove(System.String)">
+            <summary>
+            删除键值
+            </summary>
+            <param name="key">键值</param>
+            <returns>是否删除成功</returns>
+        </member>
+        <member name="T:ScriptServerStation.HelpClasses.Cache.IMemoryCache">
+            <summary>
+            缓存
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.IMemoryCache.Set(System.String,System.Object)">
+            <summary>
+            设置缓存值
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.IMemoryCache.Set(System.String,System.Object,System.Int32)">
+            <summary>
+            设置缓存值
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="timeout">超时时间(s)</param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.IMemoryCache.Set(System.String,System.Object,System.DateTime)">
+            <summary>
+            设置缓存值
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="timeout">超时时刻</param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.IMemoryCache.Get(System.String)">
+            <summary>
+            获取缓存的内容
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.IMemoryCache.IsContain(System.String)">
+            <summary>
+            是否包含key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.IMemoryCache.Remove(System.String)">
+            <summary>
+            移除
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="T:ScriptServerStation.HelpClasses.Cache.MyCache.CacheInterfaceImplement">
+            <summary>
+            缓存类的实现
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.HelpClasses.Cache.MyCache.CacheInterfaceImplement.Cache">
+            <summary>
+            内存缓存
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.MyCache.CacheInterfaceImplement.Set(System.String,System.Object)">
+            <summary>
+            设置缓存值
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.MyCache.CacheInterfaceImplement.Set(System.String,System.Object,System.Int32)">
+            <summary>
+            设置缓存值
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="timeout">超时时间(s)</param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.MyCache.CacheInterfaceImplement.Set(System.String,System.Object,System.DateTime)">
+            <summary>
+            设置缓存值
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="timeout">超时时刻</param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.MyCache.CacheInterfaceImplement.Get(System.String)">
+            <summary>
+            获取缓存的内容
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.MyCache.CacheInterfaceImplement.IsContain(System.String)">
+            <summary>
+            是否包含key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.MyCache.CacheInterfaceImplement.Remove(System.String)">
+            <summary>
+            移除
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="P:ScriptServerStation.HelpClasses.Cache.Redis.ExRedisCacheOptions.DataBaseIdx">
+            <summary>
+            数据库序号
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.Redis.ExRedisCacheOptions.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:ScriptServerStation.HelpClasses.Cache.Redis.RedisDataBase">
+            <summary>
+            redis缓存实现类
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.Redis.RedisDataBase.#ctor(ScriptServerStation.HelpClasses.Cache.Redis.ExRedisCacheOptions)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="redisCacheOptions"></param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.Redis.RedisDataBase.Exists(System.String)">
+            <summary>
+            是否存在
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.Redis.RedisDataBase.GetValue``1(System.String)">
+            <summary>
+            获取值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.Redis.RedisDataBase.Remove(System.String)">
+            <summary>
+            移除值
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.Redis.RedisDataBase.SetValue(System.String,System.Object)">
+            <summary>
+            设置存储
+            </summary>
+            <param name="key"></param>
+            <param name="obj"></param>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.Cache.Redis.RedisDataBase.SetValue(System.String,System.Object,System.DateTimeOffset)">
+            <summary>
+            设置存储
+            </summary>
+            <param name="key"></param>
+            <param name="obj"></param>
+            <param name="timeOffset"></param>
+        </member>
+        <member name="F:ScriptServerStation.HelpClasses.Cache.Redis.RedisDataBase.connection">
+            <summary>
+            连接redis类
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.HelpClasses.Cache.Redis.RedisDataBase.cache">
+            <summary>
+            存放缓存的数据库
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.HelpClasses.Cache.Redis.RedisDataBase.redisCacheOptions">
+            <summary>
+            缓存参数
+            </summary>
+        </member>
+        <member name="T:ScriptServerStation.HelpClasses.MD5Comm">
+            <summary>
+            此类获取md5加密值均为大写，如果要获取小写：MD5Comm.Get32MD5One(xx).ToLower();或完善此类。
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.MD5Comm.Get32MD5One(System.String)">
+            <summary>
+            此代码示例通过创建哈希字符串适用于任何 MD5 哈希函数 （在任何平台） 上创建 32 个字符的十六进制格式哈希字符串
+            官网案例改编
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.HelpClasses.MD5Comm.GetRandomString">
+            <summary>
+            获取随机字符串
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ScriptServerStation.Items.CodeType">
+            <summary>
+            /激活码类型
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.Items.CodeType.Normal">
+            <summary>
+            正常激活码
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.Items.CodeType.Recommend">
+            <summary>
+            推荐吗
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.Items.CodeType.Activate">
+            <summary>
+            活动吗
+            </summary>
+        </member>
+        <member name="T:ScriptServerStation.Items.Result">
+            <summary>
+            接口返回数据结构
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Items.Result.Code">
+            <summary>
+            接口执行结果代码
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Items.Result.Msg">
+            <summary>
+            接口执行消息
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Items.Result.Data">
+            <summary>
+            接口返回数据
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Items.Result.SetCode(ScriptServerStation.Items.ResultCode)">
+            <summary>
+            设置返回数据码
+            </summary>
+            <param name="code"></param>
+        </member>
+        <member name="M:ScriptServerStation.Items.Result.SetFail">
+            <summary>
+            设置失败
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Items.Result.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Items.Result.Fail(System.String)">
+            <summary>
+            创建一个表示失败的
+            </summary>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Items.Result.Success(System.Object)">
+            <summary>
+            创建一个表示成功的
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Items.Result.Success(System.String,System.Object)">
+            <summary>
+            创建一个表示成功的
+            </summary>
+            <param name="message"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Items.Result.op_Implicit(System.String)~ScriptServerStation.Items.Result">
+            <summary>
+            默认转换
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="T:ScriptServerStation.Items.ResultCode">
+            <summary>
+            操作结果码
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.Items.ResultCode.Success">
+            <summary>
+            操作成功
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.Items.ResultCode.Fail">
+            <summary>
+            失败
+            </summary>
+        </member>
+        <member name="T:ScriptServerStation.Service.IEmailConnect">
+            <summary>
+            邮件操作接口
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Service.IEmailConnect.SendEmail(System.String,System.String,System.String)">
+            <summary>
+            发送邮件
+            </summary>
+            <param name="title">标题</param>
+            <param name="msg">正文</param>
+            <param name="address">地址</param>
+            <returns>是否成功发送</returns>
+        </member>
+        <member name="T:ScriptServerStation.Service.ILog">
+            <summary>
+            日志
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Service.ILog.Log(System.Object[])">
+            <summary>
+            输出日志
+            </summary>
+            <param name="objs"></param>
+        </member>
+        <member name="M:ScriptServerStation.Service.ILog.Error(System.Object[])">
+            <summary>
+            输出错误日志
+            </summary>
+            <param name="objs"></param>
+        </member>
+        <member name="M:ScriptServerStation.Service.ILog.Waring(System.Object[])">
+            <summary>
+            输出警告日志
+            </summary>
+            <param name="objs"></param>
+        </member>
+        <member name="F:ScriptServerStation.Service.Impl.EmailConnect.smtpClient">
+            <summary>
+            邮件发送接口
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.Service.Impl.EmailConnect.fromAdress">
+            <summary>
+            发送地址
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ScriptServerStation.Service.Impl.EmailConnect.#ctor(System.String,System.String,System.String,System.Int32,System.String,System.String)" -->
+        <member name="M:ScriptServerStation.Service.Impl.EmailConnect.SendEmail(System.String,System.String,System.String)">
+            <summary>
+            发送邮件
+            </summary>
+            <param name="title">标题</param>
+            <param name="msg">内容</param>
+            <param name="address">地址</param>
+            <returns>是否成功发送</returns>
+        </member>
+        <member name="P:ScriptServerStation.Service.Impl.SpoilsStatisticsServiceImpl.DataBaseContext">
+            <summary>
+            数据库
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.SpoilsStatisticsServiceImpl.Add(ScriptServerStation.Database.Spoils)">
+            <summary>
+            添加一条战利品统计
+            </summary>
+            <param name="spoilsStatistics">战利品数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.SpoilsStatisticsServiceImpl.ShipmentRate(System.DateTime,System.DateTime,System.Int32)">
+            <summary>
+            指定时间段内的指定类型的出货率
+            </summary>
+            <param name="from">起始时间</param>
+            <param name="to">结束时间</param>
+            <param name="type">类型</param>
+            <returns>出货率</returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.SpoilsStatisticsServiceImpl.ShipmentRateAll(System.DateTime,System.DateTime)">
+            <summary>
+            指定只剪短内所有类型的出货率
+            </summary>
+            <param name="from">起始时间</param>
+            <param name="to">结束时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.SpoilsStatisticsServiceImpl.ShipmentRateAllEveryDay(System.DateTime,System.DateTime)">
+            <summary>
+            指定时间段内指定类型每天的出货率
+            </summary>
+            <param name="from">起始时间</param>
+            <param name="to">结束时间</param>
+            <param name="type">类型</param>
+            <returns>出货率</returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.SpoilsStatisticsServiceImpl.ShipmentRateEveryDay(System.DateTime,System.DateTime,System.Int32)">
+            <summary>
+            指定只剪短内所有类型的出货率
+            </summary>
+            <param name="from">起始时间</param>
+            <param name="to">结束时间</param>
+            <returns></returns>
+        </member>
+        <member name="F:ScriptServerStation.Service.Impl.TextDetectionServiceImpl.apikey">
+            <summary>
+            百度文字识别api必要信息
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.TextDetectionServiceImpl.ImageDetection(System.IO.Stream)">
+            <summary>
+            图片分类
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.TextDetectionServiceImpl.TextDetection(System.Byte[])">
+            <summary>
+            图片中文字识别
+            </summary>
+            <param name="imagedatas"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.TextDetectionServiceImpl.TextDetections(System.Byte[])">
+            <summary>
+            识别图片中的所有文字
+            </summary>
+            <param name="imagedata"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ScriptServerStation.Service.Impl.TextDetectionServiceImpl.BaiduResult">
+            <summary>
+            百度api 返回数据
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Service.Impl.UserServiceImpl.Cache">
+            <summary>
+            缓存
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Service.Impl.UserServiceImpl.DataBaseContext">
+            <summary>
+            数据库
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.UserServiceImpl.ActiveAccount(System.String,System.String,System.Boolean)">
+            <summary>
+            激活账号
+            </summary>
+            <param name="account"></param>
+            <param name="code"></param>
+            <param name="isregisteruser"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.UserServiceImpl.CreateActivatecode(ScriptServerStation.Items.CodeType,System.Int32,System.String)">
+            <summary>
+            创建一个激活码
+            </summary>
+            <param name="codeType">激活码类型</param>
+            <param name="days">激活码激活的时长</param>
+            <param name="buyaccount">购买激活码的用户</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.UserServiceImpl.AddTimeForEveryOne(System.Boolean,System.Int32)">
+            <summary>
+            追加时间
+            </summary>
+            <param name="isContain">是否包含非会员</param>
+            <param name="time">增加的时间天数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.UserServiceImpl.AddUser(ScriptServerStation.Database.User)">
+            <summary>
+            添加一个用户
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.UserServiceImpl.GetUser(System.String)">
+            <summary>
+            获取用户
+            </summary>
+            <param name="account"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.UserServiceImpl.GetUsers">
+            <summary>
+            获取用户列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.UserServiceImpl.CheckPassword(System.String,System.String)">
+            <summary>
+            判断密码是否正确
+            </summary>
+            <param name="username">用户名</param>
+            <param name="password">密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.UserServiceImpl.ExperienceCode(System.String)">
+            <summary>
+            激活体验
+            </summary>
+            <param name="account"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.UserServiceImpl.RestPassword(ScriptServerStation.Database.User,System.String)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="user"></param>
+            <param name="newpassword"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.UserServiceImpl.UpdateUserEmail(ScriptServerStation.Database.User,System.String)">
+            <summary>
+            更新用户邮箱 信息
+            </summary>
+            <param name="user"></param>
+            <param name="email"></param>
+        </member>
+        <member name="T:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl">
+            <summary>
+            版本更新
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl.CacheKey">
+            <summary>
+            缓存key
+            </summary>
+        </member>
+        <member name="P:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl.DataBaseContext">
+            <summary>
+            数据库
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl.AddVersion(ScriptServerStation.Database.Versioninfo)">
+            <summary>
+            添加一个新版本
+            </summary>
+            <param name="version">版本号</param>
+            <returns>是否添加成功</returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl.GetAfterVersion(System.String)">
+            <summary>
+            获取版本号version之后的所有版本
+            </summary>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl.GetAllVersion">
+            <summary>
+            获取所有版本信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl.GetBeforeVersion(System.String)">
+            <summary>
+            获取指定版本号之前的所有版本
+            </summary>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl.GetLastUpdateConfig">
+            <summary>
+            获取最后更新配置文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl.GetVersionBetween(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="oldversion"></param>
+            <param name="targetversion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl.GetVersionByVersion(System.String)">
+            <summary>
+            根据版本号获取版本信息
+            </summary>
+            <param name="version">版本号</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.VersionUpdateServiceImpl.GetVersionInfoByVersion(System.String)">
+            <summary>
+            根据版本号获取版本信息
+            </summary>
+            <param name="version">版本号</param>
+            <returns></returns>
+        </member>
+        <member name="T:ScriptServerStation.Service.Impl.WxxandxyxLog">
+            <summary>
+            日志实体
+            </summary>
+        </member>
+        <member name="F:ScriptServerStation.Service.Impl.WxxandxyxLog.log">
+            <summary>
+            日志输出
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.WxxandxyxLog.#ctor(System.String)">
+            <summary>
+            日志系统
+            </summary>
+            <param name="logFileName"></param>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.WxxandxyxLog.Log(System.Object[])">
+            <summary>
+            输出日志 
+            </summary>
+            <param name="objs"></param>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.IVersionUpdateService.AddVersion(ScriptServerStation.Database.Versioninfo)">
+            <summary>
+            保存版本文件
+            </summary>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.IVersionUpdateService.GetLastUpdateConfig">
+            <summary>
+            获取最后的更新配置文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.IVersionUpdateService.GetVersionByVersion(System.String)">
+            <summary>
+            根据版本号获取版本信息
+            </summary>
+            <param name="version">版本号</param>
+            <returns>版本信息</returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.IVersionUpdateService.GetVersionInfoByVersion(System.String)">
+            <summary>
+            根据版本号获取版本信息
+            </summary>
+            <param name="version">版本号</param>
+            <returns>版本信息</returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.IVersionUpdateService.GetAfterVersion(System.String)">
+            <summary>
+            获取版本号为versionn之后的所有版本
+            </summary>
+            <param name="version">版本号</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.IVersionUpdateService.GetBeforeVersion(System.String)">
+            <summary>
+            获指定版本号之前的所有版本
+            </summary>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.IVersionUpdateService.GetAllVersion">
+            <summary>
+            获取所有版本信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.Impl.IVersionUpdateService.GetVersionBetween(System.String,System.String)">
+            <summary>
+            获取版本 > oldversion 且小于等于target
+            </summary>
+            <param name="oldversion"></param>
+            <param name="targetversion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.ISpoilsStatisticsService.Add(ScriptServerStation.Database.Spoils)">
+            <summary>
+            添加一个战利品统计
+            </summary>
+            <param name="spoilsStatistics"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.ISpoilsStatisticsService.ShipmentRate(System.DateTime,System.DateTime,System.Int32)">
+            <summary>
+            指定时间段内的指定类型的出货率
+            </summary>
+            <param name="from">起始时间</param>
+            <param name="to">结束时间</param>
+            <param name="type">类型</param>
+            <returns>出货率</returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.ISpoilsStatisticsService.ShipmentRateAll(System.DateTime,System.DateTime)">
+            <summary>
+            指定只剪短内所有类型的出货率
+            </summary>
+            <param name="from">起始时间</param>
+            <param name="to">结束时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.ISpoilsStatisticsService.ShipmentRateEveryDay(System.DateTime,System.DateTime,System.Int32)">
+            <summary>
+            指定时间段内指定类型每天的出货率
+            </summary>
+            <param name="from">起始时间</param>
+            <param name="to">结束时间</param>
+            <param name="type">类型</param>
+            <returns>出货率</returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.ISpoilsStatisticsService.ShipmentRateAllEveryDay(System.DateTime,System.DateTime)">
+            <summary>
+            指定只剪短内所有类型的出货率
+            </summary>
+            <param name="from">起始时间</param>
+            <param name="to">结束时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.ITextDetectionService.TextDetection(System.Byte[])">
+            <summary>
+            图片中识别文字
+            </summary>
+            <param name="imagedatas">图片数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.ITextDetectionService.TextDetections(System.Byte[])">
+            <summary>
+            图片中识别文字
+            </summary>
+            <param name="imagedatas">图片数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.ITextDetectionService.ImageDetection(System.IO.Stream)">
+            <summary>
+            图片分类
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.IUserService.GetUsers">
+            <summary>
+            获取用户列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.IUserService.AddUser(ScriptServerStation.Database.User)">
+            <summary>
+            添加一个用户
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.IUserService.CheckPassword(System.String,System.String)">
+            <summary>
+            判断密码是否正确
+            </summary>
+            <param name="username">用户名</param>
+            <param name="password">密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.IUserService.GetUser(System.String)">
+            <summary>
+            获取用户信息，根据账号
+            </summary>
+            <param name="account"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.IUserService.ActiveAccount(System.String,System.String,System.Boolean)">
+            <summary>
+            激活账号
+            </summary>
+            <param name="user">用户</param>
+            <param name="code">激活码</param>
+            <param name="isregisteruser">是否是新注册的用户</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.IUserService.CreateActivatecode(ScriptServerStation.Items.CodeType,System.Int32,System.String)">
+            <summary>
+            创建一个激活码
+            </summary>
+            <param name="codeType">激活码类型</param>
+            <param name="days">有效日期</param>
+            <param name="buyaccount">购买激活码的用户</param>
+            <returns>创建的激活码</returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.IUserService.AddTimeForEveryOne(System.Boolean,System.Int32)">
+            <summary>
+            追加时间
+            </summary>
+            <param name="isContain">是否包含非会员</param>
+            <param name="time">追加的天数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.IUserService.ExperienceCode(System.String)">
+            <summary>
+            激活体验
+            </summary>
+            <param name="account"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.IUserService.RestPassword(ScriptServerStation.Database.User,System.String)">
+            <summary>
+            重置密码
+            </summary>
+            <param name="user"></param>
+            <param name="newpassword"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Service.IUserService.UpdateUserEmail(ScriptServerStation.Database.User,System.String)">
+            <summary>
+            更新用户邮箱 信息
+            </summary>
+            <param name="user"></param>
+            <param name="email"></param>
+        </member>
+        <member name="M:ScriptServerStation.Startup.ConfigureContainer(Autofac.ContainerBuilder)">
+            <summary>
+            集成Autofac
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.IsHasSpecialPower(ScriptServerStation.Database.User)">
+            <summary>
+            判断用户是否有特殊权限
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.IsHasAdminPower(ScriptServerStation.Database.User)">
+            <summary>
+            判断用户是否有特殊权限
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.EqualsType``1(System.Int32,``0)">
+            <summary>
+            判断int 和指定的枚举类型是否相等
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="type"></param>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.GetExpressionProperty``1(System.Linq.Expressions.Expression{System.Func{``0}})">
+            <summary>
+            获取lambda表达式表示的属性
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.GetApplicationFullPath(System.String)">
+            <summary>
+            获取应用程序域下的全路径
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ToOutPut(System.String,System.Object[])">
+            <summary>
+            输出到控制台
+            </summary>
+            <param name="msg"></param>
+            <param name="objs"></param>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.AppendPath(System.String,System.String)">
+            <summary>
+            追加路径
+            </summary>
+            <param name="url"></param>
+            <param name="appendurl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ToFormat(System.String,System.Object[])">
+            <summary>
+            格式化
+            </summary>
+            <param name="msg">消息</param>
+            <param name="objs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ToRandom(System.Int32,System.Random,System.Int32)">
+            <summary>
+            随机数
+            </summary>
+            <param name="random"></param>
+            <param name="value"></param>
+            <param name="range"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.RegexGetValue(System.String)">
+            <summary>
+            用正则表达式提取字符串中的数字
+            </summary>
+            <param name="info">字符串</param>
+            <returns>数字</returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.CloneObject``1(``0)">
+            <summary>
+            克隆一个浅对象
+            </summary>
+            <typeparam name="T">对象类型</typeparam>
+            <param name="t">要被克隆的对象</param>
+            <returns>克隆出来的对象</returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.AddRange``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.ICollection{``0})">
+            <summary>
+            把from中的所有元素添加到to的集合中并且返回to
+            </summary>
+            <typeparam name="T">集合中的元素类型</typeparam>
+            <param name="to">集合</param>
+            <param name="from">集合</param>
+            <returns>to集合</returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.SetObjectPropertyValue(System.Object,System.String,System.Object)">
+            <summary>
+            通过反射设置对象的具有访问器的值
+            </summary>
+            <param name="obj">属性所属的对象</param>
+            <param name="propertyName">属性名称</param>
+            <param name="value">属性需要被赋值的值</param>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.GetObjectPropertyValue``1(System.Object,System.String)">
+            <summary>
+            获取属性的值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.GetObjectPropertyFirstValue``1(System.Object)">
+            <summary>
+            获取属性的值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.StringToRectangle(System.String)">
+            <summary>
+            字符串转换到Rectangle 格式必须是 x,y,width,height
+            </summary>
+            <param name="rect"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.RectangleToString(System.Drawing.Rectangle)">
+            <summary>
+            转换Rectangle到字符串
+            </summary>
+            <param name="rectangle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ClearAll``1(System.Collections.Concurrent.ConcurrentQueue{``0},System.Action{``0})">
+            <summary>
+            清空队列
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="queues"></param>
+            <param name="action"></param>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.Format(System.String,System.Object[])">
+            <summary>
+            格式化字符串 {0}{1}
+            </summary>
+            <param name="msg"></param>
+            <param name="objs">填充的对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.Range(System.Int32,System.Int32,System.Func{System.Int32,System.Boolean})">
+            <summary>
+            循环从start到end 闭区间
+            </summary>
+            <param name="start"></param>
+            <param name="end"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.JoinToString(System.Collections.IEnumerable,System.String)">
+            <summary>
+            集合转换到字符串
+            </summary>
+            <param name="enumerable"></param>
+            <param name="center">间隔符</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.JoinToString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Func{``0,System.String})">
+            <summary>
+            集合转换到字符串
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="enumerable">集合</param>
+            <param name="center">间隔符</param>
+            <param name="func">转换到字符串的处理函数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.JoinToString``1(System.Collections.IEnumerable,System.String,System.Func{``0,System.String})">
+            <summary>
+            集合转换到字符串
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="enumerable">集合</param>
+            <param name="center">间隔符</param>
+            <param name="func">转换到字符串的处理函数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.GetIndex``2(System.Collections.Generic.IDictionary{``0,``1},System.Int32)">
+            <summary>
+            读取序号中的数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="V"></typeparam>
+            <param name="pairs"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.EqualLists(System.String,System.Func{System.String,System.Boolean},System.String[])">
+            <summary>
+            匹配value与后续所有的参数，如果正确匹配到条件则回调equalevent
+            </summary>
+            <param name="value"></param>
+            <param name="equalevent">返回false则终止循环</param>
+            <param name="args"></param>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.Foreach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            枚举
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="enumerator"></param>
+            <param name="func"></param>
+            <returns>返回enumerator可让表达式继续</returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.Foreach``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            枚举
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="enumerator"></param>
+            <param name="func"></param>
+            <returns>返回是否全部遍历</returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ChangedList``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            转换集合类型
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="V"></typeparam>
+            <param name="enumerator"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.Foreach``2(System.Collections.Generic.IDictionary{``0,``1},System.Action{``0,``1})">
+            <summary>
+            列举
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="enumerator"></param>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.Foreach(System.Collections.IEnumerable,System.Action{System.Object})">
+            <summary>
+            列举
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="enumerator"></param>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.Where``2(System.Collections.Generic.IDictionary{``0,``1},System.Func{``0,``1,System.Boolean})">
+            <summary>
+            查询
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="enumerator"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.Where``1(System.Collections.IEnumerable,System.Func{System.Object,System.Boolean})">
+            <summary>
+            查询
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="enumerator"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.GetEnumType``1(System.String)">
+            <summary>
+            转到到对应的枚举类型的值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.GetEnumTypes(System.Type)">
+            <summary>
+            /获取美剧类型中的所有的值
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ToFile(System.Object,System.String,System.Boolean)">
+            <summary>
+            写入文件
+            </summary>
+            <param name="obj"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ReadFromFile``1(System.String,System.Boolean)">
+            <summary>
+            从文件读取数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ReadFromFileText(System.String)">
+            <summary>
+            从文件读取文本内容
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ToBytes(System.String)">
+            <summary>
+            字符串转换到字节
+            </summary>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.GetEnumModeType``2">
+            <summary>
+            获取枚举类型T中的attribute属性V
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="V"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.GetEnumTypeModeName``1(System.Object)">
+            <summary>
+            获取value的枚举类型的注释名称,value必须是枚举类型，并且有Attribute的注释才能获取
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ToBaseType``1(System.Object)">
+            <summary>
+            转换到基础类型
+            </summary>
+            <typeparam name="T">具体的基础类型</typeparam>
+            <param name="baseobj">待转换的对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ToSavePoint(System.Double,System.String)">
+            <summary>
+            double类型保留小数
+            </summary>
+            <param name="value">值</param>
+            <param name="format">保留小数的形式</param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.StringIsNumber(System.String)">
+            <summary>
+            判断字符串是否是数字
+            </summary>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ToBase64(System.String,System.Text.Encoding)">
+            <summary>
+            转到base64编码
+            </summary>
+            <param name="info"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.FromBase64(System.String,System.Text.Encoding)">
+            <summary>
+            从base64字符串转换回来
+            </summary>
+            <param name="info"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.Combine(System.String,System.String[])">
+            <summary>
+            路径拼接
+            </summary>
+            <param name="root"></param>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.FlushVersion(System.String)">
+            <summary>
+            修复版本号显示
+            </summary>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.ToVersion(System.String)">
+            <summary>
+            转换到版本号
+            </summary>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.Expends.FromProjectRootCombine(System.String,System.String[])">
+            <summary>
+            从项目根路径开始拼接
+            </summary>
+            <param name="path"></param>
+            <param name="paths"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ScriptServerStation.Utils.StaticHelp">
+            <summary>
+            静态参数
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Utils.StaticHelp.GetRandomString">
+            <summary>
+            获取随机字符串
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.StaticHelp.ConvertToHistory(System.Collections.Generic.List{ScriptServerStation.Database.Versioninfo},ScriptServerStation.HelpClasses.Cache.Configuration.CacheKey,System.Boolean)">
+            <summary>
+            根据历史版本的改动获取所有需要下载的文件的集合
+            </summary>
+            <param name="historys">历史改动版本</param>
+            <param name="cacheKey">配置</param>
+            <param name="isDesc">是否逆向操作</param>
+            <returns>需要修改的文件信息</returns>
+        </member>
+        <member name="T:ScriptServerStation.Utils.UserControllerExpends">
+            <summary>
+            用户控制器扩展方法
+            </summary>
+        </member>
+        <member name="M:ScriptServerStation.Utils.UserControllerExpends.IsLogin(ScriptServerStation.Controllers.UserController)">
+            <summary>
+            检测用户是否已经登陆
+            </summary>
+            <param name="userController"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.UserControllerExpends.GetUserToken(ScriptServerStation.Controllers.UserController)">
+            <summary>
+            获取用户token
+            </summary>
+            <param name="userController"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.UserControllerExpends.GetUserToken(ScriptServerStation.Controllers.UserController,System.String)">
+            <summary>
+            获取token
+            </summary>
+            <param name="userController"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.UserControllerExpends.SetToken(ScriptServerStation.Controllers.UserController,System.String)">
+            <summary>
+            设置token
+            </summary>
+            <param name="userController"></param>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptServerStation.Utils.UserControllerExpends.SetToken(ScriptServerStation.Controllers.UserController,System.String,System.String)">
+            <summary>
+            设置token
+            </summary>
+            <param name="userController"></param>
+            <param name="key"></param>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

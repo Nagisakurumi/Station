@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>创建激活码</title>
+    <script src="/Content/js/jquery/jquery-2.1.1.min.js"></script>
+    <script>
+        function Login() {
+            //树
+            $.ajax({
+                url: '/api/user/createActivatecode',
+                data: {
+                    account: $("#username").val(), password: $("#password").val(),
+                    type: $("#codetype").val(), buyaccount: $("#buyaccount").val(),
+                },
+                dataType: "json",
+                type: "post",
+                async: false,
+                beforeSend: function () {
+                },
+                success: function (data) {
+                    if (data.isSuccess == "True") {
+                        alert("创建成功");
+                        document.getElementById("code").innerHTML = data.result;
+                    } else {
+                        alert("创建失败!");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        //function Register() {
+        //    window.href="/register.html";
+        //};
+
+        function Temporary() {
+            //树
+            $.ajax({
+                url: '/api/user/temporary',
+                dataType: "json",
+                type: "post",
+                async: false,
+                beforeSend: function () {
+                },
+                success: function (data) {
+                    if (data.isSuccess == "True") {
+                        alert("创建成功");
+                        document.getElementById("content").innerHTML = data.result;
+                    } else {
+                        alert("创建失败!");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+
+        function AddTime() {
+            //树
+            $.ajax({
+                url: '/api/user/activateaddtime',
+                data: {
+                    account: $("#username").val(), password: $("#password").val(),
+                    time : $("#time").val(),
+                },
+                dataType: "json",
+                type: "post",
+                async: false,
+                beforeSend: function () {
+                },
+                success: function (data) {
+                    if (data.isSuccess == "True") {
+                        alert("追加成功");
+                    } else {
+                        alert("追加时间失败!");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <div>
+            <label style="width:100">用户名</label>
+            <input type="text" id="username" />
+        </div>
+        <div>
+            <label style="width:100">密  码</label>
+            <input type="password" id="password" />
+        </div>
+        <div>
+            <label>购买者的用户名(不填写的话就没有推荐码):</label>
+            <input type="text" id="buyaccount" />
+        </div>
+        <div>
+            <label style="width:100">激活码类型:</label>
+            <select id="codetype">
+                <option value="0">一周</option>
+                <option value="1">一个月</option>
+                <option value="2">三个月</option>
+                <option value="3">半年</option>
+                <option value="4">创建活动码</option>
+            </select>
+        </div>
+        <div>
+            <input type="button" value="生成" onclick="Login()" />
+        </div>
+        <div>
+            <span>结果 : </span>
+            <span id="code"></span>
+        </div>
+        <div>
+            <label style="width:100">免费时间</label>
+            <input type="text" id="time" />
+        </div>
+        <div>
+            <input type="button" value="追加时间" onclick="AddTime()" />
+        </div>
+        <!--<div>
+        <input type="button" value="临时接口" onclick="Temporary()" />
+    </div>
+    <div>
+        <span id="content"></span>
+    </div>-->
+    </div>
+</body>
+</html>
