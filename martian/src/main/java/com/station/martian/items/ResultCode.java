@@ -21,4 +21,8 @@ public class ResultCode {
      * 更新包不存在
      */
     public final static int UPDATE_PACKAGE_NOT_EXIT = 5;
+    /**
+     * 操作异常
+     */
+    public final static int OPTION_ERROR = 6;
 }
