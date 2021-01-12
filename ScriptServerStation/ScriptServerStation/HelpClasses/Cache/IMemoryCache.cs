@@ -21,15 +21,15 @@ namespace ScriptServerStation.HelpClasses.Cache
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        /// <param name="timeout">超时时刻</param>
-        void SetValue(string key, object value, DateTime timeout);
+        /// <param name="timeout">超时时间(s)</param>
+        void SetValue(string key, object value, int timeout);
         /// <summary>
         /// 设置缓存值
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        /// <param name="timeOffset">超时时刻</param>
-        void SetValue(string key, object value, DateTimeOffset timeOffset);
+        /// <param name="timeout">超时时刻</param>
+        void SetValue(string key, object value, DateTime timeout);
         /// <summary>
         /// 获取缓存的内容
         /// </summary>
@@ -46,6 +46,6 @@ namespace ScriptServerStation.HelpClasses.Cache
         /// 移除
         /// </summary>
         /// <param name="key"></param>
-        bool Remove(string key);
+        void Remove(string key);
     }
 }

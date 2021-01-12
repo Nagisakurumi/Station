@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ScriptServerStation.Attribute;
 using ScriptServerStation.Database;
+using ScriptServerStation.Expends;
 using ScriptServerStation.FileUpdate;
-using ScriptServerStation.HelpClasses.Cache.Configuration;
-using ScriptServerStation.Utils;
+using ScriptServerStation.HelpClasses.Configs.Configuration;
 
 namespace ScriptServerStation.Service.Impl
 {
@@ -19,7 +19,7 @@ namespace ScriptServerStation.Service.Impl
     public class VersionUpdateServiceImpl : IVersionUpdateService
     {
         /// <summary>
-        /// 缓存key
+        ///  配置
         /// </summary>
         public CacheKey CacheKey { get; set; }
         /// <summary>

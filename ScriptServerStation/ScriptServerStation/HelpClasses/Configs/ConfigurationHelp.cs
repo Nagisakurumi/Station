@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
-using ScriptServerStation.Expends;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using ScriptServerStation.Expends;
 
-namespace ScriptServerStation.HelpClasses.Cache
+namespace ScriptServerStation.HelpClasses.Configs
 {
     /// <summary>
     /// 读取配置文件的值
@@ -14,14 +15,9 @@ namespace ScriptServerStation.HelpClasses.Cache
     public abstract class ConfigurationHelp
     {
         /// <summary>
-        /// 堆栈信息
+        /// 配置文件读取
         /// </summary>
-        private StackTrace trace = new StackTrace();
-
-         /// <summary>
-         /// 配置文件读取
-         /// </summary>
-        private IConfiguration Configuration { get; set; }
+        protected IConfiguration Configuration { get; set; }
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -33,12 +29,12 @@ namespace ScriptServerStation.HelpClasses.Cache
         /// <summary>
         /// 读取内容
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T"><peparam>
         /// <returns></returns>
-        protected T Read<T>()
+        protected V Read<T, V>(Expression<Func<T, object>> expression)
         {
-            string name = new StackFrame(1).GetMethod().Name.Replace("get_", "");
-            return Configuration["{0}:{1}".Format(this.GetType().Name, name)].ToBaseType<T>();
+            string name = expression.GetExpressionProperty();
+            return Configuration["{0}:{1}".Format(this.GetType().Name, name)].ToBaseType<V>();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ScriptServerStation.Controllers
 {
     [ApiController]
     [Route("api/SpoilsStatistics")]
-    public class SpoilsStatisticsController : ControllerBase
+    public class SpoilsStatisticsController : ScriptBaseController
     {
         /// <summary>
         /// 服务

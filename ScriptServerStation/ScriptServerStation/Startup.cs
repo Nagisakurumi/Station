@@ -24,21 +24,43 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using ScriptServerStation.Service.Impl;
 using ScriptServerStation.Service;
-using ScriptServerStation.HelpClasses.Cache.Configuration;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http.Features;
-using ScriptServerStation.HelpClasses.Cache.MyCache;
+using Microsoft.AspNetCore.Diagnostics;
+using Newtonsoft.Json;
+using ScriptServerStation.Items;
+using Microsoft.AspNetCore.Http;
+using ScriptServerStation.Filters;
+using ScriptServerStation.HelpClasses.Configs.Configuration;
+using ScriptServerStation.HelpClasses.Cache.Memory;
 
 namespace ScriptServerStation
 {
     public class Startup
     {
+
+        /// <summary>
+        /// 配置文件
+        /// </summary>
+        public IConfiguration Configuration { get; set; }
+        /// <summary>
+        /// 全局日志
+        /// </summary>
+        public ILog Log { get; set; } = new WxxandxyxLog("全局日志");
+        /// <summary>
+        /// 服务器配置
+        /// </summary>
+        public CacheKey CacheKey { get; set; }
+        /// <summary>
+        /// 缓存
+        /// </summary>
+        public IMemoryCache MemoryCache { get; set; } = new MemoryCache();
+
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         /// <summary>
         /// 集成Autofac
@@ -108,6 +130,13 @@ namespace ScriptServerStation
             services.AddMemoryCache();
             services.AddSession();
 
+            services.AddMvc(o => {
+                o.Filters.Add(new LoginAuthFilterAction(new string[] {
+                    "api/User/login",
+                    "api/User/register"
+                }, Log, CacheKey, MemoryCache));
+            });
+
             services.AddSwaggerGen(c =>
             {
                 //c.OperationFilter<ExamplesOperationFilter>();
@@ -142,7 +171,23 @@ namespace ScriptServerStation
             app.UseHttpsRedirection();
             //启动跨域
             app.UseCors("CorsPolicy");
+            //全局异常
+            app.UseExceptionHandler(config =>
+            {
+                config.Run(async context =>
+                {
+                    context.Response.StatusCode = 500;
+                    context.Response.ContentType = "application/json";
 
+                    var error = context.Features.Get<IExceptionHandlerFeature>();
+                    if (error != null)
+                    {
+                        Log.Error("gloab ------------------ ", error.Error);
+                        var ex = error.Error;
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(Result.Fail(ex.Message)));
+                    }
+                });
+            });
             app.UseStaticFiles();
 
             app.UseRouting();

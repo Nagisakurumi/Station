@@ -11,16 +11,15 @@ using Newtonsoft.Json;
 using ScriptServerStation.HelpClasses.Cache;
 using ScriptServerStation.Items;
 using ScriptServerStation.Database;
-using ScriptServerStation.Utils;
-using ScriptServerStation.HelpClasses.Cache.Configuration;
 using Microsoft.AspNetCore.Http;
+using ScriptServerStation.Expends;
 
 namespace ScriptServerStation.Controllers
 {
     //[Route("api/[controller]")]
     [Route("api/User")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : ScriptBaseController
     {
         /// <summary>
         /// service
@@ -38,18 +37,9 @@ namespace ScriptServerStation.Controllers
         /// 邮件服务
         /// </summary>
         public IEmailConnect EmailConnect { get; set; }
-        /// <summary>
-        /// 日志
-        /// </summary>
-        public ILog Log { get; set; }
-        /// <summary>
-        /// 缓存名
-        /// </summary>
-        public CacheKey CacheKey { get; set; }
 
         private HttpClient HttpClient = new HttpClient();
         private string url = "http://127.0.0.1:8000/";
-
         /// <summary>
         /// 获取用户列表
         /// </summary>
@@ -76,7 +66,7 @@ namespace ScriptServerStation.Controllers
         {
             try
             {
-                return Result.Success(this.CacheOption.GetValue<User>(this.GetUserToken()));
+                return Result.Success(this.GetLoginUser());
             }
             catch (Exception ex)
             {
@@ -90,7 +80,7 @@ namespace ScriptServerStation.Controllers
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        [HttpGet("login/{username}/{password}")]
+        [HttpPost("login")]
         public Result Login(string username, string password)
         {
             Result Result = new Result();
@@ -107,8 +97,9 @@ namespace ScriptServerStation.Controllers
                 Console.WriteLine("用户 : " + user.Name + ", token : " + cookieValue);
                 //存入缓存
                 CacheOption.SetValue(cookieValue, user, DateTime.Now + TimeSpan.FromDays(100));
-                //设置用户token
-                this.SetToken(cookieValue);
+                //默认10天有效
+                TokenInfo token = new TokenInfo(user.Name, DateTime.Now + TimeSpan.FromDays(10));
+                this.SetUserToken(token, user);
                 Result.Data = new { IsSpecial = user.IsHasSpecialPower() || ishaveroot(user),
                     Time = user.IsHasSpecialPower() ? (
                     DateTime.Now + TimeSpan.FromDays(30)).ToString() : (user.EndDate == null || user.EndDate < DateTime.Now ? "未开通会员" : user.EndDate.ToString()),
@@ -241,11 +232,7 @@ namespace ScriptServerStation.Controllers
             Result Result = new Result();
             try
             {
-                if (!this.IsLogin())
-                {
-                    return Result.Fail("登陆以过期，或者被别人从其他地方顶掉了!尽快修改密码!");
-                }
-                User user = CacheOption.GetValue<User>(this.GetUserToken());
+                User user = this.GetLoginUser();
                 Result.SetCode(UserService.ExperienceCode(user.Name) ? ResultCode.Success : ResultCode.Fail);
                 Result.Data = "激活成功!";
             }
@@ -489,11 +476,7 @@ namespace ScriptServerStation.Controllers
             Result Result = new Result();
             try
             {
-                if (!this.IsLogin())
-                {
-                    return Result.Fail("登陆以过期，或者被别人从其他地方顶掉了!尽快修改密码!");
-                }
-                User user = CacheOption.GetValue<User>(this.GetUserToken());
+                User user = this.GetLoginUser();
                 if(Convert.ToBoolean(user.IsHasSpecialPower()) == false &&
                     ishaveroot(user) == false)
                 {
@@ -580,11 +563,7 @@ namespace ScriptServerStation.Controllers
             Result Result = new Result();
             try
             {
-                if (!this.IsLogin())
-                {
-                    return Result.Fail("登陆以过期，或者被别人从其他地方顶掉了!尽快修改密码!");
-                }
-                User user = CacheOption.GetValue<User>(this.GetUserToken(CacheKey.UserCacheName));
+                User user = this.GetLoginUser();
                 if (user.IsHasSpecialPower() == false
                     && ishaveroot(user) == false)
                 {
@@ -613,14 +592,6 @@ namespace ScriptServerStation.Controllers
                 Result.SetFail();
                 Result.Msg = e.Message;
                 Log.Error(e.ToString());
-                try
-                {
-                    Log.Log("用户名 : {0}, Token : {1}".Format(CacheOption.GetValue<User>(this.GetUserToken()), this.GetUserToken()));
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("获取信息异常 : ", ex);
-                }
             }
             return Result;
         }
@@ -693,26 +664,6 @@ namespace ScriptServerStation.Controllers
             }
         }
 
-
-        /// <summary>
-        /// 检测用户是否已经登陆
-        /// </summary>
-        /// <returns></returns>
-        private bool IsLogin()
-        {
-            var token = this.GetUserToken();
-            var user = this.CacheOption.GetValue<User>(token);
-            
-            if(user == null)
-            {
-                Log.Error("未能找到用户 : ", " token,", "cookie : ", token);
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
         /// <summary>
         /// 图片
         /// </summary>

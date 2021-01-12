@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ScriptServerStation.HelpClasses.Cache.MyCache
+namespace ScriptServerStation.HelpClasses.Cache.Memory
 {
     /// <summary>
     /// 缓存类的实现
     /// </summary>
-    public class CacheInterfaceImplement : IMemoryCache
+    public class MemoryCache : IMemoryCache
     {
         /// <summary>
         /// 内存缓存
         /// </summary>
-        public MemoryCache Cache { get; set; } = new MemoryCache(new MemoryCacheOptions());
+        public Microsoft.Extensions.Caching.Memory.MemoryCache Cache { get; set; } = new Microsoft.Extensions.Caching.Memory.MemoryCache(new MemoryCacheOptions());
 
         /// <summary>
         /// 设置缓存值
@@ -24,6 +24,16 @@ namespace ScriptServerStation.HelpClasses.Cache.MyCache
         public void SetValue(string key, object value)
         {
             this.Cache.Set<object>(key, value);
+        }
+        /// <summary>
+        /// 设置缓存值
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="timeout">超时时间(s)</param>
+        public void SetValue(string key, object value, int timeout)
+        {
+            this.Cache.Set<object>(key, value, DateTime.Now + TimeSpan.FromSeconds(timeout));
         }
         /// <summary>
         /// 设置缓存值
@@ -57,22 +67,12 @@ namespace ScriptServerStation.HelpClasses.Cache.MyCache
         /// 移除
         /// </summary>
         /// <param name="key"></param>
-        public bool Remove(string key)
+        public void Remove(string key)
         {
             if (IsContain(key))
             {
                 Cache.Remove(key);
-                return true;
             }
-            return false;
         }
-        /// <summary>
-        /// 设置值
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <param name="timeOffset"></param>
-        public void SetValue(string key, object value, DateTimeOffset timeOffset) => Cache.Set<object>(key, value, timeOffset);
-
     }
 }

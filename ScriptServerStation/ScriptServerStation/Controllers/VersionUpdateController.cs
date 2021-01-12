@@ -5,14 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ScriptServerStation.Expends;
 using ScriptServerStation.FileUpdate;
 using ScriptServerStation.HelpClasses;
 using ScriptServerStation.HelpClasses.Cache;
-using ScriptServerStation.HelpClasses.Cache.Configuration;
 using ScriptServerStation.Items;
 using ScriptServerStation.Service;
 using ScriptServerStation.Service.Impl;
-using ScriptServerStation.Utils;
 using Versioninfo = ScriptServerStation.Database.Versioninfo;
 
 namespace ScriptServerStation.Controllers
@@ -22,7 +21,7 @@ namespace ScriptServerStation.Controllers
     /// </summary>
     [Route("api/version/")]
     [ApiController]
-    public class VersionUpdateController : ControllerBase
+    public class VersionUpdateController : ScriptBaseController
     {
         /// <summary>
         /// 1mb的大小
@@ -32,18 +31,6 @@ namespace ScriptServerStation.Controllers
         /// 版本更新接口
         /// </summary>
         public IVersionUpdateService VersionUpdateService { get; set; }
-        /// <summary>
-        /// 日志
-        /// </summary>
-        public ILog Log { get; set; }
-        /// <summary>
-        /// 内存缓存
-        /// </summary>
-        public IMemoryCache MemoryCache { get; set; }
-        /// <summary>
-        /// 键值
-        /// </summary>
-        public CacheKey CacheKey { get; set; }
         /// <summary>
         /// 上传最新版本信息
         /// </summary>

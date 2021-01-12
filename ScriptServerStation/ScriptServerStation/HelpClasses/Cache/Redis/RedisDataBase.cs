@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ScriptServerStation.Utils;
+using ScriptServerStation.Expends;
 using StackExchange.Redis;
 
 namespace ScriptServerStation.HelpClasses.Cache.Redis
@@ -42,7 +42,7 @@ namespace ScriptServerStation.HelpClasses.Cache.Redis
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public bool Remove(string key) => cache.KeyDeleteAsync(key).Result;
+        public void Remove(string key) { _ = cache.KeyDeleteAsync(key).Result; }
         /// <summary>
         /// 设置存储
         /// </summary>
@@ -100,6 +100,13 @@ namespace ScriptServerStation.HelpClasses.Cache.Redis
                 return JsonConvert.DeserializeObject<T>(content);
             }
         }
+        /// <summary>
+        /// 转换为对应的对象
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="timeout">对象字符串</param>
+        /// <returns>对象实体</returns>
+        public void SetValue(string key, object value, int timeout) => cache.StringSetAsync(key, GetString(value), TimeSpan.FromSeconds(timeout));
 
         /// <summary>
         /// 连接redis类

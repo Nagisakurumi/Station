@@ -33,7 +33,6 @@ namespace ScriptServerStation.AutofacMoudles
             {
                 builder.RegisterType(item).As(item.GetInterfaces().First()).PropertiesAutowired();
             }
-
         }
     }
 }

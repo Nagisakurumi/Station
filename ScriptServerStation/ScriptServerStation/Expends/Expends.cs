@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using ScriptServerStation.Database;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -12,29 +11,46 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ScriptServerStation.Utils
+namespace ScriptServerStation.Expends
 {
+    /// <summary>
+    /// 扩展方法
+    /// </summary>
     public static class Expends
     {
 
         /// <summary>
-        /// 判断用户是否有特殊权限
+        /// 数据进行偏移
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="content">内容</param>
+        /// <param name="password">密钥</param>
         /// <returns></returns>
-        public static bool IsHasSpecialPower(this User user)
+        public static string Offset(this string content, string password)
         {
-            return user.IsSpecial;
+            string res = "";
+
+            for (int i = 0; i < content.Length; i++)
+            {
+                res += (char)((content[i] + password[i % password.Length]) % 255);
+            }
+            return res;
         }
         /// <summary>
-        /// 判断用户是否有特殊权限
+        /// 反解析
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="content">内容</param>
+        /// <param name="password">密钥</param>
         /// <returns></returns>
-        public static bool IsHasAdminPower(this User user)
+        public static string ReOffset(this string content, string password)
         {
-            return user.Type == 1;
+            string res = "";
+            for (int i = 0; i < content.Length; i++)
+            {
+                res += (char)((content[i] + 255 - password[i % password.Length]) % 255);
+            }
+            return res;
         }
+
         /// <summary>
         /// 判断int 和指定的枚举类型是否相等
         /// </summary>
@@ -53,7 +69,7 @@ namespace ScriptServerStation.Utils
         /// <typeparam name="T"></typeparam>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public static string GetExpressionProperty<T>(this Expression<Func<T>> expression)
+        public static string GetExpressionProperty<T>(this Expression<Func<T, object>> expression)
         {
             var lambda = (LambdaExpression)expression;
             MemberExpression memberExpr;
@@ -224,6 +240,7 @@ namespace ScriptServerStation.Utils
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<System.Drawing.Rectangle>(rect);
             }
         }
+
         /// <summary>
         /// 转换Rectangle到字符串
         /// </summary>
@@ -413,7 +430,7 @@ namespace ScriptServerStation.Utils
         /// <param name="enumerator"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static IEnumerable<V> ChangedList<T, V>(this IEnumerable<T> enumerator, Func<T, V> func)
+        public static List<V> ChangedList<T, V>(this IEnumerable<T> enumerator, Func<T, V> func)
         {
             List<V> vs = new List<V>();
 
@@ -613,6 +630,23 @@ namespace ScriptServerStation.Utils
         public static T ToBaseType<T>(this object baseobj)
         {
             return (T)Convert.ChangeType(baseobj, typeof(T));
+        }
+        /// <summary>
+        /// 转换到任意类型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="baseobj"></param>
+        /// <returns></returns>
+        public static T ToAny<T>(this object baseobj)
+        {
+            if (typeof(T).IsValueType || typeof(T).FullName.Equals(typeof(string).FullName))
+            {
+                return baseobj.ToBaseType<T>();
+            }
+            else
+            {
+                return JsonConvert.DeserializeObject<T>(baseobj.ToString());
+            }
         }
 
         /// <summary>
