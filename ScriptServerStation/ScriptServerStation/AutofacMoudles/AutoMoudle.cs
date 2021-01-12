@@ -24,15 +24,14 @@ namespace ScriptServerStation.AutofacMoudles
             //读取当前命名空间下的所有的类型
             Type[] types = this.GetType().Assembly.GetTypes();
 
-
             foreach (var item in types.Where(t => t.GetCustomAttribute<ApiControllerAttribute>() != null))
             {
-                builder.RegisterType(item).SingleInstance().PropertiesAutowired();
+                builder.RegisterType(item).PropertiesAutowired();
             }
 
             foreach (var item in types.Where(t => t.GetCustomAttribute<InterfaceAttribute>() != null))
             {
-                builder.RegisterType(item).As(item.GetInterfaces().First()).SingleInstance().PropertiesAutowired();
+                builder.RegisterType(item).As(item.GetInterfaces().First()).PropertiesAutowired();
             }
 
         }

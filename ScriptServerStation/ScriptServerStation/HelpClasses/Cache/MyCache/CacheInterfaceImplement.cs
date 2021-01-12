@@ -21,7 +21,7 @@ namespace ScriptServerStation.HelpClasses.Cache.MyCache
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public void Set(string key, object value)
+        public void SetValue(string key, object value)
         {
             this.Cache.Set<object>(key, value);
         }
@@ -30,18 +30,8 @@ namespace ScriptServerStation.HelpClasses.Cache.MyCache
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        /// <param name="timeout">超时时间(s)</param>
-        public void Set(string key, object value, int timeout)
-        {
-            this.Cache.Set<object>(key, value, DateTime.Now + TimeSpan.FromSeconds(timeout));
-        }
-        /// <summary>
-        /// 设置缓存值
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
         /// <param name="timeout">超时时刻</param>
-        public void Set(string key, object value, DateTime timeout)
+        public void SetValue(string key, object value, DateTime timeout)
         {
             this.Cache.Set<object>(key, value, timeout);
         }
@@ -50,9 +40,9 @@ namespace ScriptServerStation.HelpClasses.Cache.MyCache
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public object Get(string key)
+        public T GetValue<T>(string key)
         {
-            return Cache.Get<object>(key);
+            return (T)Cache.Get<object>(key);
         }
         /// <summary>
         /// 是否包含key
@@ -67,12 +57,22 @@ namespace ScriptServerStation.HelpClasses.Cache.MyCache
         /// 移除
         /// </summary>
         /// <param name="key"></param>
-        public void Remove(string key)
+        public bool Remove(string key)
         {
             if (IsContain(key))
             {
                 Cache.Remove(key);
+                return true;
             }
+            return false;
         }
+        /// <summary>
+        /// 设置值
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="timeOffset"></param>
+        public void SetValue(string key, object value, DateTimeOffset timeOffset) => Cache.Set<object>(key, value, timeOffset);
+
     }
 }

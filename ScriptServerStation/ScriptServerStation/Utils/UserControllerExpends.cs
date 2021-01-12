@@ -12,24 +12,6 @@ namespace ScriptServerStation.Utils
     public static class UserControllerExpends
     {
         /// <summary>
-        /// 检测用户是否已经登陆
-        /// </summary>
-        /// <param name="userController"></param>
-        /// <returns></returns>
-        public static bool IsLogin(this UserController userController)
-        {
-            var token = userController.GetUserToken();
-            var username = userController.GetUserToken(userController.CacheKey.UserCookieName);
-            if(token != null && username != null && userController.CacheOption.GetValue<string>(username).Equals(token))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
         /// 获取用户token
         /// </summary>
         /// <param name="userController"></param>

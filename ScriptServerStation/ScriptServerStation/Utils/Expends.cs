@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -698,6 +699,17 @@ namespace ScriptServerStation.Utils
 
             newVersion = newVersion.Substring(0, newVersion.Length - 1);
             return newVersion;
+        }
+
+        /// <summary>
+        /// 获取文件大小
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public static long GetFileSize(this string filename)
+        {
+            FileInfo file = new FileInfo(filename);
+            return file.Length;
         }
         /// <summary>
         /// 转换到版本号

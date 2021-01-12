@@ -33,7 +33,7 @@ namespace ScriptServerStation.Controllers
         /// <summary>
         /// 缓存
         /// </summary>
-        public ICacheOption CacheOption { get; set; }
+        public IMemoryCache CacheOption { get; set; }
         /// <summary>
         /// 邮件服务
         /// </summary>
@@ -72,18 +72,17 @@ namespace ScriptServerStation.Controllers
         /// <param name="account"></param>
         /// <returns></returns>
         [HttpGet("userinfo")]
-        public Result GetUserInfo(string account)
+        public Result GetUserInfo()
         {
-            Result obj = new Result();
             try
             {
-                obj.Data = UserService.GetUser(account);
+                return Result.Success(this.CacheOption.GetValue<User>(this.GetUserToken()));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                obj.SetCode( ResultCode.Fail);
+                Log.Error(ex);
+                return Result.Fail(ex.Message);
             }
-            return obj;
         }
         /// <summary>
         /// 登陆
@@ -104,12 +103,13 @@ namespace ScriptServerStation.Controllers
                 }
                 //计算cookie的值
                 string cookieValue = MD5Comm.Get32MD5One(DateTime.Now.ToString());
+
+                Console.WriteLine("用户 : " + user.Name + ", token : " + cookieValue);
                 //存入缓存
-                CacheOption.SetValue(username, cookieValue);
+                CacheOption.SetValue(cookieValue, user, DateTime.Now + TimeSpan.FromDays(100));
                 //设置用户token
                 this.SetToken(cookieValue);
-                this.SetToken(CacheKey.UserCookieName, username);
-                Result.Data = new { IsSpecial = (user.IsHasSpecialPower() || ishaveroot(user)).ToString(),
+                Result.Data = new { IsSpecial = user.IsHasSpecialPower() || ishaveroot(user),
                     Time = user.IsHasSpecialPower() ? (
                     DateTime.Now + TimeSpan.FromDays(30)).ToString() : (user.EndDate == null || user.EndDate < DateTime.Now ? "未开通会员" : user.EndDate.ToString()),
                     IsShowMsg = (user.Email == null || user.Email.Equals("")).ToString(),
@@ -179,7 +179,6 @@ namespace ScriptServerStation.Controllers
         [HttpPost("sendcode")]
         public Result SendVerificationCode(string account, string email)
         {
-        /// </summary>
             Result Result = new Result();
             try
             {
@@ -187,8 +186,8 @@ namespace ScriptServerStation.Controllers
                 if (UserService.GetUser(account) != null) throw new Exception("该账号已经被注册!");
                 string code = random.Next(0, 9).ToString() + random.Next(0, 9).ToString()
                     + random.Next(0, 9).ToString() + random.Next(0, 9).ToString();
-                CacheOption.SetValue("register_{0}".ToFormat(account), code, new DateTimeOffset(
-                    DateTime.Now + TimeSpan.FromHours(1)));
+                CacheOption.SetValue("register_{0}".ToFormat(account), code, 
+                    DateTime.Now + TimeSpan.FromHours(1));
                 EmailConnect.SendEmail("火星人脚本账号注册", "验证码:{0}".ToFormat(code), email);
                 Result.Data = "已经成功发送验证码,验证码只有一小时的有效期!";
             }
@@ -246,7 +245,7 @@ namespace ScriptServerStation.Controllers
                 {
                     return Result.Fail("登陆以过期，或者被别人从其他地方顶掉了!尽快修改密码!");
                 }
-                User user = UserService.GetUser(this.GetUserToken(CacheKey.UserCookieName));
+                User user = CacheOption.GetValue<User>(this.GetUserToken());
                 Result.SetCode(UserService.ExperienceCode(user.Name) ? ResultCode.Success : ResultCode.Fail);
                 Result.Data = "激活成功!";
             }
@@ -482,7 +481,7 @@ namespace ScriptServerStation.Controllers
         /// <summary>
         /// 答题检测
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="formFiles"></param>
         /// <returns></returns>
         [HttpPost("checkimage")]
         public Result CheckImage([FromForm] IFormCollection formFiles)
@@ -494,7 +493,7 @@ namespace ScriptServerStation.Controllers
                 {
                     return Result.Fail("登陆以过期，或者被别人从其他地方顶掉了!尽快修改密码!");
                 }
-                User user = UserService.GetUser(this.GetUserToken(CacheKey.UserCookieName));
+                User user = CacheOption.GetValue<User>(this.GetUserToken());
                 if(Convert.ToBoolean(user.IsHasSpecialPower()) == false &&
                     ishaveroot(user) == false)
                 {
@@ -585,7 +584,7 @@ namespace ScriptServerStation.Controllers
                 {
                     return Result.Fail("登陆以过期，或者被别人从其他地方顶掉了!尽快修改密码!");
                 }
-                User user = UserService.GetUser(this.GetUserToken(CacheKey.UserCookieName));
+                User user = CacheOption.GetValue<User>(this.GetUserToken(CacheKey.UserCacheName));
                 if (user.IsHasSpecialPower() == false
                     && ishaveroot(user) == false)
                 {
@@ -613,7 +612,15 @@ namespace ScriptServerStation.Controllers
             {
                 Result.SetFail();
                 Result.Msg = e.Message;
-                Log.Log(e.ToString());
+                Log.Error(e.ToString());
+                try
+                {
+                    Log.Log("用户名 : {0}, Token : {1}".Format(CacheOption.GetValue<User>(this.GetUserToken()), this.GetUserToken()));
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("获取信息异常 : ", ex);
+                }
             }
             return Result;
         }
@@ -678,7 +685,7 @@ namespace ScriptServerStation.Controllers
         {
             try
             {
-                return Convert.ToDateTime(user.EndDate) > DateTime.Now;
+                return user.EndDate > DateTime.Now;
             }
             catch (Exception ex)
             {
@@ -687,7 +694,25 @@ namespace ScriptServerStation.Controllers
         }
 
 
-
+        /// <summary>
+        /// 检测用户是否已经登陆
+        /// </summary>
+        /// <returns></returns>
+        private bool IsLogin()
+        {
+            var token = this.GetUserToken();
+            var user = this.CacheOption.GetValue<User>(token);
+            
+            if(user == null)
+            {
+                Log.Error("未能找到用户 : ", " token,", "cookie : ", token);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         /// <summary>
         /// 图片
         /// </summary>

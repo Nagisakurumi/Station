@@ -25,6 +25,10 @@ namespace ScriptServerStation.Controllers
     public class VersionUpdateController : ControllerBase
     {
         /// <summary>
+        /// 1mb的大小
+        /// </summary>
+        public static int PackageSize { get; set; } = 1048576 * 6;
+        /// <summary>
         /// 版本更新接口
         /// </summary>
         public IVersionUpdateService VersionUpdateService { get; set; }
@@ -32,10 +36,6 @@ namespace ScriptServerStation.Controllers
         /// 日志
         /// </summary>
         public ILog Log { get; set; }
-        /// <summary>
-        /// 缓存
-        /// </summary>
-        public ICacheOption CacheOption { get; set; }
         /// <summary>
         /// 内存缓存
         /// </summary>
@@ -76,7 +76,7 @@ namespace ScriptServerStation.Controllers
                 //添加版本
                 VersionUpdateService.AddVersion(version);
                 //更新当前最新的正在上传的版本信息
-                CacheOption.SetValue(CacheKey.UploadCacheFileName, versioninfo);
+                MemoryCache.SetValue(CacheKey.UploadCacheFileName, versioninfo);
                 //保存版本更新内容
                 versioninfo.ToFile(root.Combine(CacheKey.VersionUpdateFileSaveName));
                 //返回成功
@@ -98,7 +98,7 @@ namespace ScriptServerStation.Controllers
         {
             try
             {
-                VersionUpdateInfo updateInfo = CacheOption.GetValue<VersionUpdateInfo>(CacheKey.UploadCacheFileName);
+                VersionUpdateInfo updateInfo = MemoryCache.GetValue<VersionUpdateInfo>(CacheKey.UploadCacheFileName);
                 if (updateInfo == null)
                     return "必须先上传版本信息!";
                 
@@ -140,7 +140,7 @@ namespace ScriptServerStation.Controllers
         {
             try
             {
-                VersionUpdateInfo updateInfo = CacheOption.GetValue<VersionUpdateInfo>(CacheKey.UploadCacheFileName);
+                VersionUpdateInfo updateInfo = MemoryCache.GetValue<VersionUpdateInfo>(CacheKey.UploadCacheFileName);
                 if (updateInfo == null)
                     return "必须先上传版本信息!";
                 //要写入的文件流
@@ -165,11 +165,11 @@ namespace ScriptServerStation.Controllers
                 if (isFirst)
                 {
                     writeStream = new MemoryStream();
-                    MemoryCache.Set(md5, writeStream, DateTime.Now + TimeSpan.FromMinutes(10));
+                    MemoryCache.SetValue(md5, writeStream, DateTime.Now + TimeSpan.FromMinutes(10));
                 }
                 else
                 {
-                    writeStream = MemoryCache.Get(md5) as MemoryStream;
+                    writeStream = MemoryCache.GetValue<MemoryStream>(md5) as MemoryStream;
                 }
                 // 复制文件
                 file.CopyTo(writeStream);
@@ -216,7 +216,8 @@ namespace ScriptServerStation.Controllers
         /// <summary>
         /// 获取更新到指定版本的信息
         /// </summary>
-        /// <param name="from"></param>
+        /// <param name="oldversion"></param>
+        /// <param name="targetversion"></param>
         /// <returns></returns>
         [HttpGet("updateversion/{oldversion}/{targetversion}")]
         public Result UpdateVersion(string oldversion, string targetversion)
@@ -287,6 +288,56 @@ namespace ScriptServerStation.Controllers
             {
                 Log.Error(ex);
                 return null;
+            }
+        }
+        /// <summary>
+        /// 下载大文件
+        /// </summary>
+        /// <param name="path">文件名称</param>
+        /// <returns></returns>
+        [HttpGet("downloadbig/{path}")]
+        public void DownloadBigFile(string path)
+        {
+            try
+            {
+                path = path.FromBase64();
+                path = System.IO.Path.Combine(AppContext.BaseDirectory, CacheKey.UploadCacheFileRootPath, path);
+                if(System.IO.File.Exists(path) == false)
+                {
+                    //return Result.Fail("文件不存在!");
+                    return;
+                }
+                int size = PackageSize;
+                var response = HttpContext.Response;
+                using (FileStream stream = System.IO.File.OpenRead(path))
+                {
+                    while (true)
+                    {
+                        //如果超出
+                        if (stream.Position + PackageSize >= stream.Length)
+                        {
+                            size = (int)(stream.Length - stream.Position);
+                        }
+
+                        //如果请求被中途取消
+                        if (HttpContext.RequestAborted.IsCancellationRequested)
+                        {
+                            break;
+                        }
+                        byte[] datas = new byte[size];
+                        stream.Read(datas, 0, size);
+                        response.Body.WriteAsync(datas, 0, size).Wait();
+                        response.Body.Flush();
+                
+                        if (stream.Position == stream.Length)
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                Log.Log("下载大文件失败!");
             }
         }
     }

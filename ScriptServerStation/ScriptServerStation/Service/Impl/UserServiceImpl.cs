@@ -17,10 +17,6 @@ namespace ScriptServerStation.Service.Impl
     public class UserServiceImpl : IUserService
     {
         /// <summary>
-        /// 缓存
-        /// </summary>
-        public ICacheOption Cache { get; set; }
-        /// <summary>
         /// 数据库
         /// </summary>
         public DataBaseContext DataBaseContext { get; set; }

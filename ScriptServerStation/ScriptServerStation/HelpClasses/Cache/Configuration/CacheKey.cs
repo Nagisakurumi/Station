@@ -29,10 +29,6 @@ namespace ScriptServerStation.HelpClasses.Cache.Configuration
         /// </summary>
         public string VersionUpdateFileSaveName => Read<string>();
         /// <summary>
-        /// 读取再cookie中的用户名
-        /// </summary>
-        public string UserCookieName => Read<string>();
-        /// <summary>
         /// /构造函数
         /// </summary>
         /// <param name="config"></param>

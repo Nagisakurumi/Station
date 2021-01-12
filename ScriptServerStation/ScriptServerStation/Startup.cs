@@ -57,24 +57,19 @@ namespace ScriptServerStation
                 DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder(new DbContextOptions<DataBaseContext>());
                 optionsBuilder.UseMySQL(Configuration["DataBase:ConnectionString"]);
                 return new DataBaseContext(optionsBuilder.Options as DbContextOptions<DataBaseContext>);
-            }).PropertiesAutowired(); ;
+            }).PropertiesAutowired();
 
             var redisConn = Configuration["WebConfig:Redis:Connection"];
-            var redisInstanceName = Configuration["WebConfig:Redis:InstanceName"];
-            //Session 过期时长分钟
-            var sessionOutTime = Configuration.GetValue<int>("WebConfig:SessionTimeOut", 30);
 
             ///自定义redis
-            builder.Register<ICacheOption>(c => 
+            builder.Register<IMemoryCache>(c => 
                 new RedisDataBase(new ExRedisCacheOptions()
                 {
                     Configuration = redisConn,
-                    DataBaseIdx = 0,
-                    InstanceName = redisInstanceName
                 }
-                )).PropertiesAutowired();
+                )).SingleInstance().PropertiesAutowired();
             //注入内存缓存
-            builder.RegisterInstance<IMemoryCache>(new CacheInterfaceImplement()).PropertiesAutowired();
+            //builder.RegisterInstance<IMemoryCache>(new CacheInterfaceImplement()).SingleInstance().PropertiesAutowired();
             //注入配置文件
             builder.RegisterInstance<IConfiguration>(Configuration).SingleInstance().PropertiesAutowired();
             ///添加邮件服务
@@ -95,11 +90,6 @@ namespace ScriptServerStation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.Configure<FormOptions>(x => {
-            //    x.MultipartBodyLengthLimit = 1_074_790_400;//不到300M
-            //    x.ValueLengthLimit = 1_074_790_400;
-            //    x.MemoryBufferThreshold = 1_074_790_400;
-            //});
             //替换容器服务
             _ = services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
             services.AddControllers().AddNewtonsoftJson();

@@ -67,11 +67,12 @@ namespace ScriptServerStation.Utils
                     Versioninfo item = historys[i];
                     //获取根目录
                     string root = cacheKey.UploadCacheFileRootPath.FromProjectRootCombine(item.Path, cacheKey.VersionUpdateFileSaveName);
+
                     //读取对应版本的配置文件
                     VersionUpdateInfo info = root.ReadFromFile<VersionUpdateInfo>();
                     foreach (var fileInfo in info.Files.Values)
                     {
-                        if(fileInfo.Status == FileStatus.Add)
+                        if (fileInfo.Status == FileStatus.Add)
                         {
                             fileInfo.Status = FileStatus.Delete;
                         }
