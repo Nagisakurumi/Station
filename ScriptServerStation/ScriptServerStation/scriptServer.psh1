@@ -1,1 +1,1 @@
-Scaffold-DbContext "server=www.wxxandxyx.cn;userid=mytest;pwd=123456;port=3306;database=martian;sslmode=none;" Pomelo.EntityFrameworkCore.MySql -OutputDir Database -Context DataBaseContext -Force -v
+Scaffold-DbContext "server=www.wxxandxyx.cn;userid=gay;pwd=09080706;port=3306;database=gay;sslmode=none;" Pomelo.EntityFrameworkCore.MySql -OutputDir Database -Context DataBaseContext -Force -v
