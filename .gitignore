@@ -33,3 +33,5 @@ _ReSharper*/
 packages/
 *bin*
 obj*/
+node_modules/
+dist/
