@@ -56,7 +56,7 @@ namespace ScriptServerStation.Filters
             if (context.HttpContext.Request == null) return;
             try
             {
-                string path = GetRoutePath(context);
+                string path = GetRoutePath(context).ToLower();
                 if (!path.EqualLists(s => false, UnAuthList))
                 {
                     return;
