@@ -115,7 +115,8 @@ export default {
   methods: {
     getList() {
       Api.user.getUserList().then((res) => {
-        debugger;
+        //debugger;
+        console.log(res)
         // if (res.code == 0) {
         //   this.$router.push("/home");
         // } else {
