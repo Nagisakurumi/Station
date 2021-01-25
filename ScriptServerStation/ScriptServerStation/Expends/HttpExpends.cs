@@ -22,6 +22,7 @@ namespace ScriptServerStation.Expends
         public static void SetUserToken(this ScriptBaseController baseController, TokenInfo token, User user)
         {
             baseController.HttpContext.Response.Headers.Add(baseController.CacheKey.TokenName, TokenInfo.TokenToString(token));
+            baseController.HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", baseController.CacheKey.TokenName);
             baseController.MemoryCache.SetValue(user.Name, user, token.OverTime);
         }
 
@@ -80,7 +81,7 @@ namespace ScriptServerStation.Expends
         /// <returns>用户信息</returns>
         public static User GetLoginUser(this HttpContext httpContext, CacheKey cacheKey, IMemoryCache memoryCache)
         {
-            string token = httpContext.GetUserCookie(cacheKey);
+            string token = httpContext.GetUserToken(cacheKey);
             if (token == null)
             {
                 return null;

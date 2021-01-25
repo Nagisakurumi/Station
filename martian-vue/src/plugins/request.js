@@ -68,11 +68,11 @@ service.interceptors.request.use(config => {
 
 // response interceptor
 service.interceptors.response.use((response) => {
-    // console.log('response -> ', response)
+    // console.log('response -> ', response.config.url, response.headers.token)
     //如果是登陆的返回则自动截获token
     if(response.config.url == 'user/login' && response.status == 200 && response.data.code == 0){
-      console.log('GetToken', response.data.data.token)
-      Vue.ls.set(ACCESS_TOKEN, response.data.data.token, 60 * 60 * 1000 * 10)
+      console.log('GetToken', response.headers.token)
+      Vue.ls.set(ACCESS_TOKEN, response.headers.token, 60 * 60 * 1000 * 10)
     }
     //文件下载
     else if(response.headers["content-type"] != "" && response.headers["content-type"] === "application/octet-stream"){

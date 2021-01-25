@@ -118,8 +118,8 @@ export default {
     getList() {
       this.loading = true;
       Api.user.getUserList().then((res) => {
-        debugger;
-        this.loading = false;
+        //debugger;
+        console.log(res)
         // if (res.code == 0) {
         //   this.$router.push("/home");
         // } else {
