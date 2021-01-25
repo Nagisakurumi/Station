@@ -107,7 +107,7 @@ export default {
             this.$v.$touch()
             if(!this.$v.$invalid) {
                 this.loading = true
-                Api.user.login({'name' : this.account, 'pwd' : this.password}).then(res =>{
+                Api.user.login({'username' : this.account, 'password' : this.password}).then(res =>{
                     this.loading = false
                     console.log('cookie', document.cookie)
                     if(res.code == 0){

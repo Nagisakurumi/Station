@@ -80,8 +80,8 @@ namespace ScriptServerStation.Controllers
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        [HttpPost("login")]
-        public Result Login(string username, string password)
+        [HttpGet("login")]
+        public Result Login([FromQuery] string username, [FromQuery] string password)
         {
             Result Result = new Result();
             try

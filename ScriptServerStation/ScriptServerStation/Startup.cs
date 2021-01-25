@@ -50,7 +50,7 @@ namespace ScriptServerStation
         /// <summary>
         /// 服务器配置
         /// </summary>
-        public CacheKey CacheKey { get; set; }
+        public CacheKey CacheKey { get; set; } 
         /// <summary>
         /// 缓存
         /// </summary>
@@ -60,6 +60,7 @@ namespace ScriptServerStation
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            CacheKey = new CacheKey(configuration);
         }
 
         /// <summary>
@@ -83,15 +84,15 @@ namespace ScriptServerStation
 
             var redisConn = Configuration["WebConfig:Redis:Connection"];
 
-            ///自定义redis
-            builder.Register<IMemoryCache>(c => 
-                new RedisDataBase(new ExRedisCacheOptions()
-                {
-                    Configuration = redisConn,
-                }
-                )).SingleInstance().PropertiesAutowired();
+            /////自定义redis
+            //builder.Register<IMemoryCache>(c => 
+            //    new RedisDataBase(new ExRedisCacheOptions()
+            //    {
+            //        Configuration = redisConn,
+            //    }
+            //    )).SingleInstance().PropertiesAutowired();
             //注入内存缓存
-            //builder.RegisterInstance<IMemoryCache>(new CacheInterfaceImplement()).SingleInstance().PropertiesAutowired();
+            builder.RegisterInstance<IMemoryCache>(MemoryCache).SingleInstance().PropertiesAutowired();
             //注入配置文件
             builder.RegisterInstance<IConfiguration>(Configuration).SingleInstance().PropertiesAutowired();
             ///添加邮件服务
@@ -132,8 +133,8 @@ namespace ScriptServerStation
 
             services.AddMvc(o => {
                 o.Filters.Add(new LoginAuthFilterAction(new string[] {
-                    "api/User/login",
-                    "api/User/register"
+                    "user/login",
+                    "user/register"
                 }, Log, CacheKey, MemoryCache));
             });
 
