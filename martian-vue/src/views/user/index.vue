@@ -5,6 +5,7 @@
       :items="desserts"
       :items-per-page="5"
       class="elevation-1"
+      :loading="loading"
     ></v-data-table>
   </v-container>
 </template>
@@ -107,6 +108,7 @@ export default {
           iron: "6%",
         },
       ],
+      loading: false,
     };
   },
   created() {
@@ -114,8 +116,10 @@ export default {
   },
   methods: {
     getList() {
+      this.loading = true;
       Api.user.getUserList().then((res) => {
         debugger;
+        this.loading = false;
         // if (res.code == 0) {
         //   this.$router.push("/home");
         // } else {
