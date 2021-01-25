@@ -36,7 +36,7 @@ export default {
     //用户接口
     user : {
         login : (params) => {
-            return get('user/login', params)
+            return post('user/login', params)
         },
         logout : (params) => {
             return get('user/logout', params)

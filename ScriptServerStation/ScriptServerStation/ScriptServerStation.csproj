@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>G:\GameScript\Station\ScriptServerStation\ScriptServerStation\ScriptServerStation.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\shencaobo\Source\Repos\Station\ScriptServerStation\ScriptServerStation\ScriptServerStation.xml</DocumentationFile>
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
 
