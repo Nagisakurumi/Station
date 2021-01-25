@@ -16,10 +16,10 @@ const router = new Router({
         component: () => import('@/layout/home'),
         meta: '首页',
         children: [{
-            path: '/upload/dataupload',
-            name: 'upload',
-            component: () => import('@/views/upload/dataupload'),
-            meta: '测试页面'
+            path: '/user/index',
+            name: 'user',
+            component: () => import('@/views/user/index'),
+            meta: '用户列表'
         }]
     }, {
         path: '*',
