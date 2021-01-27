@@ -67,6 +67,9 @@
           </v-dialog>
         </v-toolbar>
       </template>
+      <template v-slot:item.name="{ item }">
+        {{item.name === '123' ? '321' : item.name}}
+      </template>
       <template v-slot:item.actions="{ item }">
           <v-icon
               small
