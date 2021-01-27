@@ -67,18 +67,14 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">
-          mdi-pencil
-        </v-icon>
-        <v-icon small @click="deleteItem(item)">
-          mdi-delete
-        </v-icon>
-      </template>
-      <template v-slot:calories="{ item }">
-        <v-chip :color="getColor(item.isActivated)" dark>
-          {{ item.isActivated }}
-        </v-chip>
+      <template v-slot:item.actions="{ item }">
+          <v-icon
+              small
+              class="mr-2"
+              @click="editItem(item)"
+          >
+                  mdi-arrow-down-bold
+          </v-icon>
       </template>
     </v-data-table>
   </v-container>
@@ -102,7 +98,7 @@ export default {
         { text: "创建时间", value: "createTime" },
         { text: "最后登录时间", value: "lastLoginDate" },
         { text: "是否激活", value: "isActivated" },
-        //{ text: "Iron (%)", value: "iron" },
+        { text: "Iron (%)", value: "actions" },
       ],
       desserts: [],
       editedIndex: -1,
