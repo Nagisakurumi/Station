@@ -1,131 +1,192 @@
 <template>
   <v-container>
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :items-per-page="5"
-      class="elevation-1"
-      :loading="loading"
-    ></v-data-table>
+    <v-data-table :headers="headers" :items="desserts" class="elevation-1">
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="dialog" max-width="500px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+                新增
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.name"
+                        label="名字"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.phone"
+                        label="手机号"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.email"
+                        label="邮箱"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">
+                  关闭
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="save">
+                  保存
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="headline">确定删除？</v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelete"
+                  >取消</v-btn
+                >
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                  >确定</v-btn
+                >
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+      </template>
+      <template v-slot:actions="{ item }">
+        <v-icon small class="mr-2" @click="editItem(item)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteItem(item)">
+          mdi-delete
+        </v-icon>
+      </template>
+      <template v-slot:calories="{ item }">
+        <v-chip :color="getColor(item.isActivated)" dark>
+          {{ item.isActivated }}
+        </v-chip>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 <script>
 import Api from "../../api/api";
-
+import until from "../../untils/index";
 export default {
   data() {
     return {
+      dialog: false,
+      dialogDelete: false,
       headers: [
         {
-          text: "Dessert (100g serving)",
-          value: "name",
+          text: "id",
+          value: "id",
         },
         { text: "名称", value: "name" },
+        { text: "手机号", value: "phone" },
+        { text: "邮箱", value: "email" },
         { text: "创建时间", value: "createTime" },
-        // { text: "Guid", value: "carbs" },
-        // { text: "Protein (g)", value: "protein" },
-        // { text: "Iron (%)", value: "iron" },
+        { text: "最后登录时间", value: "lastLoginDate" },
+        { text: "是否激活", value: "isActivated" },
+        //{ text: "Iron (%)", value: "iron" },
       ],
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%",
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: "1%",
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: "7%",
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: "8%",
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: "16%",
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: "0%",
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: "2%",
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: "45%",
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: "22%",
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
-      ],
-      loading: false,
+      desserts: [],
+      editedIndex: -1,
+      editedItem: {
+        name: "",
+        phone: "",
+        email: "",
+        password: "",
+      },
+      defaultItem: {
+        name: "",
+        phone: "",
+        email: "",
+        password: "",
+      },
     };
+  },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "新增" : "编辑";
+    },
+  },
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
   },
   created() {
     this.getList();
   },
   methods: {
     getList() {
-      this.loading = true;
       Api.user.getUserList().then((res) => {
-        //debugger;
-        console.log(res)
-        // if (res.code == 0) {
-        //   this.$router.push("/home");
-        // } else {
-        //   alert("登录失败, " + res.msg);
-        // }
+        if (res.code == 0) {
+          this.desserts = res.data;
+        } else {
+          alert("登录失败, " + res.msg);
+        }
       });
+    },
+    getColor(isActivated) {
+      if (isActivated == true) return "red";
+      else if (isActivated == false) return "green";
+      else return "";
+    },
+    editItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+    deleteItemConfirm() {
+      this.desserts.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+      this.close();
     },
   },
 };
